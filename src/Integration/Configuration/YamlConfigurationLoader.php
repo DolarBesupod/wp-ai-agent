@@ -217,7 +217,8 @@ final class YamlConfigurationLoader
 		$merged = $base;
 
 		foreach ($override as $key => $value) {
-			if (is_array($value)
+			if (
+				is_array($value)
 				&& isset($merged[$key])
 				&& is_array($merged[$key])
 				&& $this->isAssociativeArray($value)

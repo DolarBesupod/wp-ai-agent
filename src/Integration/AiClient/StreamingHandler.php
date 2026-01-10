@@ -85,7 +85,7 @@ final class StreamingHandler
 	 * Splits the text into chunks and calls the callback with each chunk,
 	 * simulating streaming output from the AI.
 	 *
-	 * @param string              $text      The complete text to stream.
+	 * @param string              $text     The complete text to stream.
 	 * @param callable(string): void $callback The callback to receive each chunk.
 	 */
 	public function streamToCallback(string $text, callable $callback): void

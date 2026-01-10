@@ -328,5 +328,4 @@ final class AiResponseTest extends TestCase
 			$model_metadata
 		);
 	}
-
 }

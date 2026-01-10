@@ -45,7 +45,7 @@ final class Session implements SessionInterface
 	 *
 	 * @param SessionId|null              $id            The session identifier.
 	 * @param string                      $system_prompt The system prompt.
-	 * @param SessionMetadataInterface|null $metadata    The session metadata.
+	 * @param SessionMetadataInterface|null $metadata      The session metadata.
 	 */
 	public function __construct(
 		?SessionId $id = null,

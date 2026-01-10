@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<ruleset name="PHP-CLI-Agent">
+	<description>Coding standard for PHP CLI Agent</description>
+
+	<!-- What to scan -->
+	<file>./src</file>
+	<file>./tests</file>
+
+	<!-- Exclude vendor and generated files -->
+	<exclude-pattern>./vendor/*</exclude-pattern>
+	<exclude-pattern>./.phpunit.cache/*</exclude-pattern>
+	<!-- Exclude bootstrap.php as it uses anonymous classes for configuration -->
+	<exclude-pattern>./src/bootstrap.php</exclude-pattern>
+
+	<!-- Show progress and sniff codes in all reports -->
+	<arg value="ps"/>
+	<arg name="colors"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- Use PSR-12 as base -->
+	<rule ref="PSR12">
+		<!-- Allow tabs for indentation (per project standard) -->
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+		<!-- Allow multi-line control structures in PSR12 style -->
+		<exclude name="PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace"/>
+	</rule>
+
+	<!-- Use tabs for indentation -->
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+
+	<!-- Line length limit -->
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<property name="lineLimit" value="120"/>
+			<property name="absoluteLineLimit" value="160"/>
+		</properties>
+	</rule>
+
+	<!-- Require strict types declaration -->
+	<rule ref="Generic.PHP.RequireStrictTypes"/>
+
+	<!-- Disallow long array syntax -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+	<!-- Operators spacing -->
+	<rule ref="Squiz.WhiteSpace.OperatorSpacing">
+		<properties>
+			<property name="ignoreNewlines" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Concatenation operator spacing -->
+	<rule ref="Squiz.Strings.ConcatenationSpacing">
+		<properties>
+			<property name="spacing" value="1"/>
+			<property name="ignoreNewlines" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Skip array indentation since we use tabs and the rule expects spaces -->
+	<!-- <rule ref="Generic.Arrays.ArrayIndent"/> -->
+
+	<!-- Function call argument spacing -->
+	<rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
+
+	<!-- Forbid duplicate class names -->
+	<rule ref="Generic.Classes.DuplicateClassName"/>
+
+	<!-- Forbid empty statements (except for empty catch blocks which may be intentional) -->
+	<rule ref="Generic.CodeAnalysis.EmptyStatement">
+		<exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
+	</rule>
+
+	<!-- Forbid unconditional if statements -->
+	<rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+
+	<!-- Forbid useless empty method overrides -->
+	<rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+
+	<!-- Forbid final methods in final classes -->
+	<rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+
+	<!-- Require proper naming conventions -->
+	<rule ref="Squiz.NamingConventions.ValidVariableName">
+		<!-- Allow underscores in variable names and no leading underscore for private -->
+		<exclude name="Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps"/>
+		<exclude name="Squiz.NamingConventions.ValidVariableName.NotCamelCaps"/>
+		<exclude name="Squiz.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>
+	</rule>
+
+	<!-- PHPDoc rules - exclude from tests and relax for src -->
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
+		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
+		<exclude name="Squiz.Commenting.FunctionComment.InvalidReturn"/>
+		<exclude name="Squiz.Commenting.FunctionComment.InvalidReturnNotVoid"/>
+		<!-- Allow short type names like int, bool instead of integer, boolean -->
+		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingReturn"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamName"/>
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
+		<!-- Skip type hint warnings for interface implementations -->
+		<exclude name="Squiz.Commenting.FunctionComment.TypeHintMissing"/>
+		<exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing"/>
+		<exclude-pattern>./tests/*</exclude-pattern>
+	</rule>
+
+	<!-- Allow test method naming convention (test_*) -->
+	<rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+		<exclude-pattern>./tests/*</exclude-pattern>
+	</rule>
+
+	<!-- Allow multiple classes in test files (for helper/mock classes) -->
+	<rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+		<exclude-pattern>./tests/*</exclude-pattern>
+	</rule>
+
+	<!-- Disallow inline control structures -->
+	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
+
+	<!-- Require file comment for PHP files -->
+	<rule ref="Squiz.Commenting.FileComment">
+		<!-- Skip some requirements that are too strict -->
+		<exclude name="Squiz.Commenting.FileComment.Missing"/>
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+		<exclude name="Squiz.Commenting.FileComment.AuthorTagOrder"/>
+		<exclude name="Squiz.Commenting.FileComment.SubpackageTagOrder"/>
+		<exclude name="Squiz.Commenting.FileComment.CopyrightTagOrder"/>
+		<exclude name="Squiz.Commenting.FileComment.LicenseTagOrder"/>
+		<exclude name="Squiz.Commenting.FileComment.IncorrectCopyright"/>
+		<exclude name="Squiz.Commenting.FileComment.IncorrectAuthor"/>
+	</rule>
+
+	<!-- Forbid spacing before semicolons -->
+	<rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+
+	<!-- Forbid superfluous whitespaces -->
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+		<properties>
+			<property name="ignoreBlankLines" value="false"/>
+		</properties>
+	</rule>
+
+	<!-- Require single blank line before return statements -->
+	<rule ref="PSR2.ControlStructures.ControlStructureSpacing">
+		<properties>
+			<property name="requiredSpacesAfterOpen" value="0"/>
+			<property name="requiredSpacesBeforeClose" value="0"/>
+		</properties>
+	</rule>
+
+	<!-- Forbid blank lines at the end of class/interface/trait definitions -->
+	<rule ref="PSR2.Classes.ClassDeclaration"/>
+</ruleset>

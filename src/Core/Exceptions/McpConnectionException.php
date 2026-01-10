@@ -33,7 +33,7 @@ class McpConnectionException extends AgentException
 	/**
 	 * Creates an exception for connection timeout.
 	 *
-	 * @param string $server         The MCP server identifier or URL.
+	 * @param string $server          The MCP server identifier or URL.
 	 * @param int    $timeout_seconds The timeout duration in seconds.
 	 *
 	 * @return self
