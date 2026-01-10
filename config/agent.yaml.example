@@ -1,0 +1,76 @@
+# PHP CLI Agent Configuration
+#
+# Copy this file to one of the following locations:
+#   - ~/.php-cli-agent/agent.yaml (user configuration)
+#   - ./agent.yaml (project configuration)
+#
+# Or specify a custom path with: --config=/path/to/agent.yaml
+#
+# Environment variables can be used with ${VAR_NAME} syntax.
+# The tilde (~) is expanded to the user's home directory.
+
+# AI Provider Configuration
+provider:
+  # Provider type: anthropic, openai, or google
+  type: anthropic
+
+  # API key from environment variable
+  # Set this in your environment: export ANTHROPIC_API_KEY=your-key-here
+  api_key: ${ANTHROPIC_API_KEY}
+
+  # Model to use
+  # Anthropic models: claude-sonnet-4-20250514, claude-opus-4-20250514
+  # OpenAI models: gpt-4, gpt-4-turbo, gpt-4o
+  model: claude-sonnet-4-20250514
+
+  # Maximum tokens for AI responses
+  max_tokens: 8192
+
+# MCP Server Configuration
+# Each server is identified by a unique name
+mcp_servers:
+  # Filesystem access server
+  filesystem:
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "/home"]
+    enabled: true
+
+  # SQLite database server (disabled by default)
+  # sqlite:
+  #   command: uvx
+  #   args: ["mcp-server-sqlite", "--db-path", "./data.db"]
+  #   enabled: false
+  #   env:
+  #     SQLITE_MODE: "read-write"
+
+  # Brave Search server (requires API key)
+  # brave_search:
+  #   command: npx
+  #   args: ["-y", "@anthropic/mcp-server-brave-search"]
+  #   enabled: false
+  #   env:
+  #     BRAVE_API_KEY: ${BRAVE_API_KEY}
+
+# Session Storage Path
+# Where to store session data for conversation continuity
+session_storage_path: ~/.php-cli-agent/sessions
+
+# Log Path
+# Where to store log files
+log_path: ~/.php-cli-agent/logs
+
+# Maximum Agent Loop Turns
+# Safety limit for the agent's think-act-observe loop
+max_turns: 100
+
+# Default System Prompt
+# Custom instructions for the AI agent
+default_system_prompt: ""
+
+# Tools that bypass user confirmation
+# These tools are considered safe and won't prompt for confirmation
+bypass_confirmation_tools:
+  - think
+  - read_file
+  - glob
+  - grep
