@@ -47,6 +47,28 @@ interface OutputHandlerInterface
 	public function writeError(string $text): void;
 
 	/**
+	 * Writes a success message.
+	 *
+	 * The output may be styled differently to indicate success.
+	 *
+	 * @param string $text The success message.
+	 *
+	 * @return void
+	 */
+	public function writeSuccess(string $text): void;
+
+	/**
+	 * Writes a warning message.
+	 *
+	 * The output may be styled differently to indicate a warning.
+	 *
+	 * @param string $text The warning message.
+	 *
+	 * @return void
+	 */
+	public function writeWarning(string $text): void;
+
+	/**
 	 * Writes a tool execution result.
 	 *
 	 * @param string     $tool_name The name of the executed tool.
