@@ -110,4 +110,23 @@ interface SessionMetadataInterface
 	 * }
 	 */
 	public function toArray(): array;
+
+	/**
+	 * Returns the session title if set.
+	 *
+	 * The title is typically derived from the first user message
+	 * or can be explicitly set.
+	 *
+	 * @return string|null The session title or null if not set.
+	 */
+	public function getTitle(): ?string;
+
+	/**
+	 * Sets the session title.
+	 *
+	 * @param string $title The session title.
+	 *
+	 * @return void
+	 */
+	public function setTitle(string $title): void;
 }
