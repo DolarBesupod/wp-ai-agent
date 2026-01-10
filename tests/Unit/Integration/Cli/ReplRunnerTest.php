@@ -139,4 +139,20 @@ final class ReplRunnerTest extends TestCase
 		$this->assertSame('You: ', ReplRunner::DEFAULT_PROMPT);
 		$this->assertSame('/', ReplRunner::COMMAND_PREFIX);
 	}
+
+	public function test_isAutoSaveEnabled_returnsTrueByDefault(): void
+	{
+		$this->assertTrue($this->runner->isAutoSaveEnabled());
+	}
+
+	public function test_setAutoSaveEnabled_changesAutoSaveState(): void
+	{
+		$this->runner->setAutoSaveEnabled(false);
+
+		$this->assertFalse($this->runner->isAutoSaveEnabled());
+
+		$this->runner->setAutoSaveEnabled(true);
+
+		$this->assertTrue($this->runner->isAutoSaveEnabled());
+	}
 }

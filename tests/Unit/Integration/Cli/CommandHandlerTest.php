@@ -259,11 +259,12 @@ final class CommandHandlerTest extends TestCase
 		$result = $this->handler->handle('/session list');
 
 		$this->assertTrue($result->wasHandled());
-		$this->assertStringContainsString('session-1', $output);
-		$this->assertStringContainsString('session-2', $output);
+		$this->assertStringContainsString('Recent Sessions:', $output);
+		$this->assertStringContainsString('session', $output);
 		$this->assertStringContainsString('First session', $output);
 		$this->assertStringContainsString('(untitled)', $output);
 		$this->assertStringContainsString('Total: 2 session(s)', $output);
+		$this->assertStringContainsString("Use '/session resume <id>' to continue", $output);
 	}
 
 	public function test_handle_sessionList_showsMessageWhenEmpty(): void

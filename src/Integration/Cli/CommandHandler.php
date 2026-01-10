@@ -363,6 +363,13 @@ HELP;
 	}
 
 	/**
+	 * Maximum number of recent sessions to display in the list.
+	 *
+	 * @var int
+	 */
+	private const SESSION_LIST_LIMIT = 10;
+
+	/**
 	 * Lists all saved sessions.
 	 *
 	 * @return CommandResult
@@ -376,33 +383,39 @@ HELP;
 			return CommandResult::handled();
 		}
 
-		$output = "\nSaved sessions:\n";
-		$output .= str_repeat('-', 60) . "\n";
+		// Limit to recent sessions.
+		$sessions = array_slice($sessions, 0, self::SESSION_LIST_LIMIT);
 
+		$output = "\nRecent Sessions:\n";
+
+		$index = 1;
 		foreach ($sessions as $session_data) {
 			$id = $session_data['id']->toString();
 			$metadata = $session_data['metadata'];
 
 			$title = $metadata->getTitle() ?? '(untitled)';
-			$created = $metadata->getCreatedAt()->format('Y-m-d H:i');
 			$updated = $metadata->getUpdatedAt()->format('Y-m-d H:i');
 
 			// Truncate title if too long.
-			if (strlen($title) > 30) {
-				$title = substr($title, 0, 27) . '...';
+			if (strlen($title) > 40) {
+				$title = substr($title, 0, 37) . '...';
 			}
 
+			// Shorten the session ID for display (first 7 characters).
+			$short_id = strlen($id) > 7 ? substr($id, 0, 7) : $id;
+
 			$output .= sprintf(
-				"  %-12s  %-30s  %s\n",
-				$id,
-				$title,
-				$updated
+				"  %d. [%s] %s - \"%s\"\n",
+				$index,
+				$short_id,
+				$updated,
+				$title
 			);
+			$index++;
 		}
 
-		$output .= str_repeat('-', 60) . "\n";
-		$output .= sprintf("Total: %d session(s)\n", count($sessions));
-		$output .= "\nUse '/session resume <id>' to resume a session.\n";
+		$output .= sprintf("\nTotal: %d session(s)\n", count($sessions));
+		$output .= "Use '/session resume <id>' to continue\n";
 
 		$this->output_handler->writeLine($output);
 

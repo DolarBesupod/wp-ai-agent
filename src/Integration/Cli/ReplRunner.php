@@ -90,6 +90,13 @@ final class ReplRunner
 	private bool $debug_enabled = false;
 
 	/**
+	 * Whether auto-save is enabled.
+	 *
+	 * @var bool
+	 */
+	private bool $auto_save_enabled = true;
+
+	/**
 	 * Registered command handlers.
 	 *
 	 * @var array<string, callable>
@@ -215,6 +222,30 @@ final class ReplRunner
 	public function isDebugEnabled(): bool
 	{
 		return $this->debug_enabled;
+	}
+
+	/**
+	 * Enables or disables auto-save.
+	 *
+	 * When enabled, the session is saved after each turn.
+	 *
+	 * @param bool $enabled Whether auto-save should be enabled.
+	 *
+	 * @return void
+	 */
+	public function setAutoSaveEnabled(bool $enabled): void
+	{
+		$this->auto_save_enabled = $enabled;
+	}
+
+	/**
+	 * Checks if auto-save is enabled.
+	 *
+	 * @return bool
+	 */
+	public function isAutoSaveEnabled(): bool
+	{
+		return $this->auto_save_enabled;
 	}
 
 	/**
@@ -479,12 +510,49 @@ HELP;
 		try {
 			$this->agent->sendMessage($message);
 			$this->output_handler->writeLine('');
+
+			// Auto-save session after each turn.
+			$this->autoSaveSession();
 		} catch (\Throwable $exception) {
 			$this->output_handler->writeError('Error: ' . $exception->getMessage());
 			if ($this->debug_enabled) {
 				$this->output_handler->writeDebug($exception->getTraceAsString());
 			}
 			$this->output_handler->writeLine('');
+		}
+	}
+
+	/**
+	 * Saves the current session if auto-save is enabled.
+	 *
+	 * @return void
+	 */
+	private function autoSaveSession(): void
+	{
+		if (!$this->auto_save_enabled) {
+			return;
+		}
+
+		$session = $this->agent->getCurrentSession();
+
+		if ($session === null) {
+			return;
+		}
+
+		try {
+			$this->session_repository->save($session);
+			if ($this->debug_enabled) {
+				$this->output_handler->writeDebug(
+					sprintf('Session auto-saved: %s', $session->getId()->toString())
+				);
+			}
+		} catch (\Throwable $exception) {
+			// Log but don't interrupt the conversation.
+			if ($this->debug_enabled) {
+				$this->output_handler->writeDebug(
+					'Auto-save failed: ' . $exception->getMessage()
+				);
+			}
 		}
 	}
 }
