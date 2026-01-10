@@ -139,14 +139,16 @@ final class Agent implements AgentInterface
 		$this->agent_loop->run($this->current_session);
 
 		// Auto-save if enabled.
-		if ($this->auto_save) {
+		if ($this->auto_save && $this->current_session !== null) {
 			$this->saveCurrentSession();
 		}
 
-		$this->logger->info('Message processed', [
-			'session_id' => $this->current_session->getId()->toString(),
-			'total_messages' => $this->current_session->getMessageCount(),
-		]);
+		if ($this->current_session !== null) {
+			$this->logger->info('Message processed', [
+				'session_id' => $this->current_session->getId()->toString(),
+				'total_messages' => $this->current_session->getMessageCount(),
+			]);
+		}
 	}
 
 	/**
@@ -259,8 +261,10 @@ final class Agent implements AgentInterface
 		]);
 
 		// If deleting the current session, clear it.
-		if ($this->current_session !== null &&
-			$this->current_session->getId()->equals($session_id)) {
+		if (
+			$this->current_session !== null &&
+			$this->current_session->getId()->equals($session_id)
+		) {
 			$this->current_session = null;
 		}
 

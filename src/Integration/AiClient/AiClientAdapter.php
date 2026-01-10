@@ -317,7 +317,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 
 			$this->provider_registry->registerProvider(AnthropicProvider::class);
 
-			$authentication = new AnthropicApiKeyRequestAuthentication($this->api_key);
+			$authentication = new AnthropicApiKeyRequestAuthentication((string) $this->api_key);
 			$this->provider_registry->setProviderRequestAuthentication('anthropic', $authentication);
 
 			$this->initialized = true;

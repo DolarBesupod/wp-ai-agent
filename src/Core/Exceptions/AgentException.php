@@ -67,17 +67,15 @@ class AgentException extends \RuntimeException
 	 *
 	 * @param array<string, mixed> $additional_context Context to merge.
 	 *
-	 * @return static
+	 * @return self
 	 */
-	public function withContext(array $additional_context): static
+	public function withContext(array $additional_context): self
 	{
-		$new_exception = new static(
+		return new self(
 			$this->getMessage(),
 			$this->getCode(),
 			$this->getPrevious(),
 			array_merge($this->context, $additional_context)
 		);
-
-		return $new_exception;
 	}
 }
