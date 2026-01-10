@@ -104,6 +104,13 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	private bool $initialized = false;
 
 	/**
+	 * The streaming handler for simulated streaming.
+	 *
+	 * @var StreamingHandler|null
+	 */
+	private ?StreamingHandler $streaming_handler = null;
+
+	/**
 	 * Creates a new AiClientAdapter instance.
 	 *
 	 * @param string|null                    $api_key          Optional API key. If not provided,
@@ -194,9 +201,39 @@ final class AiClientAdapter implements AiClientAdapterInterface
 		array $tools,
 		callable $on_chunk
 	): AiResponseInterface {
-		// For now, fall back to non-streaming chat
-		// Streaming support will be added in a future task
-		return $this->chat($messages, $system, $tools);
+		$response = $this->chat($messages, $system, $tools);
+
+		$content = $response->getContent();
+
+		if ($content !== '') {
+			$this->getStreamingHandler()->streamToCallback($content, $on_chunk);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Gets the streaming handler instance.
+	 *
+	 * @return StreamingHandler
+	 */
+	public function getStreamingHandler(): StreamingHandler
+	{
+		if ($this->streaming_handler === null) {
+			$this->streaming_handler = new StreamingHandler();
+		}
+
+		return $this->streaming_handler;
+	}
+
+	/**
+	 * Sets a custom streaming handler.
+	 *
+	 * @param StreamingHandler $handler The streaming handler to use.
+	 */
+	public function setStreamingHandler(StreamingHandler $handler): void
+	{
+		$this->streaming_handler = $handler;
 	}
 
 	/**
