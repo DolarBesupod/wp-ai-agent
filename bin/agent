@@ -1,0 +1,102 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * PHP CLI Agent entry point.
+ *
+ * This script initializes and runs the CLI application.
+ *
+ * @since n.e.x.t
+ */
+
+use PhpCliAgent\Integration\Cli\CliApplication;
+
+// Ensure we're running from CLI.
+if (PHP_SAPI !== 'cli') {
+	fwrite(STDERR, "This script must be run from the command line.\n");
+	exit(1);
+}
+
+// Find autoloader.
+$autoload_paths = [
+	__DIR__ . '/../vendor/autoload.php',
+	__DIR__ . '/../../vendor/autoload.php',
+	__DIR__ . '/../../../autoload.php',
+];
+
+$autoload_found = false;
+foreach ($autoload_paths as $autoload_path) {
+	if (file_exists($autoload_path)) {
+		require $autoload_path;
+		$autoload_found = true;
+		break;
+	}
+}
+
+if (!$autoload_found) {
+	fwrite(STDERR, "Composer autoload not found. Run 'composer install' first.\n");
+	exit(1);
+}
+
+/** @var array<int, string> $argv */
+global $argv;
+
+// Handle --help and --version early before loading the full application.
+// This allows these commands to work without requiring an API key.
+$show_help = false;
+$show_version = false;
+
+foreach (array_slice($argv, 1) as $arg) {
+	if ($arg === '--help' || $arg === '-h') {
+		$show_help = true;
+		break;
+	}
+	if ($arg === '--version' || $arg === '-v') {
+		$show_version = true;
+		break;
+	}
+}
+
+if ($show_help) {
+	echo CliApplication::NAME . ' v' . CliApplication::VERSION . "\n\n";
+	echo <<<HELP
+Usage: agent [options]
+
+Options:
+  --config=PATH, -cPATH    Load configuration from the specified file
+  --session=ID, -sID       Resume an existing session by ID
+  --no-save                Don't persist session to disk
+  --debug, -d              Enable debug output
+  --help, -h               Show this help message
+  --version, -v            Show version information
+
+Examples:
+  agent                    Start a new interactive session
+  agent --session=abc123   Resume session 'abc123'
+  agent --config=my.yaml   Use custom configuration file
+  agent --no-save          Start session without saving to disk
+
+HELP;
+	exit(0);
+}
+
+if ($show_version) {
+	echo CliApplication::NAME . ' v' . CliApplication::VERSION . "\n";
+	exit(0);
+}
+
+// Run the full application.
+try {
+	$app = require __DIR__ . '/../src/bootstrap.php';
+	exit($app->run($argv));
+} catch (Throwable $exception) {
+	fwrite(STDERR, sprintf("Fatal error: %s\n", $exception->getMessage()));
+
+	if (getenv('AGENT_DEBUG')) {
+		fwrite(STDERR, sprintf("\nStack trace:\n%s\n", $exception->getTraceAsString()));
+	}
+
+	exit(1);
+}
