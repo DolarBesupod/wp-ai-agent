@@ -27,6 +27,7 @@ Thumbs.db
 
 # Configuration (may contain secrets)
 agent.yaml
+/.php-cli-agent/
 
 # Logs
 *.log
@@ -42,6 +43,9 @@ agent.yaml
 # Temporary files
 /tmp/
 *.tmp
+
+# Session data
+/.data/
 
 # Project notes
 /_notes/
