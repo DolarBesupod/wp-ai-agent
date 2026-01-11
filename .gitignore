@@ -25,6 +25,9 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Configuration (may contain secrets)
+agent.yaml
+
 # Logs
 *.log
 

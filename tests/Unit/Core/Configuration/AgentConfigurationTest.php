@@ -24,7 +24,7 @@ final class AgentConfigurationTest extends TestCase
 	{
 		$provider = new ProviderConfiguration('anthropic', 'test-key');
 		$mcp_servers = [
-			new McpServerConfiguration('server1', 'node'),
+			new McpServerConfiguration('server1', McpServerConfiguration::TRANSPORT_STDIO, 'node'),
 		];
 
 		$config = new AgentConfiguration(
@@ -171,10 +171,10 @@ final class AgentConfigurationTest extends TestCase
 	{
 		$provider = new ProviderConfiguration('anthropic', 'key');
 		$mcp_servers = [
-			new McpServerConfiguration('enabled1', 'cmd1', [], null, true),
-			new McpServerConfiguration('disabled1', 'cmd2', [], null, false),
-			new McpServerConfiguration('enabled2', 'cmd3', [], null, true),
-			new McpServerConfiguration('disabled2', 'cmd4', [], null, false),
+			new McpServerConfiguration('enabled1', McpServerConfiguration::TRANSPORT_STDIO, 'cmd1'),
+			new McpServerConfiguration('disabled1', McpServerConfiguration::TRANSPORT_STDIO, 'cmd2', [], null, '', [], null, 30.0, false),
+			new McpServerConfiguration('enabled2', McpServerConfiguration::TRANSPORT_STDIO, 'cmd3'),
+			new McpServerConfiguration('disabled2', McpServerConfiguration::TRANSPORT_STDIO, 'cmd4', [], null, '', [], null, 30.0, false),
 		];
 
 		$config = new AgentConfiguration($provider, $mcp_servers);
@@ -278,7 +278,7 @@ final class AgentConfigurationTest extends TestCase
 	{
 		$provider = new ProviderConfiguration('anthropic', 'key');
 		$mcp_servers = [
-			new McpServerConfiguration('server', 'cmd'),
+			new McpServerConfiguration('server', McpServerConfiguration::TRANSPORT_STDIO, 'cmd'),
 		];
 		$config = new AgentConfiguration($provider, $mcp_servers);
 
@@ -303,7 +303,7 @@ final class AgentConfigurationTest extends TestCase
 	{
 		$provider = new ProviderConfiguration('anthropic', 'key');
 		$mcp_servers = [
-			new McpServerConfiguration('', 'cmd'),
+			new McpServerConfiguration('', McpServerConfiguration::TRANSPORT_STDIO, 'cmd'),
 		];
 		$config = new AgentConfiguration($provider, $mcp_servers);
 
@@ -365,8 +365,8 @@ final class AgentConfigurationTest extends TestCase
 	{
 		$provider = new ProviderConfiguration('anthropic', 'key');
 		$mcp_servers = [
-			new McpServerConfiguration('fs', 'npx', ['-y', 'mcp-fs'], null, true),
-			new McpServerConfiguration('db', 'uvx', ['mcp-sqlite'], ['PATH' => '/usr'], false),
+			new McpServerConfiguration('fs', McpServerConfiguration::TRANSPORT_STDIO, 'npx', ['-y', 'mcp-fs']),
+			new McpServerConfiguration('db', McpServerConfiguration::TRANSPORT_STDIO, 'uvx', ['mcp-sqlite'], ['PATH' => '/usr'], '', [], null, 30.0, false),
 		];
 		$config = new AgentConfiguration($provider, $mcp_servers);
 

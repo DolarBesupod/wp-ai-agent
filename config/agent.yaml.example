@@ -28,12 +28,32 @@ provider:
 
 # MCP Server Configuration
 # Each server is identified by a unique name
+# Supports two transport types:
+#   - stdio: Starts an MCP server as a subprocess (requires 'command')
+#   - http: Connects to an HTTP-based MCP endpoint (requires 'url')
 mcp_servers:
-  # Filesystem access server
+  # Example: Stdio-based server (subprocess)
   filesystem:
     command: npx
     args: ["-y", "@modelcontextprotocol/server-filesystem", "/home"]
+    timeout: 30
     enabled: true
+
+  # Example: HTTP-based server with bearer token authentication
+  # wordpress:
+  #   url: https://public-api.wordpress.com/wpcom/v2/mcp/v1
+  #   bearer_token: ${WPCOM_MCP_TOKEN}
+  #   timeout: 60
+  #   enabled: true
+
+  # Example: HTTP-based server with custom headers
+  # custom_api:
+  #   url: https://api.example.com/mcp
+  #   headers:
+  #     X-API-Key: ${API_KEY}
+  #     X-Custom-Header: "some-value"
+  #   timeout: 30
+  #   enabled: true
 
   # SQLite database server (disabled by default)
   # sqlite:
