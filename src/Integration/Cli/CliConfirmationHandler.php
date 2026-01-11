@@ -13,6 +13,9 @@ use PhpCliAgent\Core\Contracts\ConfirmationHandlerInterface;
  * displaying formatted tool execution requests and prompting the user
  * for confirmation with support for "always allow" and bypass lists.
  *
+ * Supports optional persistence of bypass choices across sessions via
+ * BypassPersistence.
+ *
  * @since n.e.x.t
  */
 final class CliConfirmationHandler implements ConfirmationHandlerInterface
@@ -93,25 +96,43 @@ final class CliConfirmationHandler implements ConfirmationHandlerInterface
 	private bool $colors_enabled;
 
 	/**
+	 * Optional persistence for bypass state.
+	 *
+	 * @var BypassPersistence|null
+	 */
+	private ?BypassPersistence $persistence;
+
+	/**
 	 * Creates a new CliConfirmationHandler instance.
 	 *
-	 * @param resource|null       $output_stream  The output stream (default: STDOUT).
-	 * @param resource|null       $input_stream   The input stream (default: STDIN).
-	 * @param bool|null           $colors_enabled Whether to enable colors (default: auto-detect).
-	 * @param array<int, string>  $default_bypass Additional tools to bypass by default.
+	 * @param resource|null          $output_stream  The output stream (default: STDOUT).
+	 * @param resource|null          $input_stream   The input stream (default: STDIN).
+	 * @param bool|null              $colors_enabled Whether to enable colors (default: auto-detect).
+	 * @param array<int, string>     $default_bypass Additional tools to bypass by default.
+	 * @param BypassPersistence|null $persistence    Optional persistence for bypass state.
 	 */
 	public function __construct(
 		$output_stream = null,
 		$input_stream = null,
 		?bool $colors_enabled = null,
-		array $default_bypass = []
+		array $default_bypass = [],
+		?BypassPersistence $persistence = null
 	) {
 		$this->output_stream = $output_stream ?? STDOUT;
 		$this->input_stream = $input_stream ?? STDIN;
 		$this->colors_enabled = $colors_enabled ?? $this->detectColorSupport();
+		$this->persistence = $persistence;
 
 		$all_default_bypasses = array_merge(self::DEFAULT_BYPASS_LIST, $default_bypass);
 		$this->default_bypasses = array_fill_keys($all_default_bypasses, true);
+
+		// Load persisted bypasses if persistence is available.
+		if ($this->persistence !== null) {
+			$persisted = $this->persistence->load();
+			foreach ($persisted as $tool_name) {
+				$this->session_bypasses[strtolower($tool_name)] = true;
+			}
+		}
 	}
 
 	/**
@@ -156,7 +177,8 @@ final class CliConfirmationHandler implements ConfirmationHandlerInterface
 	/**
 	 * Adds a tool to the bypass list.
 	 *
-	 * Tools on this list will execute without confirmation for the current session.
+	 * Tools on this list will execute without confirmation. If persistence
+	 * is configured, the bypass is also saved for future sessions.
 	 *
 	 * @param string $tool_name The tool name to bypass.
 	 *
@@ -166,10 +188,17 @@ final class CliConfirmationHandler implements ConfirmationHandlerInterface
 	{
 		$normalized_name = strtolower($tool_name);
 		$this->session_bypasses[$normalized_name] = true;
+
+		// Persist the bypass if persistence is available.
+		if ($this->persistence !== null) {
+			$this->persistence->addBypass($normalized_name);
+		}
 	}
 
 	/**
 	 * Removes a tool from the bypass list.
+	 *
+	 * If persistence is configured, also removes from persistent storage.
 	 *
 	 * @param string $tool_name The tool name.
 	 *
@@ -179,6 +208,11 @@ final class CliConfirmationHandler implements ConfirmationHandlerInterface
 	{
 		$normalized_name = strtolower($tool_name);
 		unset($this->session_bypasses[$normalized_name]);
+
+		// Remove from persistence if available.
+		if ($this->persistence !== null) {
+			$this->persistence->removeBypass($normalized_name);
+		}
 	}
 
 	/**
@@ -199,11 +233,18 @@ final class CliConfirmationHandler implements ConfirmationHandlerInterface
 	/**
 	 * Clears all bypass rules (except default safe tools).
 	 *
+	 * If persistence is configured, also clears persistent storage.
+	 *
 	 * @return void
 	 */
 	public function clearBypasses(): void
 	{
 		$this->session_bypasses = [];
+
+		// Clear persistence if available.
+		if ($this->persistence !== null) {
+			$this->persistence->clear();
+		}
 	}
 
 	/**

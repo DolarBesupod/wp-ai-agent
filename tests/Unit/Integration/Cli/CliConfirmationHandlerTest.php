@@ -701,4 +701,221 @@ final class CliConfirmationHandlerTest extends TestCase
 			}
 		}
 	}
+
+	/**
+	 * Tests that handler loads persisted bypasses on construction.
+	 */
+	public function test_constructor_withPersistence_loadsPersistedBypasses(): void
+	{
+		$temp_dir = sys_get_temp_dir() . '/bypass_test_' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		try {
+			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence->save(['persisted_tool']);
+
+			$handler = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+
+			$this->assertTrue($handler->shouldBypass('persisted_tool'));
+		} finally {
+			// Cleanup.
+			$files = glob($temp_dir . '/*');
+			if ($files !== false) {
+				foreach ($files as $file) {
+					unlink($file);
+				}
+			}
+			rmdir($temp_dir);
+		}
+	}
+
+	/**
+	 * Tests that addBypass persists to storage when persistence is configured.
+	 */
+	public function test_addBypass_withPersistence_persistsToStorage(): void
+	{
+		$temp_dir = sys_get_temp_dir() . '/bypass_test_' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		try {
+			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$handler = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+
+			$handler->addBypass('new_tool');
+
+			// Verify it's persisted by loading fresh.
+			$loaded = $persistence->load();
+			$this->assertContains('new_tool', $loaded);
+		} finally {
+			$files = glob($temp_dir . '/*');
+			if ($files !== false) {
+				foreach ($files as $file) {
+					unlink($file);
+				}
+			}
+			rmdir($temp_dir);
+		}
+	}
+
+	/**
+	 * Tests that removeBypass removes from persistent storage.
+	 */
+	public function test_removeBypass_withPersistence_removesFromStorage(): void
+	{
+		$temp_dir = sys_get_temp_dir() . '/bypass_test_' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		try {
+			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence->save(['tool_a', 'tool_b']);
+
+			$handler = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+
+			$handler->removeBypass('tool_a');
+
+			$loaded = $persistence->load();
+			$this->assertNotContains('tool_a', $loaded);
+			$this->assertContains('tool_b', $loaded);
+		} finally {
+			$files = glob($temp_dir . '/*');
+			if ($files !== false) {
+				foreach ($files as $file) {
+					unlink($file);
+				}
+			}
+			rmdir($temp_dir);
+		}
+	}
+
+	/**
+	 * Tests that clearBypasses clears persistent storage.
+	 */
+	public function test_clearBypasses_withPersistence_clearsStorage(): void
+	{
+		$temp_dir = sys_get_temp_dir() . '/bypass_test_' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		try {
+			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence->save(['tool_a', 'tool_b']);
+
+			$handler = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+
+			$handler->clearBypasses();
+
+			$loaded = $persistence->load();
+			$this->assertEmpty($loaded);
+		} finally {
+			$files = glob($temp_dir . '/*');
+			if ($files !== false) {
+				foreach ($files as $file) {
+					unlink($file);
+				}
+			}
+			rmdir($temp_dir);
+		}
+	}
+
+	/**
+	 * Tests that "always" response persists the bypass.
+	 */
+	public function test_confirm_withAlwaysResponse_persistsBypass(): void
+	{
+		$temp_dir = sys_get_temp_dir() . '/bypass_test_' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		try {
+			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$handler = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+
+			$this->setInput('a');
+			$result = $handler->confirm('my_tool', []);
+
+			$this->assertTrue($result);
+
+			// Verify it's persisted.
+			$loaded = $persistence->load();
+			$this->assertContains('my_tool', $loaded);
+		} finally {
+			$files = glob($temp_dir . '/*');
+			if ($files !== false) {
+				foreach ($files as $file) {
+					unlink($file);
+				}
+			}
+			rmdir($temp_dir);
+		}
+	}
+
+	/**
+	 * Tests that bypasses persist across handler instances.
+	 */
+	public function test_bypasses_persistAcrossHandlerInstances(): void
+	{
+		$temp_dir = sys_get_temp_dir() . '/bypass_test_' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		try {
+			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+
+			// First handler adds a bypass.
+			$handler1 = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+			$handler1->addBypass('persistent_tool');
+
+			// Second handler (new session) should load the bypass.
+			$handler2 = new CliConfirmationHandler(
+				$this->output_stream,
+				$this->input_stream,
+				false,
+				[],
+				$persistence
+			);
+
+			$this->assertTrue($handler2->shouldBypass('persistent_tool'));
+		} finally {
+			$files = glob($temp_dir . '/*');
+			if ($files !== false) {
+				foreach ($files as $file) {
+					unlink($file);
+				}
+			}
+			rmdir($temp_dir);
+		}
+	}
 }
