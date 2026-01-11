@@ -8,6 +8,7 @@ use Ovidiu\McpClient\Core\Client\ClientCapabilities;
 use Ovidiu\McpClient\Core\Client\McpClient;
 use Ovidiu\McpClient\Core\Client\ServerCapabilities;
 use Ovidiu\McpClient\Core\Client\ServerInfo;
+use Ovidiu\McpClient\Core\Contracts\TransportInterface;
 use Ovidiu\McpClient\Core\Exception\ConnectionException;
 use Ovidiu\McpClient\Core\Exception\TimeoutException;
 use Ovidiu\McpClient\Core\Exception\TransportException;
@@ -102,7 +103,7 @@ final class McpClientManagerTest extends TestCase
 	public function test_connect_withInvalidConfiguration_throwsException(): void
 	{
 		$manager = new McpClientManager($this->mock_logger);
-		$config = new McpServerConfiguration('test', '');
+		$config = McpServerConfiguration::stdio('test', '');
 
 		$this->expectException(McpConnectionException::class);
 		$this->expectExceptionMessage('Invalid server configuration');
@@ -125,7 +126,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 
@@ -142,7 +143,7 @@ final class McpClientManagerTest extends TestCase
 			->willThrowException(new TimeoutException('Connection timed out'));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'slow-command', [], null, 5.0);
+		$config = McpServerConfiguration::stdio('test-server', 'slow-command', [], null, 5.0);
 
 		$this->expectException(McpConnectionException::class);
 		$this->expectExceptionMessage('timed out after 5 seconds');
@@ -160,7 +161,7 @@ final class McpClientManagerTest extends TestCase
 			->willThrowException(new ConnectionException('Failed to start process'));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'nonexistent');
+		$config = McpServerConfiguration::stdio('test-server', 'nonexistent');
 
 		$this->expectException(McpConnectionException::class);
 		$this->expectExceptionMessage('Failed to start process');
@@ -178,7 +179,7 @@ final class McpClientManagerTest extends TestCase
 			->willThrowException(new TransportException('Transport failed'));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'bad-transport');
+		$config = McpServerConfiguration::stdio('test-server', 'bad-transport');
 
 		$this->expectException(McpConnectionException::class);
 		$this->expectExceptionMessage('Transport error');
@@ -200,7 +201,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 		$manager->connect($config); // Second call should be skipped
@@ -222,9 +223,9 @@ final class McpClientManagerTest extends TestCase
 		$manager = $this->createTestableManager($mock_client);
 
 		$configs = [
-			new McpServerConfiguration('server1', 'cmd1'),
-			new McpServerConfiguration('server2', 'cmd2'),
-			new McpServerConfiguration('server3', 'cmd3'),
+			McpServerConfiguration::stdio('server1', 'cmd1'),
+			McpServerConfiguration::stdio('server2', 'cmd2'),
+			McpServerConfiguration::stdio('server3', 'cmd3'),
 		];
 
 		$failures = $manager->connectAll($configs);
@@ -255,9 +256,9 @@ final class McpClientManagerTest extends TestCase
 		$manager = $this->createTestableManager($mock_client);
 
 		$configs = [
-			new McpServerConfiguration('server1', 'cmd1'),
-			new McpServerConfiguration('server2', 'cmd2'),
-			new McpServerConfiguration('server3', 'cmd3'),
+			McpServerConfiguration::stdio('server1', 'cmd1'),
+			McpServerConfiguration::stdio('server2', 'cmd2'),
+			McpServerConfiguration::stdio('server3', 'cmd3'),
 		];
 
 		$failures = $manager->connectAll($configs);
@@ -279,7 +280,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 
@@ -312,7 +313,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 
@@ -341,7 +342,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 		$this->assertTrue($manager->isConnected('test-server'));
@@ -364,7 +365,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 		$manager->disconnect('test-server');
@@ -386,7 +387,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 		$manager->disconnect('test-server'); // Should not throw
@@ -420,8 +421,8 @@ final class McpClientManagerTest extends TestCase
 		$manager = $this->createTestableManager($mock_client);
 
 		$configs = [
-			new McpServerConfiguration('server1', 'cmd1'),
-			new McpServerConfiguration('server2', 'cmd2'),
+			McpServerConfiguration::stdio('server1', 'cmd1'),
+			McpServerConfiguration::stdio('server2', 'cmd2'),
 		];
 
 		$manager->connectAll($configs);
@@ -446,8 +447,8 @@ final class McpClientManagerTest extends TestCase
 		$manager = $this->createTestableManager($mock_client);
 
 		$configs = [
-			new McpServerConfiguration('server1', 'cmd1'),
-			new McpServerConfiguration('server2', 'cmd2'),
+			McpServerConfiguration::stdio('server1', 'cmd1'),
+			McpServerConfiguration::stdio('server2', 'cmd2'),
 		];
 
 		$manager->connectAll($configs);
@@ -471,7 +472,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 
@@ -493,7 +494,7 @@ final class McpClientManagerTest extends TestCase
 			->willReturn(new ServerInfo('TestServer', '1.0.0', '2025-11-25', new ServerCapabilities([])));
 
 		$manager = $this->createTestableManager($mock_client);
-		$config = new McpServerConfiguration('test-server', 'echo');
+		$config = McpServerConfiguration::stdio('test-server', 'echo');
 
 		$manager->connect($config);
 
@@ -521,11 +522,11 @@ final class McpClientManagerTest extends TestCase
 class TestableMcpClientManager extends McpClientManager
 {
 	private ?McpClient $mock_client;
-	private ?StdioTransport $mock_transport;
+	private ?TransportInterface $mock_transport;
 
 	public function __construct(
 		?McpClient $mock_client = null,
-		?StdioTransport $mock_transport = null,
+		?TransportInterface $mock_transport = null,
 		?LoggerInterface $logger = null,
 		?ClientCapabilities $capabilities = null
 	) {
@@ -534,7 +535,7 @@ class TestableMcpClientManager extends McpClientManager
 		$this->mock_transport = $mock_transport;
 	}
 
-	protected function createTransport(McpServerConfiguration $config): StdioTransport
+	protected function createTransport(McpServerConfiguration $config): TransportInterface
 	{
 		if ($this->mock_transport !== null) {
 			return $this->mock_transport;
@@ -543,7 +544,7 @@ class TestableMcpClientManager extends McpClientManager
 		return parent::createTransport($config);
 	}
 
-	protected function createClient(StdioTransport $transport): McpClient
+	protected function createClient(TransportInterface $transport): McpClient
 	{
 		if ($this->mock_client !== null) {
 			return $this->mock_client;

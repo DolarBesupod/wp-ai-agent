@@ -6,10 +6,12 @@ namespace PhpCliAgent\Integration\Mcp;
 
 use Ovidiu\McpClient\Core\Client\ClientCapabilities;
 use Ovidiu\McpClient\Core\Client\McpClient;
+use Ovidiu\McpClient\Core\Contracts\TransportInterface;
 use Ovidiu\McpClient\Core\Exception\ConnectionException;
 use Ovidiu\McpClient\Core\Exception\McpException;
 use Ovidiu\McpClient\Core\Exception\TimeoutException;
 use Ovidiu\McpClient\Core\Exception\TransportException;
+use Ovidiu\McpClient\Integration\Transport\Http\HttpTransport;
 use Ovidiu\McpClient\Integration\Transport\StdioTransport;
 use PhpCliAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
@@ -95,9 +97,12 @@ class McpClientManager
 		$server_name = $config->getName();
 
 		if (!$config->isValid()) {
+			$error_detail = $config->isHttpTransport()
+				? 'URL cannot be empty'
+				: 'command cannot be empty';
 			throw McpConnectionException::connectionFailed(
 				$server_name,
-				'Invalid server configuration: command cannot be empty'
+				'Invalid server configuration: ' . $error_detail
 			);
 		}
 
@@ -108,10 +113,13 @@ class McpClientManager
 
 		$this->configurations[$server_name] = $config;
 
-		$this->logger->info('Connecting to MCP server', [
-			'server' => $server_name,
-			'command' => $config->getCommand(),
-		]);
+		$log_context = ['server' => $server_name, 'transport' => $config->getTransport()];
+		if ($config->isHttpTransport()) {
+			$log_context['url'] = $config->getUrl();
+		} else {
+			$log_context['command'] = $config->getCommand();
+		}
+		$this->logger->info('Connecting to MCP server', $log_context);
 
 		try {
 			$transport = $this->createTransport($config);
@@ -296,14 +304,23 @@ class McpClientManager
 	}
 
 	/**
-	 * Creates a stdio transport for the given configuration.
+	 * Creates a transport for the given configuration.
 	 *
 	 * @param McpServerConfiguration $config The server configuration.
 	 *
-	 * @return StdioTransport The created transport.
+	 * @return TransportInterface The created transport.
 	 */
-	protected function createTransport(McpServerConfiguration $config): StdioTransport
+	protected function createTransport(McpServerConfiguration $config): TransportInterface
 	{
+		if ($config->isHttpTransport()) {
+			return new HttpTransport(
+				$config->getUrl(),
+				null,
+				$this->logger,
+				$config->getHeaders()
+			);
+		}
+
 		return new StdioTransport(
 			$config->getCommand(),
 			$config->getArgs(),
@@ -314,11 +331,11 @@ class McpClientManager
 	/**
 	 * Creates an MCP client with the given transport.
 	 *
-	 * @param StdioTransport $transport The transport to use.
+	 * @param TransportInterface $transport The transport to use.
 	 *
 	 * @return McpClient The created client.
 	 */
-	protected function createClient(StdioTransport $transport): McpClient
+	protected function createClient(TransportInterface $transport): McpClient
 	{
 		return new McpClient(
 			$transport,
