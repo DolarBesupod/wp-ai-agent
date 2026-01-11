@@ -12,6 +12,7 @@ use PhpCliAgent\Core\Exceptions\ConfigurationException;
  * Supports loading from `.php-cli-agent/settings.json` in the working directory.
  * Environment variables using ${VAR_NAME} syntax are expanded.
  * Returns default configuration if the file does not exist.
+ * Validates configuration against JSON schema.
  *
  * @since n.e.x.t
  */
@@ -35,15 +36,26 @@ final class JsonConfigurationLoader
 	private EnvConfigurationLoader $env_loader;
 
 	/**
+	 * The schema validator.
+	 *
+	 * @var SettingsSchemaValidator
+	 */
+	private SettingsSchemaValidator $validator;
+
+	/**
 	 * Creates a new JSON configuration loader.
 	 *
-	 * @param EnvConfigurationLoader|null $env_loader Optional environment loader for testing.
+	 * @param EnvConfigurationLoader|null     $env_loader Optional environment loader for testing.
+	 * @param SettingsSchemaValidator|null    $validator  Optional schema validator for testing.
 	 *
 	 * @since n.e.x.t
 	 */
-	public function __construct(?EnvConfigurationLoader $env_loader = null)
-	{
+	public function __construct(
+		?EnvConfigurationLoader $env_loader = null,
+		?SettingsSchemaValidator $validator = null
+	) {
 		$this->env_loader = $env_loader ?? new EnvConfigurationLoader();
+		$this->validator = $validator ?? new SettingsSchemaValidator();
 	}
 
 	/**
@@ -70,6 +82,7 @@ final class JsonConfigurationLoader
 
 		if (file_exists($settings_path)) {
 			$file_config = $this->loadJsonFile($settings_path);
+			$this->validator->validate($file_config);
 			$merged_config = $this->mergeConfigurations($merged_config, $file_config);
 		}
 
@@ -142,7 +155,16 @@ final class JsonConfigurationLoader
 			throw ConfigurationException::jsonParseError($path, json_last_error_msg());
 		}
 
-		if (! is_array($parsed) || ! $this->isAssociativeArray($parsed)) {
+		// Empty object {} is valid, but arrays [1, 2] are not
+		if (! is_array($parsed)) {
+			throw ConfigurationException::fileLoadFailed(
+				$path,
+				'JSON file must contain an object at the root level'
+			);
+		}
+
+		// Only reject if it's a non-empty indexed array
+		if ($parsed !== [] && ! $this->isAssociativeArray($parsed)) {
 			throw ConfigurationException::fileLoadFailed(
 				$path,
 				'JSON file must contain an object at the root level'
@@ -171,6 +193,8 @@ final class JsonConfigurationLoader
 			'max_turns' => 100,
 			'default_system_prompt' => '',
 			'bypass_confirmation_tools' => ['think'],
+			'debug' => false,
+			'streaming' => true,
 		];
 	}
 

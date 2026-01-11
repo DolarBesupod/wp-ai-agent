@@ -111,4 +111,50 @@ class ConfigurationException extends AgentException
 			sprintf('Failed to parse JSON configuration file "%s": %s', $path, $message)
 		);
 	}
+
+	/**
+	 * Creates an exception for schema validation type errors.
+	 *
+	 * @param string $property      The property path (e.g., "provider.max_tokens").
+	 * @param string $expected_type The expected type.
+	 * @param string $actual_type   The actual type of the value.
+	 *
+	 * @return self
+	 *
+	 * @since n.e.x.t
+	 */
+	public static function schemaTypeError(string $property, string $expected_type, string $actual_type): self
+	{
+		return new self(
+			sprintf(
+				'Invalid configuration: "%s" must be %s, got %s',
+				$property,
+				$expected_type,
+				$actual_type
+			)
+		);
+	}
+
+	/**
+	 * Creates an exception for schema validation minimum value errors.
+	 *
+	 * @param string    $property The property path (e.g., "max_turns").
+	 * @param int|float $minimum  The minimum allowed value.
+	 * @param int|float $actual   The actual value.
+	 *
+	 * @return self
+	 *
+	 * @since n.e.x.t
+	 */
+	public static function schemaMinimumError(string $property, int|float $minimum, int|float $actual): self
+	{
+		return new self(
+			sprintf(
+				'Invalid configuration: "%s" must have minimum value of %s, got %s',
+				$property,
+				(string) $minimum,
+				(string) $actual
+			)
+		);
+	}
 }

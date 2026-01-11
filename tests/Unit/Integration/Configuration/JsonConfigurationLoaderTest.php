@@ -280,6 +280,62 @@ final class JsonConfigurationLoaderTest extends TestCase
 	}
 
 	/**
+	 * Tests that load validates configuration and throws on invalid type.
+	 */
+	public function test_load_withInvalidMaxTokensType_throwsConfigurationException(): void
+	{
+		$this->createSettingsFile([
+			'provider' => [
+				'max_tokens' => 'not a number',
+			],
+		]);
+
+		$loader = new JsonConfigurationLoader();
+
+		$this->expectException(ConfigurationException::class);
+		$this->expectExceptionMessage('provider.max_tokens');
+		$this->expectExceptionMessage('integer');
+
+		$loader->load($this->temp_dir);
+	}
+
+	/**
+	 * Tests that load validates configuration and throws on invalid minimum value.
+	 */
+	public function test_load_withNegativeMaxTurns_throwsConfigurationException(): void
+	{
+		$this->createSettingsFile([
+			'max_turns' => -1,
+		]);
+
+		$loader = new JsonConfigurationLoader();
+
+		$this->expectException(ConfigurationException::class);
+		$this->expectExceptionMessage('max_turns');
+		$this->expectExceptionMessage('minimum');
+
+		$loader->load($this->temp_dir);
+	}
+
+	/**
+	 * Tests that empty settings file returns defaults.
+	 */
+	public function test_load_withEmptySettingsFile_returnsDefaults(): void
+	{
+		$this->createSettingsFile([]);
+
+		$loader = new JsonConfigurationLoader();
+
+		$config = $loader->load($this->temp_dir);
+
+		// All defaults should be applied
+		$this->assertSame('anthropic', $config['provider']['type']);
+		$this->assertSame(100, $config['max_turns']);
+		$this->assertFalse($config['debug']);
+		$this->assertTrue($config['streaming']);
+	}
+
+	/**
 	 * Creates a settings.json file in the temp directory.
 	 *
 	 * @param array<string, mixed> $content The JSON content as an array.
