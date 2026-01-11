@@ -6,7 +6,10 @@ declare(strict_types=1);
  * Bootstrap file for the PHP CLI Agent.
  *
  * This file initializes all dependencies and returns a configured CliApplication instance.
- * It uses environment variables for configuration and creates all necessary services.
+ * It uses the ConfigurationResolver to load configuration from multiple sources with priority:
+ * 1. Environment variables (highest priority)
+ * 2. .php-cli-agent/settings.json + .php-cli-agent/mcp.json
+ * 3. Built-in defaults (lowest priority)
  *
  * @since n.e.x.t
  */
@@ -20,8 +23,7 @@ use PhpCliAgent\Integration\AiClient\AiClientAdapter;
 use PhpCliAgent\Integration\Cli\BypassPersistence;
 use PhpCliAgent\Integration\Cli\CliApplication;
 use PhpCliAgent\Integration\Cli\CliConfirmationHandler;
-use PhpCliAgent\Integration\Configuration\McpJsonLoader;
-use PhpCliAgent\Integration\Configuration\YamlConfigurationLoader;
+use PhpCliAgent\Integration\Configuration\ConfigurationResolver;
 use PhpCliAgent\Integration\Mcp\McpClientManager;
 use PhpCliAgent\Integration\Mcp\McpServerConfiguration as IntegrationMcpServerConfig;
 use PhpCliAgent\Integration\Mcp\McpToolRegistry;
@@ -36,216 +38,9 @@ use PhpCliAgent\Integration\Tool\BuiltInToolRegistry;
  * @throws \PhpCliAgent\Core\Exceptions\ConfigurationException If configuration is invalid.
  */
 return (static function (): CliApplication {
-	// Create configuration.
-	$configuration = new class implements Core\Contracts\ConfigurationInterface {
-		/** @var array<string, mixed> */
-		private array $config = [];
-
-		public function __construct()
-		{
-			$this->config = [
-				'model' => getenv('AGENT_MODEL') ?: 'claude-sonnet-4-20250514',
-				'max_tokens' => (int) (getenv('AGENT_MAX_TOKENS') ?: 4096),
-				'temperature' => (float) (getenv('AGENT_TEMPERATURE') ?: 0.7),
-				'max_iterations' => (int) (getenv('AGENT_MAX_ITERATIONS') ?: 100),
-				'session_storage_path' => getenv('AGENT_SESSION_PATH') ?: dirname(__DIR__) . '/.data/sessions',
-				'debug' => (bool) getenv('AGENT_DEBUG'),
-				'streaming' => (bool) (getenv('AGENT_STREAMING') ?: true),
-				'bypassed_tools' => [],
-				'system_prompt' => $this->getDefaultSystemPrompt(),
-			];
-		}
-
-		public function get(string $key, mixed $default = null): mixed
-		{
-			return $this->getNestedValue($key) ?? $default;
-		}
-
-		public function set(string $key, mixed $value): void
-		{
-			$this->setNestedValue($key, $value);
-		}
-
-		public function has(string $key): bool
-		{
-			return $this->getNestedValue($key) !== null;
-		}
-
-		public function getModel(): string
-		{
-			$model = $this->config['model'] ?? '';
-			return is_string($model) ? $model : '';
-		}
-
-		public function getApiKey(): string
-		{
-			$api_key = getenv('ANTHROPIC_API_KEY');
-			if ($api_key === false || $api_key === '') {
-				throw new Core\Exceptions\ConfigurationException(
-					'ANTHROPIC_API_KEY environment variable is not set'
-				);
-			}
-			return $api_key;
-		}
-
-		public function getMaxTokens(): int
-		{
-			$value = $this->config['max_tokens'] ?? 4096;
-			return is_numeric($value) ? (int) $value : 4096;
-		}
-
-		public function getTemperature(): float
-		{
-			$value = $this->config['temperature'] ?? 0.7;
-			return is_numeric($value) ? (float) $value : 0.7;
-		}
-
-		public function getSessionStoragePath(): string
-		{
-			$path = $this->config['session_storage_path'] ?? sys_get_temp_dir() . '/php-cli-agent-sessions';
-			return is_string($path) ? $path : sys_get_temp_dir() . '/php-cli-agent-sessions';
-		}
-
-		public function getSystemPrompt(): string
-		{
-			$prompt = $this->config['system_prompt'] ?? '';
-			return is_string($prompt) ? $prompt : '';
-		}
-
-		public function getMaxIterations(): int
-		{
-			$value = $this->config['max_iterations'] ?? 100;
-			return is_numeric($value) ? (int) $value : 100;
-		}
-
-		public function isDebugEnabled(): bool
-		{
-			return (bool) ($this->config['debug'] ?? false);
-		}
-
-		public function isStreamingEnabled(): bool
-		{
-			return (bool) ($this->config['streaming'] ?? true);
-		}
-
-		/** @return array<int, string> */
-		public function getBypassedTools(): array
-		{
-			$tools = $this->config['bypassed_tools'] ?? [];
-			if (!is_array($tools)) {
-				return [];
-			}
-			return array_values(array_filter($tools, 'is_string'));
-		}
-
-		/** @return array<string, mixed> */
-		public function toArray(): array
-		{
-			return $this->config;
-		}
-
-		public function loadFromFile(string $path): void
-		{
-			if (!file_exists($path)) {
-				throw new Core\Exceptions\ConfigurationException(
-					sprintf('Configuration file not found: %s', $path)
-				);
-			}
-
-			$extension = pathinfo($path, PATHINFO_EXTENSION);
-
-			if ($extension === 'yaml' || $extension === 'yml') {
-				if (!function_exists('yaml_parse_file')) {
-					$content = file_get_contents($path);
-					if ($content === false) {
-						throw new Core\Exceptions\ConfigurationException(
-							sprintf('Failed to read configuration file: %s', $path)
-						);
-					}
-					$parsed = \Symfony\Component\Yaml\Yaml::parse($content);
-				} else {
-					$parsed = yaml_parse_file($path);
-				}
-
-				if ($parsed === false || !is_array($parsed)) {
-					throw new Core\Exceptions\ConfigurationException(
-						sprintf('Failed to parse YAML configuration: %s', $path)
-					);
-				}
-
-				$this->merge($parsed);
-				return;
-			}
-
-			if ($extension === 'json') {
-				$content = file_get_contents($path);
-				if ($content === false) {
-					throw new Core\Exceptions\ConfigurationException(
-						sprintf('Failed to read configuration file: %s', $path)
-					);
-				}
-
-				$parsed = json_decode($content, true);
-				if (json_last_error() !== JSON_ERROR_NONE || !is_array($parsed)) {
-					throw new Core\Exceptions\ConfigurationException(
-						sprintf('Failed to parse JSON configuration: %s - %s', $path, json_last_error_msg())
-					);
-				}
-
-				$this->merge($parsed);
-				return;
-			}
-
-			throw new Core\Exceptions\ConfigurationException(
-				sprintf('Unsupported configuration file format: %s', $extension)
-			);
-		}
-
-		/** @param array<string, mixed> $config */
-		public function merge(array $config): void
-		{
-			$this->config = array_merge($this->config, $config);
-		}
-
-		private function getDefaultSystemPrompt(): string
-		{
-			return <<<PROMPT
-You are a helpful AI assistant with access to tools.
-When the user asks you to perform tasks, use the available tools to help them.
-Be concise but thorough in your responses.
-PROMPT;
-		}
-
-		private function getNestedValue(string $key): mixed
-		{
-			$keys = explode('.', $key);
-			$value = $this->config;
-
-			foreach ($keys as $k) {
-				if (!is_array($value) || !array_key_exists($k, $value)) {
-					return null;
-				}
-				$value = $value[$k];
-			}
-
-			return $value;
-		}
-
-		private function setNestedValue(string $key, mixed $value): void
-		{
-			$keys = explode('.', $key);
-			$current = &$this->config;
-
-			foreach (array_slice($keys, 0, -1) as $k) {
-				if (!isset($current[$k]) || !is_array($current[$k])) {
-					$current[$k] = [];
-				}
-				$current = &$current[$k];
-			}
-
-			$current[end($keys)] = $value;
-		}
-	};
+	// Create configuration resolver and load configuration from all sources.
+	$config_resolver = new ConfigurationResolver();
+	$configuration = $config_resolver->resolve();
 
 	// Create output handler.
 	$output_handler = new class implements Core\Contracts\OutputHandlerInterface {
@@ -329,7 +124,8 @@ PROMPT;
 	};
 
 	// Create session repository (in-memory with file persistence).
-	$session_repository = new class ($configuration->getSessionStoragePath()) implements Core\Contracts\SessionRepositoryInterface {
+	$session_repository = new class ($configuration->getSessionStoragePath())
+		implements Core\Contracts\SessionRepositoryInterface {
 		/** @var array<string, Core\Contracts\SessionInterface> */
 		private array $sessions = [];
 		private string $storage_path;
@@ -387,7 +183,7 @@ PROMPT;
 
 			// Try to load from disk.
 			$file_path = $this->getFilePath($session_id);
-			if (!file_exists($file_path)) {
+			if (! file_exists($file_path)) {
 				throw new Core\Exceptions\SessionNotFoundException($session_id);
 			}
 
@@ -399,7 +195,7 @@ PROMPT;
 			}
 
 			$data = json_decode($content, true);
-			if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
+			if (json_last_error() !== JSON_ERROR_NONE || ! is_array($data)) {
 				throw new Core\Exceptions\SessionPersistenceException(
 					sprintf('Failed to decode session: %s', json_last_error_msg())
 				);
@@ -412,7 +208,7 @@ PROMPT;
 			/** @var array<int, mixed> $messages */
 			$messages = $data['messages'] ?? [];
 			foreach ($messages as $msg_data) {
-				if (!is_array($msg_data)) {
+				if (! is_array($msg_data)) {
 					continue;
 				}
 				/** @var string $role */
@@ -467,7 +263,7 @@ PROMPT;
 			$file_path = $this->getFilePath($session_id);
 			if (file_exists($file_path)) {
 				$existed = true;
-				if (!unlink($file_path)) {
+				if (! unlink($file_path)) {
 					throw new Core\Exceptions\SessionPersistenceException(
 						sprintf('Failed to delete session file: %s', $file_path)
 					);
@@ -495,7 +291,12 @@ PROMPT;
 			return $ids;
 		}
 
-		/** @return array<int, array{id: Core\ValueObjects\SessionId, metadata: Core\Contracts\SessionMetadataInterface}> */
+		/**
+		 * @return array<int, array{
+		 *     id: Core\ValueObjects\SessionId,
+		 *     metadata: Core\Contracts\SessionMetadataInterface
+		 * }>
+		 */
 		public function listWithMetadata(): array
 		{
 			$result = [];
@@ -523,8 +324,8 @@ PROMPT;
 
 		private function ensureStorageDirectory(): void
 		{
-			if (!is_dir($this->storage_path)) {
-				if (!mkdir($this->storage_path, 0755, true)) {
+			if (! is_dir($this->storage_path)) {
+				if (! mkdir($this->storage_path, 0755, true)) {
 					throw new Core\Exceptions\SessionPersistenceException(
 						sprintf('Failed to create session storage directory: %s', $this->storage_path)
 					);
@@ -534,7 +335,16 @@ PROMPT;
 	};
 
 	// Create confirmation handler with persistence.
-	$bypass_persistence = new BypassPersistence($configuration->getSessionStoragePath());
+	// Use .php-cli-agent/ folder in working directory for bypass state,
+	// with migration from old session storage path.
+	$working_dir = getcwd();
+	if ($working_dir === false) {
+		$working_dir = '.';
+	}
+	$bypass_persistence = BypassPersistence::forWorkingDirectory(
+		$working_dir,
+		$configuration->getSessionStoragePath()
+	);
 	$confirmation_handler = new CliConfirmationHandler(
 		null, // output stream (STDOUT)
 		null, // input stream (STDIN)
@@ -547,33 +357,10 @@ PROMPT;
 	$tool_registry = BuiltInToolRegistry::createWithAllTools();
 	$tool_executor = new ToolExecutor($tool_registry, $confirmation_handler);
 
-	// Load MCP configuration from JSON first, falling back to YAML.
-	// JSON servers take precedence over YAML servers with the same name.
+	// Load MCP servers from configuration resolver.
 	$mcp_client_manager = null;
 	try {
-		// Start with servers from YAML configuration.
-		$yaml_loader = new YamlConfigurationLoader();
-		$agent_config = $yaml_loader->load();
-		$yaml_servers = $agent_config->getEnabledMcpServers();
-
-		// Index YAML servers by name for merging.
-		$servers_by_name = [];
-		foreach ($yaml_servers as $server) {
-			$servers_by_name[$server->getName()] = $server;
-		}
-
-		// Load servers from JSON configuration (takes precedence).
-		$json_loader = new McpJsonLoader();
-		$json_servers = $json_loader->load();
-
-		// JSON servers override YAML servers with the same name.
-		foreach ($json_servers as $server) {
-			if ($server->isEnabled()) {
-				$servers_by_name[$server->getName()] = $server;
-			}
-		}
-
-		$mcp_servers = array_values($servers_by_name);
+		$mcp_servers = $config_resolver->getMcpServers();
 
 		if (\count($mcp_servers) > 0) {
 			$mcp_client_manager = new McpClientManager();
