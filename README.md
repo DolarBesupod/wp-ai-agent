@@ -82,7 +82,7 @@ mcp_servers:
 ### Starting the Agent
 
 ```bash
-php bin/agent
+php agent
 ```
 
 ### REPL Commands
@@ -102,7 +102,7 @@ php bin/agent
 ### Example Session
 
 ```
-$ php bin/agent
+$ php agent
 
 PHP CLI Agent v1.0
 Type /help for available commands, /exit to quit.
@@ -195,8 +195,7 @@ composer phpcs
 
 ```
 php-cli-agent/
-├── bin/
-│   └── agent              # CLI entry point
+├── agent                  # CLI entry point
 ├── src/
 │   ├── Core/              # Platform-agnostic business logic
 │   │   ├── Agent/         # Agent, AgentLoop, Context

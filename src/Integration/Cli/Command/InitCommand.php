@@ -346,7 +346,7 @@ USAGE;
 Next steps:
   1. Edit .php-cli-agent/settings.json to configure your agent
   2. Add MCP servers to .php-cli-agent/mcp.json
-  3. Run 'php bin/agent' to start the agent
+  3. Run 'php agent' to start the agent
 
 STEPS;
 

@@ -21,9 +21,9 @@ if (PHP_SAPI !== 'cli') {
 
 // Find autoloader.
 $autoload_paths = [
+	__DIR__ . '/vendor/autoload.php',
 	__DIR__ . '/../vendor/autoload.php',
-	__DIR__ . '/../../vendor/autoload.php',
-	__DIR__ . '/../../../autoload.php',
+	__DIR__ . '/../../autoload.php',
 ];
 
 $autoload_found = false;
@@ -89,7 +89,7 @@ if ($show_version) {
 
 // Run the full application.
 try {
-	$app = require __DIR__ . '/../src/bootstrap.php';
+	$app = require __DIR__ . '/src/bootstrap.php';
 	exit($app->run($argv));
 } catch (Throwable $exception) {
 	fwrite(STDERR, sprintf("Fatal error: %s\n", $exception->getMessage()));
