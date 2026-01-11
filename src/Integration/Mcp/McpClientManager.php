@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace PhpCliAgent\Integration\Mcp;
 
-use Ovidiu\McpClient\Core\Client\ClientCapabilities;
-use Ovidiu\McpClient\Core\Client\McpClient;
-use Ovidiu\McpClient\Core\Contracts\TransportInterface;
-use Ovidiu\McpClient\Core\Exception\ConnectionException;
-use Ovidiu\McpClient\Core\Exception\McpException;
-use Ovidiu\McpClient\Core\Exception\TimeoutException;
-use Ovidiu\McpClient\Core\Exception\TransportException;
-use Ovidiu\McpClient\Integration\Transport\Http\HttpTransport;
-use Ovidiu\McpClient\Integration\Transport\StdioTransport;
+use GalatanOvidiu\PhpMcpClient\Core\Client\ClientCapabilities;
+use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
+use GalatanOvidiu\PhpMcpClient\Core\Contracts\TransportInterface;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\ConnectionException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\McpException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\TransportException;
+use GalatanOvidiu\PhpMcpClient\Integration\Transport\Http\HttpTransport;
+use GalatanOvidiu\PhpMcpClient\Integration\Transport\StdioTransport;
 use PhpCliAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

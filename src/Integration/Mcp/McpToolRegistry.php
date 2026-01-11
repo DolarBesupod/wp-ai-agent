@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpCliAgent\Integration\Mcp;
 
-use Ovidiu\McpClient\Core\Client\McpClient;
+use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
 use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
 use PhpCliAgent\Core\Exceptions\DuplicateToolException;
 use PhpCliAgent\Core\Exceptions\McpConnectionException;

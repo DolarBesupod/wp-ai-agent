@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PhpCliAgent\Tests\Unit\Integration\Mcp;
 
-use Ovidiu\McpClient\Core\Client\McpClient;
-use Ovidiu\McpClient\Core\Exception\JsonRpcException;
-use Ovidiu\McpClient\Core\Exception\McpException;
-use Ovidiu\McpClient\Core\Exception\TimeoutException;
+use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\JsonRpcException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\McpException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
 use PhpCliAgent\Core\Contracts\ToolInterface;
 use PhpCliAgent\Core\Exceptions\ToolExecutionException;
 use PhpCliAgent\Integration\Mcp\McpToolAdapter;

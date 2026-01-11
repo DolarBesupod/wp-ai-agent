@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace PhpCliAgent\Tests\Unit\Integration\Mcp;
 
-use Ovidiu\McpClient\Core\Client\ClientCapabilities;
-use Ovidiu\McpClient\Core\Client\McpClient;
-use Ovidiu\McpClient\Core\Client\ServerCapabilities;
-use Ovidiu\McpClient\Core\Client\ServerInfo;
-use Ovidiu\McpClient\Core\Contracts\TransportInterface;
-use Ovidiu\McpClient\Core\Exception\ConnectionException;
-use Ovidiu\McpClient\Core\Exception\TimeoutException;
-use Ovidiu\McpClient\Core\Exception\TransportException;
-use Ovidiu\McpClient\Integration\Transport\StdioTransport;
+use GalatanOvidiu\PhpMcpClient\Core\Client\ClientCapabilities;
+use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
+use GalatanOvidiu\PhpMcpClient\Core\Client\ServerCapabilities;
+use GalatanOvidiu\PhpMcpClient\Core\Client\ServerInfo;
+use GalatanOvidiu\PhpMcpClient\Core\Contracts\TransportInterface;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\ConnectionException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
+use GalatanOvidiu\PhpMcpClient\Core\Exception\TransportException;
+use GalatanOvidiu\PhpMcpClient\Integration\Transport\StdioTransport;
 use PhpCliAgent\Core\Exceptions\McpConnectionException;
 use PhpCliAgent\Integration\Mcp\McpClientManager;
 use PhpCliAgent\Integration\Mcp\McpServerConfiguration;

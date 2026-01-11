@@ -144,7 +144,7 @@ Platform-specific implementations:
 
 - **CLI**: Command-line interface, REPL runner, output handling
 - **AI Client**: Anthropic Claude integration via `wordpress/php-ai-client`
-- **MCP**: MCP protocol integration via `ovidiu/mcp-client`
+- **MCP**: MCP protocol integration via `galatanovidiu/php-mcp-client`
 - **Logging**: PSR-3 compliant file and console loggers
 - **Configuration**: YAML configuration loading with environment variable expansion
 - **Session Storage**: JSON-based file persistence
@@ -309,4 +309,4 @@ Contributions are welcome! Please:
 - [Anthropic Claude](https://www.anthropic.com/) - AI model
 - [Model Context Protocol](https://modelcontextprotocol.io/) - Tool integration standard
 - [wordpress/php-ai-client](https://github.com/WordPress/php-ai-client) - Claude API client
-- [ovidiu/mcp-client](https://github.com/galatanovidiu/php-mcp-client) - MCP protocol client
+- [galatanovidiu/php-mcp-client](https://github.com/galatanovidiu/php-mcp-client) - MCP protocol client

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpCliAgent\Integration\Mcp;
 
-use Ovidiu\McpClient\Core\Client\McpClient;
+use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
 use PhpCliAgent\Core\Contracts\ToolInterface;
 use PhpCliAgent\Core\ValueObjects\ToolResult;
 use Throwable;
