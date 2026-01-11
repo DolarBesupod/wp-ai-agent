@@ -6,7 +6,6 @@ namespace PhpCliAgent\Tests\Unit\Integration\Cli;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Agent\Agent;
 use PhpCliAgent\Core\Contracts\AgentInterface;
 use PhpCliAgent\Core\Contracts\ConfigurationInterface;
 use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
@@ -301,10 +300,12 @@ final class CliApplicationTest extends TestCase
 		$args = $this->app->getParsedArgs();
 		$this->assertNull($args['config']);
 		$this->assertNull($args['session']);
+		$this->assertNull($args['subcommand']);
 		$this->assertFalse($args['no_save']);
 		$this->assertFalse($args['help']);
 		$this->assertFalse($args['version']);
 		$this->assertFalse($args['debug']);
+		$this->assertFalse($args['force']);
 	}
 
 	public function test_parseArguments_skipsScriptNameCorrectly(): void
@@ -324,6 +325,40 @@ final class CliApplicationTest extends TestCase
 		$args = $this->app->getParsedArgs();
 		$this->assertFalse($args['help']);
 		$this->assertFalse($args['version']);
+	}
+
+	public function test_parseArguments_withInitSubcommand_setsSubcommand(): void
+	{
+		$this->app->parseArguments(['agent', 'init']);
+
+		$args = $this->app->getParsedArgs();
+		$this->assertSame('init', $args['subcommand']);
+	}
+
+	public function test_parseArguments_withInitAndForceFlag_setsSubcommandAndForce(): void
+	{
+		$this->app->parseArguments(['agent', 'init', '--force']);
+
+		$args = $this->app->getParsedArgs();
+		$this->assertSame('init', $args['subcommand']);
+		$this->assertTrue($args['force']);
+	}
+
+	public function test_parseArguments_withInitAndShortForceFlag_setsSubcommandAndForce(): void
+	{
+		$this->app->parseArguments(['agent', 'init', '-f']);
+
+		$args = $this->app->getParsedArgs();
+		$this->assertSame('init', $args['subcommand']);
+		$this->assertTrue($args['force']);
+	}
+
+	public function test_parseArguments_withNoSubcommand_hasNullSubcommand(): void
+	{
+		$this->app->parseArguments(['agent']);
+
+		$args = $this->app->getParsedArgs();
+		$this->assertNull($args['subcommand']);
 	}
 
 	public function test_run_earlyReturnsOnHelpBeforeLoadingConfig(): void
@@ -352,5 +387,116 @@ final class CliApplicationTest extends TestCase
 		$exit_code = $this->app->run(['agent', '--version', '--config=/path/to/config.yaml']);
 
 		$this->assertSame(CliApplication::EXIT_SUCCESS, $exit_code);
+	}
+
+	public function test_run_withInitSubcommand_executesInitCommand(): void
+	{
+		// Agent should NOT be called when running init command.
+		$this->agent->expects($this->never())
+			->method('startSession');
+
+		// Configuration should NOT be loaded when running init command.
+		$this->configuration->expects($this->never())
+			->method('loadFromFile');
+
+		// Create a temporary directory for testing.
+		$temp_dir = sys_get_temp_dir() . '/php-cli-agent-test-' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		// Use reflection to create an app that initializes in the temp directory.
+		$app = new CliApplication(
+			$this->configuration,
+			$this->agent,
+			$this->output_handler
+		);
+
+		// Change to temp directory before running.
+		$original_dir = getcwd();
+		chdir($temp_dir);
+
+		try {
+			$exit_code = $app->run(['agent', 'init', '--force']);
+
+			$this->assertSame(CliApplication::EXIT_SUCCESS, $exit_code);
+			$this->assertDirectoryExists($temp_dir . '/.php-cli-agent');
+			$this->assertFileExists($temp_dir . '/.php-cli-agent/settings.json');
+			$this->assertFileExists($temp_dir . '/.php-cli-agent/mcp.json');
+		} finally {
+			chdir((string) $original_dir);
+			// Clean up.
+			if (file_exists($temp_dir . '/.php-cli-agent/settings.json')) {
+				unlink($temp_dir . '/.php-cli-agent/settings.json');
+			}
+			if (file_exists($temp_dir . '/.php-cli-agent/mcp.json')) {
+				unlink($temp_dir . '/.php-cli-agent/mcp.json');
+			}
+			if (is_dir($temp_dir . '/.php-cli-agent')) {
+				rmdir($temp_dir . '/.php-cli-agent');
+			}
+			if (is_dir($temp_dir)) {
+				rmdir($temp_dir);
+			}
+		}
+	}
+
+	public function test_run_withInitSubcommand_doesNotStartSession(): void
+	{
+		// Agent should NOT be called when running init command.
+		$this->agent->expects($this->never())
+			->method('startSession');
+
+		$this->agent->expects($this->never())
+			->method('resumeSession');
+
+		// Create a temporary directory for testing.
+		$temp_dir = sys_get_temp_dir() . '/php-cli-agent-test-' . uniqid();
+		mkdir($temp_dir, 0755, true);
+
+		$original_dir = getcwd();
+		chdir($temp_dir);
+
+		try {
+			$exit_code = $this->app->run(['agent', 'init', '--force']);
+			$this->assertSame(CliApplication::EXIT_SUCCESS, $exit_code);
+		} finally {
+			chdir((string) $original_dir);
+			// Clean up.
+			if (file_exists($temp_dir . '/.php-cli-agent/settings.json')) {
+				unlink($temp_dir . '/.php-cli-agent/settings.json');
+			}
+			if (file_exists($temp_dir . '/.php-cli-agent/mcp.json')) {
+				unlink($temp_dir . '/.php-cli-agent/mcp.json');
+			}
+			if (is_dir($temp_dir . '/.php-cli-agent')) {
+				rmdir($temp_dir . '/.php-cli-agent');
+			}
+			if (is_dir($temp_dir)) {
+				rmdir($temp_dir);
+			}
+		}
+	}
+
+	public function test_showHelp_includesInitCommand(): void
+	{
+		$this->output_handler->expects($this->once())
+			->method('writeLine')
+			->with($this->callback(function (string $output) {
+				return strpos($output, 'init') !== false
+					&& strpos($output, 'Initialize') !== false;
+			}));
+
+		$this->app->showHelp();
+	}
+
+	public function test_showHelp_includesForceOption(): void
+	{
+		$this->output_handler->expects($this->once())
+			->method('writeLine')
+			->with($this->callback(function (string $output) {
+				return strpos($output, '--force') !== false
+					&& strpos($output, '-f') !== false;
+			}));
+
+		$this->app->showHelp();
 	}
 }

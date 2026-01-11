@@ -8,6 +8,8 @@ use PhpCliAgent\Core\Contracts\AgentInterface;
 use PhpCliAgent\Core\Contracts\ConfigurationInterface;
 use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
 use PhpCliAgent\Core\ValueObjects\SessionId;
+use PhpCliAgent\Integration\Cli\Command\InitCommand;
+use PhpCliAgent\Integration\Mcp\McpClientManager;
 
 /**
  * CLI application entry point.
@@ -59,41 +61,58 @@ final class CliApplication
 	private OutputHandlerInterface $output_handler;
 
 	/**
+	 * MCP client manager to keep connections alive.
+	 *
+	 * This property holds a reference to prevent garbage collection
+	 * of the manager and its connected clients during the application lifecycle.
+	 *
+	 * @var McpClientManager|null
+	 */
+	private ?McpClientManager $mcp_client_manager = null;
+
+	/**
 	 * Parsed command line arguments.
 	 *
 	 * @var array{
 	 *     config: string|null,
 	 *     session: string|null,
+	 *     subcommand: string|null,
 	 *     no_save: bool,
 	 *     help: bool,
 	 *     version: bool,
-	 *     debug: bool
+	 *     debug: bool,
+	 *     force: bool
 	 * }
 	 */
 	private array $parsed_args = [
 		'config' => null,
 		'session' => null,
+		'subcommand' => null,
 		'no_save' => false,
 		'help' => false,
 		'version' => false,
 		'debug' => false,
+		'force' => false,
 	];
 
 	/**
 	 * Creates a new CliApplication instance.
 	 *
-	 * @param ConfigurationInterface $configuration  The application configuration.
-	 * @param AgentInterface         $agent          The agent instance.
-	 * @param OutputHandlerInterface $output_handler The output handler.
+	 * @param ConfigurationInterface $configuration       The application configuration.
+	 * @param AgentInterface         $agent               The agent instance.
+	 * @param OutputHandlerInterface $output_handler      The output handler.
+	 * @param McpClientManager|null  $mcp_client_manager  Optional MCP client manager to keep alive.
 	 */
 	public function __construct(
 		ConfigurationInterface $configuration,
 		AgentInterface $agent,
-		OutputHandlerInterface $output_handler
+		OutputHandlerInterface $output_handler,
+		?McpClientManager $mcp_client_manager = null
 	) {
 		$this->configuration = $configuration;
 		$this->agent = $agent;
 		$this->output_handler = $output_handler;
+		$this->mcp_client_manager = $mcp_client_manager;
 	}
 
 	/**
@@ -116,6 +135,11 @@ final class CliApplication
 			if ($this->parsed_args['version']) {
 				$this->showVersion();
 				return self::EXIT_SUCCESS;
+			}
+
+			// Handle init subcommand before loading agent configuration.
+			if ($this->parsed_args['subcommand'] === 'init') {
+				return $this->runInitCommand();
 			}
 
 			// Load custom config if specified.
@@ -202,6 +226,11 @@ final class CliApplication
 				continue;
 			}
 
+			if ($arg === '--force' || $arg === '-f') {
+				$this->parsed_args['force'] = true;
+				continue;
+			}
+
 			if (str_starts_with($arg, '--config=')) {
 				$this->parsed_args['config'] = substr($arg, 9);
 				continue;
@@ -235,6 +264,11 @@ final class CliApplication
 			if (str_starts_with($arg, '-')) {
 				throw new \InvalidArgumentException(sprintf('Unknown option: %s', $arg));
 			}
+
+			// Handle subcommands (non-option arguments).
+			if ($this->parsed_args['subcommand'] === null) {
+				$this->parsed_args['subcommand'] = $arg;
+			}
 		}
 	}
 
@@ -248,20 +282,26 @@ final class CliApplication
 		$help = <<<HELP
 {$this->getFullVersion()}
 
-Usage: agent [options]
+Usage: agent [command] [options]
+
+Commands:
+  init                     Initialize the .php-cli-agent configuration folder
 
 Options:
   --config=PATH, -cPATH    Load configuration from the specified file
   --session=ID, -sID       Resume an existing session by ID
   --no-save                Don't persist session to disk
+  --force, -f              Force overwrite (for init command)
   --debug, -d              Enable debug output
   --help, -h               Show this help message
   --version, -v            Show version information
 
 Examples:
   agent                    Start a new interactive session
+  agent init               Initialize configuration folder
+  agent init --force       Initialize and overwrite existing files
   agent --session=abc123   Resume session 'abc123'
-  agent --config=my.yaml   Use custom configuration file
+  agent --config=config.json   Use custom configuration file
   agent --no-save          Start session without saving to disk
 
 HELP;
@@ -295,10 +335,12 @@ HELP;
 	 * @return array{
 	 *     config: string|null,
 	 *     session: string|null,
+	 *     subcommand: string|null,
 	 *     no_save: bool,
 	 *     help: bool,
 	 *     version: bool,
-	 *     debug: bool
+	 *     debug: bool,
+	 *     force: bool
 	 * }
 	 */
 	public function getParsedArgs(): array
@@ -334,6 +376,16 @@ HELP;
 	public function getOutputHandler(): OutputHandlerInterface
 	{
 		return $this->output_handler;
+	}
+
+	/**
+	 * Returns the MCP client manager instance.
+	 *
+	 * @return McpClientManager|null The MCP client manager, or null if not configured.
+	 */
+	public function getMcpClientManager(): ?McpClientManager
+	{
+		return $this->mcp_client_manager;
 	}
 
 	/**
@@ -434,5 +486,29 @@ Just type your message and press Enter to interact with the agent.
 HELP;
 
 		$this->output_handler->writeLine($help);
+	}
+
+	/**
+	 * Runs the init command to create the configuration directory.
+	 *
+	 * Creates the .php-cli-agent/ folder with default settings.json and mcp.json files.
+	 * Passes the --force flag to InitCommand if provided.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @return int The exit code.
+	 */
+	private function runInitCommand(): int
+	{
+		$init_command = new InitCommand($this->output_handler);
+
+		$arguments = [];
+		if ($this->parsed_args['force']) {
+			$arguments[] = '--force';
+		}
+
+		$init_command->execute($arguments);
+
+		return self::EXIT_SUCCESS;
 	}
 }
