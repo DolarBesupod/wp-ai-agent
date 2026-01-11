@@ -75,27 +75,6 @@ class ConfigurationException extends AgentException
 	}
 
 	/**
-	 * Creates an exception for YAML parsing errors.
-	 *
-	 * @param string          $path     The file path.
-	 * @param \Throwable|null $previous The parsing exception.
-	 *
-	 * @return self
-	 */
-	public static function yamlParseError(string $path, ?\Throwable $previous = null): self
-	{
-		$message = $previous !== null
-			? $previous->getMessage()
-			: 'Unknown parsing error';
-
-		return new self(
-			sprintf('Failed to parse YAML configuration file "%s": %s', $path, $message),
-			0,
-			$previous
-		);
-	}
-
-	/**
 	 * Creates an exception for JSON parsing errors.
 	 *
 	 * @param string $path    The file path.
