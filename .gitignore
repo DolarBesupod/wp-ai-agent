@@ -44,8 +44,5 @@ agent.yaml
 /tmp/
 *.tmp
 
-# Session data
-/.data/
-
 # Project notes
 /_notes/
