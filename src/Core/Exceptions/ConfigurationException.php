@@ -94,4 +94,21 @@ class ConfigurationException extends AgentException
 			$previous
 		);
 	}
+
+	/**
+	 * Creates an exception for JSON parsing errors.
+	 *
+	 * @param string $path    The file path.
+	 * @param string $message The JSON error message.
+	 *
+	 * @return self
+	 *
+	 * @since n.e.x.t
+	 */
+	public static function jsonParseError(string $path, string $message): self
+	{
+		return new self(
+			sprintf('Failed to parse JSON configuration file "%s": %s', $path, $message)
+		);
+	}
 }
