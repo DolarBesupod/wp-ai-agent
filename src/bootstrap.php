@@ -17,7 +17,14 @@ use PhpCliAgent\Core\Agent\Agent;
 use PhpCliAgent\Core\Agent\AgentLoop;
 use PhpCliAgent\Core\Tool\ToolExecutor;
 use PhpCliAgent\Integration\AiClient\AiClientAdapter;
+use PhpCliAgent\Integration\Cli\BypassPersistence;
 use PhpCliAgent\Integration\Cli\CliApplication;
+use PhpCliAgent\Integration\Cli\CliConfirmationHandler;
+use PhpCliAgent\Integration\Configuration\McpJsonLoader;
+use PhpCliAgent\Integration\Configuration\YamlConfigurationLoader;
+use PhpCliAgent\Integration\Mcp\McpClientManager;
+use PhpCliAgent\Integration\Mcp\McpServerConfiguration as IntegrationMcpServerConfig;
+use PhpCliAgent\Integration\Mcp\McpToolRegistry;
 use PhpCliAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
@@ -41,7 +48,7 @@ return (static function (): CliApplication {
 				'max_tokens' => (int) (getenv('AGENT_MAX_TOKENS') ?: 4096),
 				'temperature' => (float) (getenv('AGENT_TEMPERATURE') ?: 0.7),
 				'max_iterations' => (int) (getenv('AGENT_MAX_ITERATIONS') ?: 100),
-				'session_storage_path' => getenv('AGENT_SESSION_PATH') ?: sys_get_temp_dir() . '/php-cli-agent-sessions',
+				'session_storage_path' => getenv('AGENT_SESSION_PATH') ?: dirname(__DIR__) . '/.data/sessions',
 				'debug' => (bool) getenv('AGENT_DEBUG'),
 				'streaming' => (bool) (getenv('AGENT_STREAMING') ?: true),
 				'bypassed_tools' => [],
@@ -526,95 +533,88 @@ PROMPT;
 		}
 	};
 
-	// Create confirmation handler.
-	$confirmation_handler = new class implements Core\Contracts\ConfirmationHandlerInterface {
-		/** @var array<string, bool> */
-		private array $bypasses = [];
-		private bool $auto_confirm = false;
-
-		/** @param array<string, mixed> $arguments */
-		public function confirm(string $tool_name, array $arguments): bool
-		{
-			if ($this->auto_confirm || isset($this->bypasses[$tool_name])) {
-				return true;
-			}
-
-			echo sprintf("\n\033[33mTool: %s\033[0m\n", $tool_name);
-
-			if (count($arguments) > 0) {
-				echo "Arguments:\n";
-				foreach ($arguments as $key => $value) {
-					$json_value = json_encode($value);
-					$display_value = is_string($json_value) ? $json_value : '';
-					if (strlen($display_value) > 100) {
-						$display_value = substr($display_value, 0, 100) . '...';
-					}
-					echo sprintf("  %s: %s\n", $key, $display_value);
-				}
-			}
-
-			echo "\nAllow this action? [y]es / [n]o / [a]lways for this tool / allow [A]ll: ";
-
-			$input = fgets(STDIN);
-			$response = $input !== false ? trim($input) : '';
-
-			if ($response === 'A') {
-				$this->auto_confirm = true;
-				return true;
-			}
-
-			if ($response === 'a') {
-				$this->bypasses[$tool_name] = true;
-				return true;
-			}
-
-			return strtolower($response) === 'y' || strtolower($response) === 'yes';
-		}
-
-		public function shouldBypass(string $tool_name): bool
-		{
-			return isset($this->bypasses[$tool_name]);
-		}
-
-		public function addBypass(string $tool_name): void
-		{
-			$this->bypasses[$tool_name] = true;
-		}
-
-		public function removeBypass(string $tool_name): void
-		{
-			unset($this->bypasses[$tool_name]);
-		}
-
-		/** @return array<int, string> */
-		public function getBypasses(): array
-		{
-			return array_keys($this->bypasses);
-		}
-
-		public function clearBypasses(): void
-		{
-			$this->bypasses = [];
-		}
-
-		public function setAutoConfirm(bool $auto_confirm): void
-		{
-			$this->auto_confirm = $auto_confirm;
-		}
-
-		public function isAutoConfirm(): bool
-		{
-			return $this->auto_confirm;
-		}
-	};
+	// Create confirmation handler with persistence.
+	$bypass_persistence = new BypassPersistence($configuration->getSessionStoragePath());
+	$confirmation_handler = new CliConfirmationHandler(
+		null, // output stream (STDOUT)
+		null, // input stream (STDIN)
+		null, // colors (auto-detect)
+		$configuration->getBypassedTools(), // default bypass from config
+		$bypass_persistence
+	);
 
 	// Create tool registry with built-in tools and executor.
 	$tool_registry = BuiltInToolRegistry::createWithAllTools();
 	$tool_executor = new ToolExecutor($tool_registry, $confirmation_handler);
 
-	// Set bypassed tools via confirmation handler.
-	foreach ($configuration->getBypassedTools() as $tool_name) {
-		$confirmation_handler->addBypass($tool_name);
+	// Load MCP configuration from JSON first, falling back to YAML.
+	// JSON servers take precedence over YAML servers with the same name.
+	$mcp_client_manager = null;
+	try {
+		// Start with servers from YAML configuration.
+		$yaml_loader = new YamlConfigurationLoader();
+		$agent_config = $yaml_loader->load();
+		$yaml_servers = $agent_config->getEnabledMcpServers();
+
+		// Index YAML servers by name for merging.
+		$servers_by_name = [];
+		foreach ($yaml_servers as $server) {
+			$servers_by_name[$server->getName()] = $server;
+		}
+
+		// Load servers from JSON configuration (takes precedence).
+		$json_loader = new McpJsonLoader();
+		$json_servers = $json_loader->load();
+
+		// JSON servers override YAML servers with the same name.
+		foreach ($json_servers as $server) {
+			if ($server->isEnabled()) {
+				$servers_by_name[$server->getName()] = $server;
+			}
+		}
+
+		$mcp_servers = array_values($servers_by_name);
+
+		if (\count($mcp_servers) > 0) {
+			$mcp_client_manager = new McpClientManager();
+
+			// Convert Core configs to Integration configs and connect.
+			$integration_configs = [];
+			foreach ($mcp_servers as $core_config) {
+				$integration_configs[] = IntegrationMcpServerConfig::fromArray(
+					$core_config->getName(),
+					$core_config->toArray()
+				);
+			}
+
+			$failures = $mcp_client_manager->connectAll($integration_configs);
+
+			// Log connection failures but continue.
+			foreach ($failures as $server_name => $error) {
+				fwrite(STDERR, \sprintf(
+					"\033[33m[MCP] Failed to connect to %s: %s\033[0m\n",
+					$server_name,
+					$error->getMessage()
+				));
+			}
+
+			// Discover and register MCP tools.
+			if (\count($mcp_client_manager->getConnectedServers()) > 0) {
+				$mcp_tool_registry = new McpToolRegistry($mcp_client_manager, $tool_registry);
+				$tools_registered = $mcp_tool_registry->discoverAndRegister();
+
+				if ($tools_registered > 0) {
+					fwrite(STDERR, \sprintf(
+						"\033[32m[MCP] Registered %d tools from %d server(s)\033[0m\n",
+						$tools_registered,
+						\count($mcp_client_manager->getConnectedServers())
+					));
+				}
+			}
+		}
+	} catch (\Throwable $e) {
+		// MCP loading is optional - continue without it.
+		fwrite(STDERR, \sprintf("\033[33m[MCP] %s\033[0m\n", $e->getMessage()));
 	}
 
 	// Create AI adapter.
@@ -647,9 +647,11 @@ PROMPT;
 	}
 
 	// Create and return CLI application.
+	// Pass $mcp_client_manager to keep MCP connections alive during application lifecycle.
 	return new CliApplication(
 		$configuration,
 		$agent,
-		$output_handler
+		$output_handler,
+		$mcp_client_manager
 	);
 })();
