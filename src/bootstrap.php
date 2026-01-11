@@ -16,9 +16,9 @@ namespace PhpCliAgent;
 use PhpCliAgent\Core\Agent\Agent;
 use PhpCliAgent\Core\Agent\AgentLoop;
 use PhpCliAgent\Core\Tool\ToolExecutor;
-use PhpCliAgent\Core\Tool\ToolRegistry;
 use PhpCliAgent\Integration\AiClient\AiClientAdapter;
 use PhpCliAgent\Integration\Cli\CliApplication;
+use PhpCliAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Creates and configures the CLI application.
@@ -608,8 +608,8 @@ PROMPT;
 		}
 	};
 
-	// Create tool registry and executor.
-	$tool_registry = new ToolRegistry();
+	// Create tool registry with built-in tools and executor.
+	$tool_registry = BuiltInToolRegistry::createWithAllTools();
 	$tool_executor = new ToolExecutor($tool_registry, $confirmation_handler);
 
 	// Set bypassed tools via confirmation handler.
