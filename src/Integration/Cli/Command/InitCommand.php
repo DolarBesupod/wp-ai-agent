@@ -141,6 +141,7 @@ USAGE;
 	public function execute(array $arguments): CommandResult
 	{
 		$force = $this->hasForceFlag($arguments);
+
 		$config_dir = $this->base_directory . '/' . self::CONFIG_DIRECTORY;
 
 		// Check if directory exists.
@@ -155,6 +156,7 @@ USAGE;
 			$this->createConfigDirectory($config_dir);
 			$this->writeSettingsFile($config_dir);
 			$this->writeMcpFile($config_dir);
+			$this->updateGitignore();
 
 			$this->output_handler->writeSuccess('Configuration initialized successfully!');
 			$this->displayNextSteps();
@@ -264,6 +266,72 @@ USAGE;
 		if (file_put_contents($mcp_path, $json . "\n") === false) {
 			throw new \RuntimeException(sprintf('Failed to write file: %s', $mcp_path));
 		}
+	}
+
+	/**
+	 * Updates the .gitignore file to include the configuration directory.
+	 *
+	 * Creates the .gitignore file if it doesn't exist. Appends the
+	 * .php-cli-agent/ entry if not already present. Handles cases where
+	 * the file exists with or without a trailing newline.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @return void
+	 */
+	private function updateGitignore(): void
+	{
+		$gitignore_path = $this->base_directory . '/.gitignore';
+		$entry = self::CONFIG_DIRECTORY . '/';
+
+		// Check if .gitignore exists.
+		if (!file_exists($gitignore_path)) {
+			file_put_contents($gitignore_path, $entry . "\n");
+			return;
+		}
+
+		// Read existing content.
+		$content = file_get_contents($gitignore_path);
+		if ($content === false) {
+			return;
+		}
+
+		// Check if entry already exists (with or without trailing slash).
+		if ($this->gitignoreContainsEntry($content)) {
+			return;
+		}
+
+		// Append entry with proper newline handling.
+		$needs_newline = $content !== '' && !str_ends_with($content, "\n");
+		$new_content = $content . ($needs_newline ? "\n" : '') . $entry . "\n";
+
+		file_put_contents($gitignore_path, $new_content);
+	}
+
+	/**
+	 * Checks if the .gitignore content already contains the config directory entry.
+	 *
+	 * Matches both ".php-cli-agent" and ".php-cli-agent/" formats.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @param string $content The .gitignore content.
+	 *
+	 * @return bool True if entry exists, false otherwise.
+	 */
+	private function gitignoreContainsEntry(string $content): bool
+	{
+		$lines = explode("\n", $content);
+
+		foreach ($lines as $line) {
+			$line = trim($line);
+			// Match ".php-cli-agent" or ".php-cli-agent/".
+			if ($line === self::CONFIG_DIRECTORY || $line === self::CONFIG_DIRECTORY . '/') {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

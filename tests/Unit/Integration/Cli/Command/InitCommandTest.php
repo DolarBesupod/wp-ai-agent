@@ -8,7 +8,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
 use PhpCliAgent\Integration\Cli\Command\InitCommand;
-use PhpCliAgent\Integration\Cli\CommandResult;
 
 /**
  * Tests for InitCommand.
@@ -305,6 +304,130 @@ final class InitCommandTest extends TestCase
 		$mcp_content = file_get_contents($config_dir . '/mcp.json');
 		$this->assertIsString($mcp_content);
 		$this->assertStringContainsString("\n", $mcp_content);
+	}
+
+	/**
+	 * Given .gitignore does not exist
+	 * When init command runs
+	 * Then .gitignore is created with ".php-cli-agent/" entry
+	 */
+	public function test_execute_withNoGitignore_createsGitignoreWithEntry(): void
+	{
+		$command = new InitCommand($this->output_handler, $this->temp_dir);
+
+		$result = $command->execute([]);
+
+		$this->assertTrue($result->wasHandled());
+
+		// Verify .gitignore was created.
+		$gitignore_path = $this->temp_dir . '/.gitignore';
+		$this->assertFileExists($gitignore_path);
+
+		$content = file_get_contents($gitignore_path);
+		$this->assertIsString($content);
+		$this->assertStringContainsString('.php-cli-agent/', $content);
+	}
+
+	/**
+	 * Given .gitignore exists without .php-cli-agent entry
+	 * When init command runs
+	 * Then ".php-cli-agent/" is appended to .gitignore
+	 */
+	public function test_execute_withExistingGitignore_withoutEntry_appendsEntry(): void
+	{
+		// Create existing .gitignore with other content.
+		$gitignore_path = $this->temp_dir . '/.gitignore';
+		file_put_contents($gitignore_path, "vendor/\nnode_modules/\n");
+
+		$command = new InitCommand($this->output_handler, $this->temp_dir);
+
+		$result = $command->execute([]);
+
+		$this->assertTrue($result->wasHandled());
+
+		$content = file_get_contents($gitignore_path);
+		$this->assertIsString($content);
+
+		// Original content should still be present.
+		$this->assertStringContainsString('vendor/', $content);
+		$this->assertStringContainsString('node_modules/', $content);
+
+		// New entry should be added.
+		$this->assertStringContainsString('.php-cli-agent/', $content);
+	}
+
+	/**
+	 * Given .gitignore already contains ".php-cli-agent/"
+	 * When init command runs
+	 * Then .gitignore is not modified
+	 */
+	public function test_execute_withExistingGitignore_withEntry_doesNotModify(): void
+	{
+		// Create existing .gitignore with the entry already present.
+		$gitignore_path = $this->temp_dir . '/.gitignore';
+		$original_content = "vendor/\n.php-cli-agent/\nnode_modules/\n";
+		file_put_contents($gitignore_path, $original_content);
+
+		$command = new InitCommand($this->output_handler, $this->temp_dir);
+
+		$result = $command->execute([]);
+
+		$this->assertTrue($result->wasHandled());
+
+		$content = file_get_contents($gitignore_path);
+		$this->assertIsString($content);
+
+		// Content should be unchanged.
+		$this->assertSame($original_content, $content);
+	}
+
+	/**
+	 * Given .gitignore exists with no trailing newline
+	 * When init command runs
+	 * Then ".php-cli-agent/" is appended on a new line
+	 */
+	public function test_execute_withGitignore_withoutTrailingNewline_appendsOnNewLine(): void
+	{
+		// Create .gitignore without trailing newline.
+		$gitignore_path = $this->temp_dir . '/.gitignore';
+		file_put_contents($gitignore_path, 'vendor/');
+
+		$command = new InitCommand($this->output_handler, $this->temp_dir);
+
+		$result = $command->execute([]);
+
+		$this->assertTrue($result->wasHandled());
+
+		$content = file_get_contents($gitignore_path);
+		$this->assertIsString($content);
+
+		// Entry should be on its own line, not appended to previous entry.
+		$this->assertStringContainsString("vendor/\n.php-cli-agent/", $content);
+	}
+
+	/**
+	 * Given .gitignore contains entry with different format (e.g., ".php-cli-agent" without slash)
+	 * When init command runs
+	 * Then .gitignore is not modified (matches both formats)
+	 */
+	public function test_execute_withExistingGitignore_withEntryWithoutSlash_doesNotModify(): void
+	{
+		// Create .gitignore with entry without trailing slash.
+		$gitignore_path = $this->temp_dir . '/.gitignore';
+		$original_content = "vendor/\n.php-cli-agent\n";
+		file_put_contents($gitignore_path, $original_content);
+
+		$command = new InitCommand($this->output_handler, $this->temp_dir);
+
+		$result = $command->execute([]);
+
+		$this->assertTrue($result->wasHandled());
+
+		$content = file_get_contents($gitignore_path);
+		$this->assertIsString($content);
+
+		// Content should be unchanged since .php-cli-agent matches.
+		$this->assertSame($original_content, $content);
 	}
 
 	/**
