@@ -6,18 +6,22 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Tests\Stubs;
 
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
 use WpAiAgent\Core\Contracts\AiResponseInterface;
+use WpAiAgent\Core\Credential\AuthMode;
+use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use WordPress\AiClient\Providers\ProviderRegistry;
 
 /**
- * Minimal stub implementation of AiAdapterInterface for subprocess-based tests.
+ * Minimal stub implementation of AiClientAdapterInterface for subprocess-based tests.
  *
  * Used by the chat() REPL subprocess test helper. All methods are no-ops or
  * return sensible defaults. Not intended for use in standard PHPUnit tests.
  */
-final class MinimalAiAdapterStub implements AiAdapterInterface
+final class MinimalAiAdapterStub implements AiClientAdapterInterface
 {
 	private string $model = 'claude-sonnet-4-20250514';
+
+	private string $provider_id = 'anthropic';
 
 	public function chat(array $messages, string $system, array $tools = []): AiResponseInterface
 	{
@@ -54,5 +58,25 @@ final class MinimalAiAdapterStub implements AiAdapterInterface
 	public function getLastUsage(): ?array
 	{
 		return null;
+	}
+
+	public function getProviderRegistry(): ProviderRegistry
+	{
+		return new ProviderRegistry();
+	}
+
+	public function isConfigured(): bool
+	{
+		return true;
+	}
+
+	public function getProviderId(): string
+	{
+		return $this->provider_id;
+	}
+
+	public function switchProvider(string $provider_id, string $api_key, AuthMode $auth_mode = AuthMode::API_KEY): void
+	{
+		$this->provider_id = $provider_id;
 	}
 }

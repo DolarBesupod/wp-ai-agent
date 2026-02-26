@@ -8,6 +8,7 @@ use WpAiAgent\Core\Agent\Agent;
 use WpAiAgent\Core\Agent\AgentLoop;
 use WpAiAgent\Core\Tool\ToolExecutor;
 use WpAiAgent\Integration\AiClient\AiClientAdapter;
+use WpAiAgent\Integration\AiClient\ProviderDetector;
 use WpAiAgent\Integration\Configuration\MarkdownParser;
 use WpAiAgent\Integration\Mcp\McpClientManager;
 use WpAiAgent\Integration\Mcp\McpServerConfiguration;
@@ -94,14 +95,16 @@ final class WpCliBootstrap
 		// Step 9 — Credential resolution and AI adapter.
 		$credential_repository = new WpOptionsCredentialRepository();
 		$credential_resolver = new CredentialResolver($credential_repository);
-			$resolved_credential = $credential_resolver->resolve('anthropic');
+		$provider_id = ProviderDetector::detectFromModel($config->getModel());
+		$resolved_credential = $credential_resolver->resolve($provider_id);
 
-			$ai_adapter = new AiClientAdapter(
-				$resolved_credential->getSecret(),
-				$resolved_credential->getAuthMode(),
-				$config->getModel(),
-				$config->getMaxTokens()
-			);
+		$ai_adapter = new AiClientAdapter(
+			$resolved_credential->getSecret(),
+			$resolved_credential->getAuthMode(),
+			$config->getModel(),
+			$config->getMaxTokens(),
+			provider_id: $provider_id
+		);
 		$ai_adapter->setTemperature($config->getTemperature());
 
 		// Step 10 — Agent loop.
@@ -118,7 +121,8 @@ final class WpCliBootstrap
 			$confirmation,
 			$session_repo,
 			$ai_adapter,
-			$mcp_client_manager
+			$mcp_client_manager,
+			$credential_resolver
 		);
 	}
 

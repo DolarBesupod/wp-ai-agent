@@ -7,10 +7,10 @@ namespace WpAiAgent\Tests\Unit\Integration\WpCli;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WpAiAgent\Core\Contracts\AgentInterface;
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
 use WpAiAgent\Core\Contracts\ConfigurationInterface;
 use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
 use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use WpAiAgent\Integration\WpCli\WpCliApplication;
 use WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
 use WpAiAgent\Integration\WpCli\WpCliOutputHandler;
@@ -61,7 +61,7 @@ final class WpCliApplicationTest extends TestCase
 			new WpCliOutputHandler(),
 			new WpCliConfirmationHandler(),
 			$this->createMock(SessionRepositoryInterface::class),
-			$this->createMock(AiAdapterInterface::class),
+			$this->createMock(AiClientAdapterInterface::class),
 		);
 	}
 
@@ -136,7 +136,7 @@ final class WpCliApplicationTest extends TestCase
 			$output_handler,
 			new WpCliConfirmationHandler(),
 			$this->createMock(SessionRepositoryInterface::class),
-			$this->createMock(AiAdapterInterface::class),
+			$this->createMock(AiClientAdapterInterface::class),
 		);
 
 		$app->ask('test', ['debug' => true]);
@@ -192,7 +192,7 @@ final class WpCliApplicationTest extends TestCase
 			$output,
 			new WpCliConfirmationHandler(),
 			$this->createMock(SessionRepositoryInterface::class),
-			$this->createMock(AiAdapterInterface::class),
+			$this->createMock(AiClientAdapterInterface::class),
 		);
 
 		$this->assertSame($output, $app->getOutputHandler());
@@ -223,7 +223,7 @@ final class WpCliApplicationTest extends TestCase
 			new WpCliOutputHandler(),
 			$confirmation_handler,
 			$this->createMock(SessionRepositoryInterface::class),
-			$this->createMock(AiAdapterInterface::class),
+			$this->createMock(AiClientAdapterInterface::class),
 		);
 
 		// Act
@@ -259,7 +259,7 @@ final class WpCliApplicationTest extends TestCase
 			new WpCliOutputHandler(),
 			$confirmation_handler,
 			$this->createMock(SessionRepositoryInterface::class),
-			$this->createMock(AiAdapterInterface::class),
+			$this->createMock(AiClientAdapterInterface::class),
 		);
 
 		// Act: STDIN is at EOF in the test runner, so the loop will break immediately.

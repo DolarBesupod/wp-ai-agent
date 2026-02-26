@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace WpAiAgent\Integration\WpCli;
 
 use WpAiAgent\Core\Contracts\AgentInterface;
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
 use WpAiAgent\Core\Contracts\ConfigurationInterface;
 use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use WpAiAgent\Integration\AiClient\ProviderDetector;
 use WpAiAgent\Integration\Mcp\McpClientManager;
 
 /**
@@ -77,13 +79,14 @@ class WpCliApplication
 	/**
 	 * Creates a new WpCliApplication.
 	 *
-	 * @param ConfigurationInterface      $configuration        The configuration.
-	 * @param AgentInterface              $agent                The agent.
-	 * @param WpCliOutputHandler          $output_handler       The output handler.
-	 * @param WpCliConfirmationHandler    $confirmation_handler The confirmation handler.
-	 * @param SessionRepositoryInterface  $session_repository   The session repository.
-	 * @param AiAdapterInterface          $ai_adapter           The AI adapter for model switching.
-	 * @param McpClientManager|null       $mcp_client_manager   MCP client manager (kept alive to prevent GC).
+	 * @param ConfigurationInterface       $configuration        The configuration.
+	 * @param AgentInterface               $agent                The agent.
+	 * @param WpCliOutputHandler           $output_handler       The output handler.
+	 * @param WpCliConfirmationHandler     $confirmation_handler The confirmation handler.
+	 * @param SessionRepositoryInterface   $session_repository   The session repository.
+	 * @param AiClientAdapterInterface     $ai_adapter           The AI adapter for model and provider switching.
+	 * @param McpClientManager|null        $mcp_client_manager   MCP client manager (kept alive to prevent GC).
+	 * @param CredentialResolver|null      $credential_resolver  Credential resolver for runtime provider switching.
 	 *
 	 * @since n.e.x.t
 	 */
@@ -95,9 +98,10 @@ class WpCliApplication
 		private readonly WpCliConfirmationHandler $confirmation_handler,
 		/** @phpstan-ignore property.onlyWritten */
 		private readonly SessionRepositoryInterface $session_repository,
-		private readonly AiAdapterInterface $ai_adapter,
+		private readonly AiClientAdapterInterface $ai_adapter,
 		/** @phpstan-ignore property.onlyWritten */
 		private readonly ?McpClientManager $mcp_client_manager = null,
+		private readonly ?CredentialResolver $credential_resolver = null,
 	) {
 	}
 
@@ -180,10 +184,13 @@ class WpCliApplication
 			if (str_starts_with($input, '/model')) {
 				$model_arg = trim(substr($input, 6));
 				if ($model_arg === '') {
-					\WP_CLI::line(sprintf('Current model: %s', $this->ai_adapter->getModel()));
+					\WP_CLI::line(sprintf(
+						'Current model: %s (provider: %s)',
+						$this->ai_adapter->getModel(),
+						$this->ai_adapter->getProviderId()
+					));
 				} else {
-					$this->ai_adapter->setModel($model_arg);
-					\WP_CLI::success(sprintf('Model switched to %s', $model_arg));
+					$this->handleModelSwitch($model_arg);
 				}
 				continue;
 			}
@@ -316,6 +323,60 @@ class WpCliApplication
 	public function getOutputHandler(): WpCliOutputHandler
 	{
 		return $this->output_handler;
+	}
+
+	/**
+	 * Handles the /model command with a model argument.
+	 *
+	 * Detects the provider from the model name. If the provider differs from the
+	 * current one, resolves credentials and switches the provider on the adapter.
+	 * If the provider is the same, only changes the model. Missing credentials or
+	 * provider initialization failures are reported as non-fatal errors.
+	 *
+	 * @param string $model The model name to switch to.
+	 *
+	 * @return void
+	 *
+	 * @since n.e.x.t
+	 */
+	private function handleModelSwitch(string $model): void
+	{
+		$new_provider = ProviderDetector::detectFromModel($model);
+		$current_provider = $this->ai_adapter->getProviderId();
+
+		if ($new_provider !== $current_provider) {
+			if ($this->credential_resolver === null) {
+				\WP_CLI::error(
+					'Cannot switch providers: credential resolver not available.',
+					false
+				);
+				return;
+			}
+
+			try {
+				$resolved = $this->credential_resolver->resolve($new_provider);
+			} catch (ConfigurationException $exception) {
+				\WP_CLI::error($exception->getMessage(), false);
+				return;
+			}
+
+			try {
+				$this->ai_adapter->switchProvider(
+					$new_provider,
+					$resolved->getSecret(),
+					$resolved->getAuthMode()
+				);
+			} catch (\Throwable $exception) {
+				\WP_CLI::error(
+					sprintf('Failed to switch to provider "%s": %s', $new_provider, $exception->getMessage()),
+					false
+				);
+				return;
+			}
+		}
+
+		$this->ai_adapter->setModel($model);
+		\WP_CLI::success(sprintf('Model switched to %s (provider: %s)', $model, $new_provider));
 	}
 
 	/**
