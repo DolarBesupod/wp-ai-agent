@@ -43,6 +43,16 @@ class AbilityStrapTool extends AbstractTool
 	private $abilities_provider;
 
 	/**
+	 * Callable that checks whether a WordPress user is logged in.
+	 *
+	 * Defaults to the global `is_user_logged_in` function. Injecting a custom
+	 * callable allows unit tests to control the logged-in state.
+	 *
+	 * @var callable
+	 */
+	private $is_user_logged_in;
+
+	/**
 	 * Lazily-populated catalog of ability adapters indexed by original ability name.
 	 *
 	 * Null means discovery has not yet occurred. An empty array means discovery
@@ -67,12 +77,17 @@ class AbilityStrapTool extends AbstractTool
 	 *
 	 * @since n.e.x.t
 	 *
-	 * @param callable|null $abilities_provider Optional callable that returns WP_Ability[].
-	 *                                          Defaults to 'wp_get_abilities'.
+	 * @param callable|null $abilities_provider  Optional callable that returns WP_Ability[].
+	 *                                           Defaults to 'wp_get_abilities'.
+	 * @param callable|null $is_user_logged_in   Optional callable that returns bool.
+	 *                                           Defaults to 'is_user_logged_in'.
 	 */
-	public function __construct(?callable $abilities_provider = null)
-	{
+	public function __construct(
+		?callable $abilities_provider = null,
+		?callable $is_user_logged_in = null,
+	) {
 		$this->abilities_provider = $abilities_provider ?? 'wp_get_abilities';
+		$this->is_user_logged_in = $is_user_logged_in ?? 'is_user_logged_in';
 	}
 
 	/**
@@ -284,6 +299,13 @@ class AbilityStrapTool extends AbstractTool
 	 */
 	private function handleExecute(array $arguments): ToolResult
 	{
+		if (!call_user_func($this->is_user_logged_in)) {
+			return $this->failure(
+				'No WordPress user context is set. '
+				. 'Use the wordpress_users tool with action "set" to select a user before executing abilities.'
+			);
+		}
+
 		$ability_name = $this->getStringArgument($arguments, 'ability_name');
 
 		if ($ability_name === '') {

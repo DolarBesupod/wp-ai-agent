@@ -2,9 +2,10 @@
 
 // phpcs:disable
 // This file intentionally uses multi-namespace block syntax (namespace { } braces)
-// to define WordPress global functions and the supporting WpOptionsStore class
-// in a single file. This pattern is the only valid PHP approach for mixing
-// global and named namespaces in one file and is required for test stubs.
+// to define WordPress global functions and the supporting WpOptionsStore and
+// WpUserState classes in a single file. This pattern is the only valid PHP
+// approach for mixing global and named namespaces in one file and is required
+// for test stubs.
 
 namespace {
 	if (!function_exists('get_option')) {
@@ -76,6 +77,21 @@ namespace {
 		function wp_json_encode(mixed $data, int $flags = 0, int $depth = 512): string|false
 		{
 			return json_encode($data, $flags, $depth);
+		}
+	}
+
+	if (!function_exists('is_user_logged_in')) {
+		/**
+		 * Stub for WordPress is_user_logged_in().
+		 *
+		 * Returns the value from WpUserState::$is_logged_in. Defaults to true
+		 * so existing tests that assume a logged-in user continue to pass.
+		 *
+		 * @return bool
+		 */
+		function is_user_logged_in(): bool
+		{
+			return \Tests\Stubs\WpUserState::$is_logged_in;
 		}
 	}
 }
@@ -151,6 +167,36 @@ namespace Tests\Stubs {
 		public static function reset(): void
 		{
 			self::$store = [];
+		}
+	}
+
+	/**
+	 * In-memory state backing the is_user_logged_in() function stub.
+	 *
+	 * Defaults to true so existing tests that assume a logged-in user
+	 * continue to pass without modification. Tests that need to verify
+	 * the logged-out guard set WpUserState::$is_logged_in = false in
+	 * setUp() and call WpUserState::reset() in tearDown().
+	 */
+	class WpUserState
+	{
+		/**
+		 * Whether the stub reports a logged-in user.
+		 *
+		 * @var bool
+		 */
+		public static bool $is_logged_in = true;
+
+		/**
+		 * Resets the logged-in state to its default (true).
+		 *
+		 * Must be called in PHPUnit tearDown() to isolate tests.
+		 *
+		 * @return void
+		 */
+		public static function reset(): void
+		{
+			self::$is_logged_in = true;
 		}
 	}
 }
