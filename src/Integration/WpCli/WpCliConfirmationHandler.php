@@ -69,14 +69,46 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 			return true;
 		}
 
-		$message = sprintf('Execute %s?', $tool_name);
+		$message = $this->buildConfirmationMessage($tool_name, $arguments);
 
 		try {
 			\WP_CLI::confirm($message);
 			return true;
-		} catch (\WP_CLI\ExitException $e) {
+		} catch (\WP_CLI\ExitException $_e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Builds a human-readable confirmation message.
+	 *
+	 * Shows the tool name plus the value of the first recognisable primary
+	 * argument (command, path, pattern, etc.) so the user can see exactly
+	 * what will run before approving.
+	 *
+	 * @param string               $tool_name The name of the tool.
+	 * @param array<string, mixed> $arguments The arguments that will be passed.
+	 *
+	 * @return string The confirmation message (without trailing "?").
+	 *
+	 * @since n.e.x.t
+	 */
+	private function buildConfirmationMessage(string $tool_name, array $arguments): string
+	{
+		// Ordered list of argument keys treated as the "primary" value to display.
+		$primary_keys = ['command', 'path', 'pattern', 'query', 'content'];
+
+		foreach ($primary_keys as $key) {
+			if (isset($arguments[$key]) && is_string($arguments[$key]) && $arguments[$key] !== '') {
+				$value = $arguments[$key];
+				if (strlen($value) > 120) {
+					$value = substr($value, 0, 120) . '…';
+				}
+				return sprintf('Execute %s: %s?', $tool_name, $value);
+			}
+		}
+
+		return sprintf('Execute %s?', $tool_name);
 	}
 
 	/**
