@@ -8,6 +8,7 @@ namespace WpAiAgent\Tests\Stubs;
 
 use WpAiAgent\Core\Contracts\AgentInterface;
 use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Session\Session;
 use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
@@ -18,9 +19,12 @@ use WpAiAgent\Core\ValueObjects\SessionId;
  */
 final class MinimalAgentStub implements AgentInterface
 {
+	private ?SessionInterface $session = null;
+
 	public function startSession(): SessionId
 	{
-		return SessionId::fromString('test-session');
+		$this->session = new Session(null, '');
+		return $this->session->getId();
 	}
 
 	public function resumeSession(SessionId $session_id): void
@@ -33,7 +37,7 @@ final class MinimalAgentStub implements AgentInterface
 
 	public function getCurrentSession(): ?SessionInterface
 	{
-		return null;
+		return $this->session;
 	}
 
 	public function endSession(): void
