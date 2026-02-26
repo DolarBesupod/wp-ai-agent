@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Interface for tools that can be executed by the agent.
@@ -57,7 +57,7 @@ interface ToolInterface
 	 *
 	 * @return ToolResult The result of the execution.
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\ToolExecutionException If execution fails.
+	 * @throws \WpAiAgent\Core\Exceptions\ToolExecutionException If execution fails.
 	 */
 	public function execute(array $arguments): ToolResult;
 

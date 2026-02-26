@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Tool;
+namespace WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Tool\AbstractTool;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Tool\AbstractTool;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for AbstractTool.
  *
- * @covers \PhpCliAgent\Core\Tool\AbstractTool
+ * @covers \WpAiAgent\Core\Tool\AbstractTool
  */
 final class AbstractToolTest extends TestCase
 {

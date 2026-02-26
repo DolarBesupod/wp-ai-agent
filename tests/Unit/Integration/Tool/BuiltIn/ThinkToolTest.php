@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Tool\BuiltIn;
+namespace WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Integration\Tool\BuiltIn\ThinkTool;
+use WpAiAgent\Integration\Tool\BuiltIn\ThinkTool;
 
 /**
  * Tests for ThinkTool.
  *
- * @covers \PhpCliAgent\Integration\Tool\BuiltIn\ThinkTool
+ * @covers \WpAiAgent\Integration\Tool\BuiltIn\ThinkTool
  */
 final class ThinkToolTest extends TestCase
 {

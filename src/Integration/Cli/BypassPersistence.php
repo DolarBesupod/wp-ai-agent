@@ -2,65 +2,71 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
+
+use WpAiAgent\Integration\Configuration\SettingsWriter;
 
 /**
- * Persists tool bypass state to a JSON file.
+ * Persists tool bypass state to settings.json permissions.allow.
  *
  * Stores runtime bypass additions (from user entering "a" at confirmation prompts)
- * so they persist across sessions. The state file is stored in the .php-cli-agent
- * folder in the working directory, separate from the user's configuration files.
+ * so they persist across sessions. The state is stored in the permissions.allow
+ * array of the .wp-ai-agent/settings.json file in the working directory.
  *
  * @since n.e.x.t
  */
 final class BypassPersistence
 {
 	/**
-	 * Default state file name.
+	 * Legacy state file name (for migration).
 	 *
 	 * @var string
 	 */
-	private const STATE_FILE_NAME = 'bypass_state.json';
+	private const LEGACY_STATE_FILE = 'bypass_state.json';
 
 	/**
-	 * Default folder name for bypass state storage.
+	 * Default folder name for settings storage.
 	 *
 	 * @var string
 	 */
-	private const DEFAULT_FOLDER_NAME = '.php-cli-agent';
+	private const DEFAULT_FOLDER_NAME = '.wp-ai-agent';
 
 	/**
-	 * Path to the state file.
+	 * The settings writer for persisting to settings.json.
+	 *
+	 * @var SettingsWriter
+	 */
+	private SettingsWriter $settings_writer;
+
+	/**
+	 * The working directory.
 	 *
 	 * @var string
 	 */
-	private string $state_file_path;
+	private string $working_dir;
 
 	/**
 	 * Creates a new BypassPersistence instance.
 	 *
-	 * @param string $storage_path The directory to store the state file.
+	 * @param SettingsWriter $settings_writer The settings writer.
+	 * @param string         $working_dir     The working directory.
 	 *
 	 * @since n.e.x.t
 	 */
-	public function __construct(string $storage_path)
+	public function __construct(SettingsWriter $settings_writer, string $working_dir)
 	{
-		$expanded_path = $this->expandTilde($storage_path);
-		$this->ensureDirectory($expanded_path);
-		$this->state_file_path = rtrim($expanded_path, DIRECTORY_SEPARATOR)
-			. DIRECTORY_SEPARATOR
-			. self::STATE_FILE_NAME;
+		$this->settings_writer = $settings_writer;
+		$this->working_dir = $working_dir;
 	}
 
 	/**
 	 * Creates a BypassPersistence instance for a working directory.
 	 *
-	 * This factory method creates the persistence instance with the bypass state
-	 * stored in .php-cli-agent/bypass_state.json within the working directory.
-	 * It also handles migration from an old session storage path if provided.
+	 * This factory method creates the persistence instance and handles
+	 * migration from the legacy bypass_state.json file if it exists.
 	 *
 	 * @param string      $working_dir      The working directory path.
-	 * @param string|null $old_session_path Optional old session storage path for migration.
+	 * @param string|null $old_session_path Optional old session storage path (unused, kept for compatibility).
 	 *
 	 * @return self The configured BypassPersistence instance.
 	 *
@@ -68,13 +74,11 @@ final class BypassPersistence
 	 */
 	public static function forWorkingDirectory(string $working_dir, ?string $old_session_path = null): self
 	{
-		$new_path = self::getDefaultPath($working_dir);
-		$instance = new self($new_path);
+		$settings_writer = new SettingsWriter();
+		$instance = new self($settings_writer, $working_dir);
 
-		// Attempt migration from old location if needed.
-		if ($old_session_path !== null) {
-			$instance->migrateFromOldPath($old_session_path);
-		}
+		// Migrate from legacy bypass_state.json if it exists.
+		$instance->migrateFromLegacyFile();
 
 		return $instance;
 	}
@@ -84,7 +88,7 @@ final class BypassPersistence
 	 *
 	 * @param string $working_dir The working directory path.
 	 *
-	 * @return string The default path (.php-cli-agent folder in working directory).
+	 * @return string The default path (.wp-ai-agent folder in working directory).
 	 *
 	 * @since n.e.x.t
 	 */
@@ -96,54 +100,59 @@ final class BypassPersistence
 	}
 
 	/**
-	 * Loads bypassed tool names from the state file.
+	 * Gets the path to the legacy bypass_state.json file.
 	 *
-	 * @return array<int, string> List of tool names that are bypassed.
+	 * @param string $working_dir The working directory path.
+	 *
+	 * @return string The path to the legacy file.
+	 *
+	 * @since n.e.x.t
 	 */
-	public function load(): array
+	public static function getLegacyFilePath(string $working_dir): string
 	{
-		if (!file_exists($this->state_file_path)) {
-			return [];
-		}
-
-		$content = file_get_contents($this->state_file_path);
-		if ($content === false) {
-			return [];
-		}
-
-		$data = json_decode($content, true);
-		if (!is_array($data)) {
-			return [];
-		}
-
-		$bypasses = $data['bypassed_tools'] ?? [];
-		if (!is_array($bypasses)) {
-			return [];
-		}
-
-		return array_values(array_filter($bypasses, 'is_string'));
+		return self::getDefaultPath($working_dir)
+			. DIRECTORY_SEPARATOR
+			. self::LEGACY_STATE_FILE;
 	}
 
 	/**
-	 * Saves bypassed tool names to the state file.
+	 * Loads bypassed tool names from settings.json permissions.allow.
+	 *
+	 * @return array<int, string> List of tool names that are bypassed.
+	 *
+	 * @since n.e.x.t
+	 */
+	public function load(): array
+	{
+		return $this->settings_writer->getAllowedTools($this->working_dir);
+	}
+
+	/**
+	 * Saves bypassed tool names to settings.json permissions.allow.
 	 *
 	 * @param array<int, string> $tool_names List of tool names to persist.
 	 *
 	 * @return bool True if save succeeded, false otherwise.
+	 *
+	 * @since n.e.x.t
 	 */
 	public function save(array $tool_names): bool
 	{
-		$data = [
-			'bypassed_tools' => array_values(array_unique($tool_names)),
-			'updated_at' => date('c'),
-		];
-
-		$json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-		if ($json === false) {
+		// Clear existing and add all new tools.
+		if (!$this->settings_writer->clearAllowedTools($this->working_dir)) {
 			return false;
 		}
 
-		return file_put_contents($this->state_file_path, $json) !== false;
+		foreach ($tool_names as $tool_name) {
+			if (!is_string($tool_name)) {
+				continue;
+			}
+			if (!$this->settings_writer->addAllowedTool($tool_name, $this->working_dir)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -152,17 +161,15 @@ final class BypassPersistence
 	 * @param string $tool_name The tool name to add.
 	 *
 	 * @return bool True if save succeeded, false otherwise.
+	 *
+	 * @since n.e.x.t
 	 */
 	public function addBypass(string $tool_name): bool
 	{
-		$current = $this->load();
-		$normalized = strtolower($tool_name);
-
-		if (!in_array($normalized, $current, true)) {
-			$current[] = $normalized;
-		}
-
-		return $this->save($current);
+		return $this->settings_writer->addAllowedTool(
+			strtolower($tool_name),
+			$this->working_dir
+		);
 	}
 
 	/**
@@ -171,111 +178,86 @@ final class BypassPersistence
 	 * @param string $tool_name The tool name to remove.
 	 *
 	 * @return bool True if save succeeded, false otherwise.
+	 *
+	 * @since n.e.x.t
 	 */
 	public function removeBypass(string $tool_name): bool
 	{
-		$current = $this->load();
-		$normalized = strtolower($tool_name);
-
-		$filtered = array_filter(
-			$current,
-			static fn (string $name): bool => $name !== $normalized
+		return $this->settings_writer->removeAllowedTool(
+			strtolower($tool_name),
+			$this->working_dir
 		);
-
-		return $this->save(array_values($filtered));
 	}
 
 	/**
 	 * Clears all persisted bypasses.
 	 *
 	 * @return bool True if save succeeded, false otherwise.
+	 *
+	 * @since n.e.x.t
 	 */
 	public function clear(): bool
 	{
-		return $this->save([]);
+		return $this->settings_writer->clearAllowedTools($this->working_dir);
 	}
 
 	/**
-	 * Returns the path to the state file.
+	 * Returns the path to the settings.json file.
 	 *
 	 * @return string
+	 *
+	 * @since n.e.x.t
 	 */
-	public function getStatFilePath(): string
+	public function getSettingsFilePath(): string
 	{
-		return $this->state_file_path;
+		return $this->settings_writer->getSettingsPath($this->working_dir);
 	}
 
 	/**
-	 * Expands tilde to home directory in a path.
+	 * Migrates bypass state from legacy bypass_state.json to settings.json.
 	 *
-	 * @param string $path The path to expand.
-	 *
-	 * @return string The expanded path.
-	 */
-	private function expandTilde(string $path): string
-	{
-		if (str_starts_with($path, '~/')) {
-			$home = getenv('HOME');
-			if ($home !== false && $home !== '') {
-				return $home . substr($path, 1);
-			}
-		}
-
-		return $path;
-	}
-
-	/**
-	 * Ensures the storage directory exists.
-	 *
-	 * @param string $path The directory path.
-	 *
-	 * @return void
-	 */
-	private function ensureDirectory(string $path): void
-	{
-		if (!is_dir($path)) {
-			mkdir($path, 0755, true);
-		}
-	}
-
-	/**
-	 * Migrates bypass state from an old storage path to the current location.
-	 *
-	 * If the old state file exists and the new state file does not exist,
-	 * this method copies the old file content to the new location and
-	 * deletes the old file.
-	 *
-	 * @param string $old_path The old storage directory path.
+	 * If the legacy state file exists, reads its contents, adds all tools to
+	 * permissions.allow, and deletes the legacy file.
 	 *
 	 * @return bool True if migration occurred, false otherwise.
 	 *
 	 * @since n.e.x.t
 	 */
-	private function migrateFromOldPath(string $old_path): bool
+	public function migrateFromLegacyFile(): bool
 	{
-		$expanded_old_path = $this->expandTilde($old_path);
-		$old_state_file = rtrim($expanded_old_path, DIRECTORY_SEPARATOR)
-			. DIRECTORY_SEPARATOR
-			. self::STATE_FILE_NAME;
+		$legacy_file = self::getLegacyFilePath($this->working_dir);
 
-		// Only migrate if old file exists and new file does not exist.
-		if (!file_exists($old_state_file) || file_exists($this->state_file_path)) {
+		if (!file_exists($legacy_file)) {
 			return false;
 		}
 
-		// Read old state file.
-		$content = file_get_contents($old_state_file);
+		$content = file_get_contents($legacy_file);
 		if ($content === false) {
 			return false;
 		}
 
-		// Write to new location.
-		if (file_put_contents($this->state_file_path, $content) === false) {
+		$data = json_decode($content, true);
+		if (!is_array($data) || !isset($data['bypassed_tools'])) {
+			// Invalid format, just delete the file.
+			unlink($legacy_file);
 			return false;
 		}
 
-		// Delete old file.
-		unlink($old_state_file);
+		$legacy_tools = $data['bypassed_tools'];
+		if (!is_array($legacy_tools)) {
+			unlink($legacy_file);
+			return false;
+		}
+
+		// Add each legacy tool to permissions.allow.
+		foreach ($legacy_tools as $tool) {
+			if (is_string($tool)) {
+				$this->settings_writer->addAllowedTool(strtolower($tool), $this->working_dir);
+			}
+		}
+
+		// Delete the legacy file after successful migration.
+		unlink($legacy_file);
 
 		return true;
 	}

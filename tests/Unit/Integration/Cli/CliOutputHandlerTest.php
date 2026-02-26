@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
-use PhpCliAgent\Core\ValueObjects\ToolResult;
-use PhpCliAgent\Integration\Cli\CliOutputHandler;
+use WpAiAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Integration\Cli\CliOutputHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for CliOutputHandler.
  *
- * @covers \PhpCliAgent\Integration\Cli\CliOutputHandler
+ * @covers \WpAiAgent\Integration\Cli\CliOutputHandler
  */
 final class CliOutputHandlerTest extends TestCase
 {
@@ -603,6 +603,6 @@ final class CliOutputHandlerTest extends TestCase
 	{
 		$handler = new CliOutputHandler($this->output_stream, $this->error_stream, false);
 
-		$this->assertInstanceOf(\PhpCliAgent\Core\Contracts\OutputHandlerInterface::class, $handler);
+		$this->assertInstanceOf(\WpAiAgent\Core\Contracts\OutputHandlerInterface::class, $handler);
 	}
 }

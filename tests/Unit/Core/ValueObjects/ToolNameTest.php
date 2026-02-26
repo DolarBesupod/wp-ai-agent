@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\ValueObjects;
+namespace WpAiAgent\Tests\Unit\Core\ValueObjects;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\ValueObjects\ToolName;
+use WpAiAgent\Core\ValueObjects\ToolName;
 
 /**
  * Tests for ToolName value object.
  *
- * @covers \PhpCliAgent\Core\ValueObjects\ToolName
+ * @covers \WpAiAgent\Core\ValueObjects\ToolName
  */
 final class ToolNameTest extends TestCase
 {

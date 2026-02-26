@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Configuration;
+namespace WpAiAgent\Tests\Unit\Core\Configuration;
 
-use PhpCliAgent\Core\Configuration\AgentConfiguration;
-use PhpCliAgent\Core\Configuration\McpServerConfiguration;
-use PhpCliAgent\Core\Configuration\ProviderConfiguration;
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Configuration\AgentConfiguration;
+use WpAiAgent\Core\Configuration\McpServerConfiguration;
+use WpAiAgent\Core\Configuration\ProviderConfiguration;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for AgentConfiguration.
  *
- * @covers \PhpCliAgent\Core\Configuration\AgentConfiguration
+ * @covers \WpAiAgent\Core\Configuration\AgentConfiguration
  */
 final class AgentConfigurationTest extends TestCase
 {
@@ -57,8 +57,8 @@ final class AgentConfigurationTest extends TestCase
 
 		$this->assertSame($provider, $config->getProvider());
 		$this->assertSame([], $config->getMcpServers());
-		$this->assertSame('~/.php-cli-agent/sessions', $config->getSessionStoragePath());
-		$this->assertSame('~/.php-cli-agent/logs', $config->getLogPath());
+		$this->assertSame('~/.wp-ai-agent/sessions', $config->getSessionStoragePath());
+		$this->assertSame('~/.wp-ai-agent/logs', $config->getLogPath());
 		$this->assertSame(100, $config->getMaxTurns());
 		$this->assertSame('', $config->getDefaultSystemPrompt());
 		$this->assertSame([], $config->getBypassConfirmationTools());
@@ -122,8 +122,8 @@ final class AgentConfigurationTest extends TestCase
 		$this->assertSame('anthropic', $config->getProvider()->getType());
 		$this->assertSame('minimal-key', $config->getProvider()->getApiKey());
 		$this->assertSame([], $config->getMcpServers());
-		$this->assertSame('~/.php-cli-agent/sessions', $config->getSessionStoragePath());
-		$this->assertSame('~/.php-cli-agent/logs', $config->getLogPath());
+		$this->assertSame('~/.wp-ai-agent/sessions', $config->getSessionStoragePath());
+		$this->assertSame('~/.wp-ai-agent/logs', $config->getLogPath());
 		$this->assertSame(100, $config->getMaxTurns());
 	}
 
@@ -192,14 +192,14 @@ final class AgentConfigurationTest extends TestCase
 	public function test_getExpandedSessionStoragePath_expandsTilde(): void
 	{
 		$provider = new ProviderConfiguration('anthropic', 'key');
-		$config = new AgentConfiguration($provider, [], '~/.php-cli-agent/sessions');
+		$config = new AgentConfiguration($provider, [], '~/.wp-ai-agent/sessions');
 
 		$home = getenv('HOME') ?: getenv('USERPROFILE');
 		if ($home !== false) {
-			$expected = $home . '/.php-cli-agent/sessions';
+			$expected = $home . '/.wp-ai-agent/sessions';
 			$this->assertSame($expected, $config->getExpandedSessionStoragePath());
 		} else {
-			$this->assertSame('~/.php-cli-agent/sessions', $config->getExpandedSessionStoragePath());
+			$this->assertSame('~/.wp-ai-agent/sessions', $config->getExpandedSessionStoragePath());
 		}
 	}
 
@@ -209,7 +209,7 @@ final class AgentConfigurationTest extends TestCase
 	public function test_getExpandedLogPath_expandsTilde(): void
 	{
 		$provider = new ProviderConfiguration('anthropic', 'key');
-		$config = new AgentConfiguration($provider, [], '~/.php-cli-agent/sessions', '~/logs');
+		$config = new AgentConfiguration($provider, [], '~/.wp-ai-agent/sessions', '~/logs');
 
 		$home = getenv('HOME') ?: getenv('USERPROFILE');
 		if ($home !== false) {
@@ -240,8 +240,8 @@ final class AgentConfigurationTest extends TestCase
 		$config = new AgentConfiguration(
 			$provider,
 			[],
-			'~/.php-cli-agent/sessions',
-			'~/.php-cli-agent/logs',
+			'~/.wp-ai-agent/sessions',
+			'~/.wp-ai-agent/logs',
 			100,
 			'',
 			['think', 'read_file']
@@ -260,8 +260,8 @@ final class AgentConfigurationTest extends TestCase
 		$config = new AgentConfiguration(
 			$provider,
 			[],
-			'~/.php-cli-agent/sessions',
-			'~/.php-cli-agent/logs',
+			'~/.wp-ai-agent/sessions',
+			'~/.wp-ai-agent/logs',
 			100,
 			'',
 			['think']

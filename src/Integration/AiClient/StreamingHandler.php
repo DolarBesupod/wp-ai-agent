@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\AiClient;
+namespace WpAiAgent\Integration\AiClient;
 
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
 
 /**
  * Handles streaming responses from the AI client.

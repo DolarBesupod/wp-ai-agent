@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\AiClient;
+namespace WpAiAgent\Integration\AiClient;
 
-use PhpCliAgent\Core\Contracts\AiResponseInterface;
-use PhpCliAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\Contracts\AiResponseInterface;
+use WpAiAgent\Core\ValueObjects\Message;
 use WordPress\AiClient\Messages\DTO\MessagePart;
 use WordPress\AiClient\Results\DTO\Candidate;
 use WordPress\AiClient\Results\DTO\GenerativeAiResult;

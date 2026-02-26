@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Tool;
+namespace WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\Exceptions\DuplicateToolException;
-use PhpCliAgent\Core\Tool\ToolRegistry;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Exceptions\DuplicateToolException;
+use WpAiAgent\Core\Tool\ToolRegistry;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for ToolRegistry.
  *
- * @covers \PhpCliAgent\Core\Tool\ToolRegistry
+ * @covers \WpAiAgent\Core\Tool\ToolRegistry
  */
 final class ToolRegistryTest extends TestCase
 {

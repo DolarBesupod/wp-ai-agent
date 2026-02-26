@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Tool;
+namespace WpAiAgent\Core\Tool;
 
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Abstract base class for tools with common functionality.

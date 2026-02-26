@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Configuration;
+namespace WpAiAgent\Integration\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Resolves environment variable placeholders in configuration values.

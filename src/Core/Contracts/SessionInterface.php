@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Interface for conversation sessions.

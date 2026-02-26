@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\AiClient;
+namespace WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use PhpCliAgent\Core\Exceptions\AiClientException;
-use PhpCliAgent\Integration\AiClient\AiClientAdapter;
-use PhpCliAgent\Integration\AiClient\AiClientAdapterInterface;
+use WpAiAgent\Core\Exceptions\AiClientException;
+use WpAiAgent\Integration\AiClient\AiClientAdapter;
+use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
 use WordPress\AiClient\Providers\ProviderRegistry;
@@ -14,7 +14,7 @@ use WordPress\AiClient\Providers\ProviderRegistry;
 /**
  * Unit tests for AiClientAdapter.
  *
- * @covers \PhpCliAgent\Integration\AiClient\AiClientAdapter
+ * @covers \WpAiAgent\Integration\AiClient\AiClientAdapter
  */
 final class AiClientAdapterTest extends TestCase
 {

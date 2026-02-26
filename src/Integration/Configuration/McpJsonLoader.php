@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Configuration;
+namespace WpAiAgent\Integration\Configuration;
 
-use PhpCliAgent\Core\Configuration\McpServerConfiguration;
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Configuration\McpServerConfiguration;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
- * Loads MCP server configuration from JSON file in .php-cli-agent folder.
+ * Loads MCP server configuration from JSON file in .wp-ai-agent folder.
  *
- * Supports loading from `.php-cli-agent/mcp.json` in the working directory.
+ * Supports loading from `.wp-ai-agent/mcp.json` in the working directory.
  * Parses `mcpServers` object into array of McpServerConfiguration.
  * Supports both HTTP and stdio transport types.
  * Environment variables using ${VAR_NAME} syntax are expanded.
@@ -28,7 +28,7 @@ final class McpJsonLoader
 	/**
 	 * The configuration folder name.
 	 */
-	private const CONFIG_FOLDER = '.php-cli-agent';
+	private const CONFIG_FOLDER = '.wp-ai-agent';
 
 	/**
 	 * The environment variable resolver.

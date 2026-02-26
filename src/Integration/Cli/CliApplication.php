@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
 
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\ConfigurationInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\ValueObjects\SessionId;
-use PhpCliAgent\Integration\Cli\Command\InitCommand;
-use PhpCliAgent\Integration\Mcp\McpClientManager;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\CommandExecutorInterface;
+use WpAiAgent\Core\Contracts\CommandRegistryInterface;
+use WpAiAgent\Core\Contracts\ConfigurationInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\ValueObjects\ArgumentList;
+use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\Cli\Command\InitCommand;
+use WpAiAgent\Integration\Mcp\McpClientManager;
 
 /**
  * CLI application entry point.
@@ -71,6 +74,20 @@ final class CliApplication
 	private ?McpClientManager $mcp_client_manager = null;
 
 	/**
+	 * Command registry for custom slash commands.
+	 *
+	 * @var CommandRegistryInterface|null
+	 */
+	private ?CommandRegistryInterface $command_registry = null;
+
+	/**
+	 * Command executor for processing custom commands.
+	 *
+	 * @var CommandExecutorInterface|null
+	 */
+	private ?CommandExecutorInterface $command_executor = null;
+
+	/**
 	 * Parsed command line arguments.
 	 *
 	 * @var array{
@@ -98,21 +115,27 @@ final class CliApplication
 	/**
 	 * Creates a new CliApplication instance.
 	 *
-	 * @param ConfigurationInterface $configuration       The application configuration.
-	 * @param AgentInterface         $agent               The agent instance.
-	 * @param OutputHandlerInterface $output_handler      The output handler.
-	 * @param McpClientManager|null  $mcp_client_manager  Optional MCP client manager to keep alive.
+	 * @param ConfigurationInterface        $configuration       The application configuration.
+	 * @param AgentInterface                $agent               The agent instance.
+	 * @param OutputHandlerInterface        $output_handler      The output handler.
+	 * @param McpClientManager|null         $mcp_client_manager  Optional MCP client manager to keep alive.
+	 * @param CommandRegistryInterface|null $command_registry    Optional command registry for custom commands.
+	 * @param CommandExecutorInterface|null $command_executor    Optional command executor for custom commands.
 	 */
 	public function __construct(
 		ConfigurationInterface $configuration,
 		AgentInterface $agent,
 		OutputHandlerInterface $output_handler,
-		?McpClientManager $mcp_client_manager = null
+		?McpClientManager $mcp_client_manager = null,
+		?CommandRegistryInterface $command_registry = null,
+		?CommandExecutorInterface $command_executor = null
 	) {
 		$this->configuration = $configuration;
 		$this->agent = $agent;
 		$this->output_handler = $output_handler;
 		$this->mcp_client_manager = $mcp_client_manager;
+		$this->command_registry = $command_registry;
+		$this->command_executor = $command_executor;
 	}
 
 	/**
@@ -173,10 +196,10 @@ final class CliApplication
 
 			// Start interactive REPL.
 			return $this->runRepl();
-		} catch (\PhpCliAgent\Core\Exceptions\ConfigurationException $exception) {
+		} catch (\WpAiAgent\Core\Exceptions\ConfigurationException $exception) {
 			$this->output_handler->writeError('Configuration error: ' . $exception->getMessage());
 			return self::EXIT_ERROR;
-		} catch (\PhpCliAgent\Core\Exceptions\SessionNotFoundException $exception) {
+		} catch (\WpAiAgent\Core\Exceptions\SessionNotFoundException $exception) {
 			$this->output_handler->writeError('Session not found: ' . $exception->getMessage());
 			return self::EXIT_ERROR;
 		} catch (\InvalidArgumentException $exception) {
@@ -285,7 +308,7 @@ final class CliApplication
 Usage: agent [command] [options]
 
 Commands:
-  init                     Initialize the .php-cli-agent configuration folder
+  init                     Initialize the .wp-ai-agent configuration folder
 
 Options:
   --config=PATH, -cPATH    Load configuration from the specified file
@@ -430,6 +453,31 @@ HELP;
 				continue;
 			}
 
+			// Handle custom slash commands.
+			if (str_starts_with($input, '/')) {
+				$result = $this->handleCustomCommand($input);
+				if ($result !== null) {
+					// Custom command was handled - either show output or inject into conversation.
+					if ($result !== '') {
+						try {
+							$this->agent->sendMessage($result);
+						} catch (\Throwable $exception) {
+							$this->output_handler->writeError('Error: ' . $exception->getMessage());
+							if ($this->parsed_args['debug']) {
+								$this->output_handler->writeDebug($exception->getTraceAsString());
+							}
+						}
+					}
+					$this->output_handler->writeLine('');
+					continue;
+				}
+				// Unknown command - show error.
+				$this->output_handler->writeError("Unknown command: {$input}");
+				$this->output_handler->writeLine("Type /help to see available commands.");
+				$this->output_handler->writeLine('');
+				continue;
+			}
+
 			try {
 				$this->agent->sendMessage($input);
 			} catch (\Throwable $exception) {
@@ -481,17 +529,87 @@ Available commands:
   /quit, /q    Exit the agent
   /exit        Exit the agent
 
-Just type your message and press Enter to interact with the agent.
-
 HELP;
 
 		$this->output_handler->writeLine($help);
+
+		// Add custom commands from registry.
+		if ($this->command_registry !== null) {
+			$custom_commands = $this->command_registry->getCustomCommands();
+			if (\count($custom_commands) > 0) {
+				$this->output_handler->writeLine('Custom commands:');
+				foreach ($custom_commands as $name => $command) {
+					$description = $command->getDescription();
+					$description_text = $description !== '' ? $description : 'No description';
+					$this->output_handler->writeLine(\sprintf('  /%s    %s', $name, $description_text));
+				}
+				$this->output_handler->writeLine('');
+			}
+		}
+
+		$this->output_handler->writeLine('Just type your message and press Enter to interact with the agent.');
+		$this->output_handler->writeLine('');
+	}
+
+	/**
+	 * Handles a custom slash command from the registry.
+	 *
+	 * @param string $input The raw input including the leading slash.
+	 *
+	 * @return string|null The content to inject into conversation, empty string for direct output, or null if command not found.
+	 *
+	 * @since n.e.x.t
+	 */
+	private function handleCustomCommand(string $input): ?string
+	{
+		if ($this->command_registry === null || $this->command_executor === null) {
+			return null;
+		}
+
+		// Parse command name and arguments from input like "/command arg1 arg2".
+		$input = ltrim($input, '/');
+		$parts = explode(' ', $input, 2);
+		$command_name = $parts[0];
+		$arguments_string = $parts[1] ?? '';
+
+		// Check if command exists in registry.
+		if (!$this->command_registry->has($command_name)) {
+			return null;
+		}
+
+		$command = $this->command_registry->get($command_name);
+		if ($command === null) {
+			return null;
+		}
+
+		// Parse arguments and execute command.
+		$arguments = ArgumentList::fromString($arguments_string);
+		$result = $this->command_executor->execute($command, $arguments);
+
+		// Handle execution result.
+		if (!$result->isSuccess()) {
+			$this->output_handler->writeError('Command error: ' . ($result->getError() ?? 'Unknown error'));
+			return '';
+		}
+
+		// If command has direct output, show it and return empty string.
+		if ($result->hasDirectOutput()) {
+			$this->output_handler->writeLine($result->getDirectOutput() ?? '');
+			return '';
+		}
+
+		// If command should inject into conversation, return the expanded content.
+		if ($result->shouldInjectIntoConversation()) {
+			return $result->getExpandedContent();
+		}
+
+		return '';
 	}
 
 	/**
 	 * Runs the init command to create the configuration directory.
 	 *
-	 * Creates the .php-cli-agent/ folder with default settings.json and mcp.json files.
+	 * Creates the .wp-ai-agent/ folder with default settings.json and mcp.json files.
 	 * Passes the --force flag to InitCommand if provided.
 	 *
 	 * @since n.e.x.t

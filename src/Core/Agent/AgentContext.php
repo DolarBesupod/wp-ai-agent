@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Agent;
+namespace WpAiAgent\Core\Agent;
 
-use PhpCliAgent\Core\Contracts\AiAdapterInterface;
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\AiAdapterInterface;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Immutable context for the agent loop execution.

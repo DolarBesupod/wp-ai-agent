@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Configuration;
+namespace WpAiAgent\Core\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Configuration for an MCP server.

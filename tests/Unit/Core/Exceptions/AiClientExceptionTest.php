@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Exceptions;
+namespace WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Exceptions\AiClientException;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\AiClientException;
 
 /**
  * Tests for AiClientException.
  *
- * @covers \PhpCliAgent\Core\Exceptions\AiClientException
+ * @covers \WpAiAgent\Core\Exceptions\AiClientException
  */
 final class AiClientExceptionTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Mcp;
+namespace WpAiAgent\Tests\Unit\Integration\Mcp;
 
 use GalatanOvidiu\PhpMcpClient\Core\Client\ClientCapabilities;
 use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
@@ -13,16 +13,16 @@ use GalatanOvidiu\PhpMcpClient\Core\Exception\ConnectionException;
 use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
 use GalatanOvidiu\PhpMcpClient\Core\Exception\TransportException;
 use GalatanOvidiu\PhpMcpClient\Integration\Transport\StdioTransport;
-use PhpCliAgent\Core\Exceptions\McpConnectionException;
-use PhpCliAgent\Integration\Mcp\McpClientManager;
-use PhpCliAgent\Integration\Mcp\McpServerConfiguration;
+use WpAiAgent\Core\Exceptions\McpConnectionException;
+use WpAiAgent\Integration\Mcp\McpClientManager;
+use WpAiAgent\Integration\Mcp\McpServerConfiguration;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
  * Unit tests for McpClientManager.
  *
- * @covers \PhpCliAgent\Integration\Mcp\McpClientManager
+ * @covers \WpAiAgent\Integration\Mcp\McpClientManager
  */
 final class McpClientManagerTest extends TestCase
 {

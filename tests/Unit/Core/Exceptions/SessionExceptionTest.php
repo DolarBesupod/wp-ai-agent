@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Exceptions;
+namespace WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Exceptions\SessionException;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\SessionException;
 
 /**
  * Tests for SessionException.
  *
- * @covers \PhpCliAgent\Core\Exceptions\SessionException
+ * @covers \WpAiAgent\Core\Exceptions\SessionException
  */
 final class SessionExceptionTest extends TestCase
 {

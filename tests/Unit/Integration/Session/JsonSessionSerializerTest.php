@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Session;
+namespace WpAiAgent\Tests\Unit\Integration\Session;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\SessionPersistenceException;
-use PhpCliAgent\Core\Session\Session;
-use PhpCliAgent\Core\Session\SessionMetadata;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\SessionId;
-use PhpCliAgent\Integration\Session\JsonSessionSerializer;
+use WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use WpAiAgent\Core\Session\Session;
+use WpAiAgent\Core\Session\SessionMetadata;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\Session\JsonSessionSerializer;
 
 /**
  * Tests for JsonSessionSerializer.
  *
- * @covers \PhpCliAgent\Integration\Session\JsonSessionSerializer
+ * @covers \WpAiAgent\Integration\Session\JsonSessionSerializer
  */
 final class JsonSessionSerializerTest extends TestCase
 {

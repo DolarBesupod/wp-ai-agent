@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
 
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
 
 /**
  * Interactive Read-Eval-Print-Loop runner for the CLI agent.

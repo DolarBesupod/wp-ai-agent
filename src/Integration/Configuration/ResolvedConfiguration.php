@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Configuration;
+namespace WpAiAgent\Integration\Configuration;
 
-use PhpCliAgent\Core\Contracts\ConfigurationInterface;
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Contracts\ConfigurationInterface;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Configuration implementation for resolved configuration data.
@@ -208,17 +208,20 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	/**
 	 * Returns tools that should bypass confirmation.
 	 *
+	 * Reads from permissions.allow array.
+	 *
 	 * @return array<int, string> List of tool names.
 	 *
 	 * @since n.e.x.t
 	 */
 	public function getBypassedTools(): array
 	{
-		$tools = $this->config['bypass_confirmation_tools'] ?? [];
-		if (! is_array($tools)) {
+		$permissions = $this->config['permissions'] ?? [];
+		if (!isset($permissions['allow']) || !is_array($permissions['allow'])) {
 			return [];
 		}
-		return array_values(array_filter($tools, 'is_string'));
+
+		return array_values(array_filter($permissions['allow'], 'is_string'));
 	}
 
 	/**

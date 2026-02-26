@@ -1,4 +1,4 @@
-# PHP CLI Agent
+# WP AI Agent
 
 A general-purpose CLI AI agent built in PHP, featuring an interactive REPL with streaming output, ReAct loop (Think → Act → Observe), tool execution with user confirmation, MCP integration for external tools, and session persistence.
 
@@ -23,8 +23,8 @@ A general-purpose CLI AI agent built in PHP, featuring an interactive REPL with 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/galatanovidiu/php-cli-agent.git
-cd php-cli-agent
+git clone https://github.com/galatanovidiu/wp-ai-agent.git
+cd wp-ai-agent
 ```
 
 2. Install dependencies:
@@ -104,7 +104,7 @@ php agent
 ```
 $ php agent
 
-PHP CLI Agent v1.0
+WP AI Agent v1.0
 Type /help for available commands, /exit to quit.
 
 You: What files are in the current directory?
@@ -194,7 +194,7 @@ composer phpcs
 ### Project Structure
 
 ```
-php-cli-agent/
+wp-ai-agent/
 ├── agent                  # CLI entry point
 ├── src/
 │   ├── Core/              # Platform-agnostic business logic
@@ -228,8 +228,8 @@ php-cli-agent/
 Implement the `ToolInterface`:
 
 ```php
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 class MyCustomTool implements ToolInterface
 {

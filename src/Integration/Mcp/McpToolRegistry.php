@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Mcp;
+namespace WpAiAgent\Integration\Mcp;
 
 use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\DuplicateToolException;
-use PhpCliAgent\Core\Exceptions\McpConnectionException;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\DuplicateToolException;
+use WpAiAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

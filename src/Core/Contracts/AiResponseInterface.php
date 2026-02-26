@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
 /**
  * Interface for AI model responses.
@@ -68,7 +68,7 @@ interface AiResponseInterface
 	/**
 	 * Converts the response to a Message value object.
 	 *
-	 * @return \PhpCliAgent\Core\ValueObjects\Message
+	 * @return \WpAiAgent\Core\ValueObjects\Message
 	 */
-	public function toMessage(): \PhpCliAgent\Core\ValueObjects\Message;
+	public function toMessage(): \WpAiAgent\Core\ValueObjects\Message;
 }

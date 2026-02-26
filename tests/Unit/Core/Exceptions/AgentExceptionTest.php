@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Exceptions;
+namespace WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\AgentException;
 
 /**
  * Tests for AgentException.
  *
- * @covers \PhpCliAgent\Core\Exceptions\AgentException
+ * @covers \WpAiAgent\Core\Exceptions\AgentException
  */
 final class AgentExceptionTest extends TestCase
 {

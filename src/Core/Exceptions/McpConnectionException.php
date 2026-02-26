@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Exceptions;
+namespace WpAiAgent\Core\Exceptions;
 
 /**
  * Exception thrown when MCP (Model Context Protocol) connection operations fail.

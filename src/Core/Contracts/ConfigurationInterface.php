@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
 /**
  * Interface for agent configuration.
@@ -55,7 +55,7 @@ interface ConfigurationInterface
 	 *
 	 * @return string
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\ConfigurationException If API key is not set.
+	 * @throws \WpAiAgent\Core\Exceptions\ConfigurationException If API key is not set.
 	 */
 	public function getApiKey(): string;
 
@@ -129,7 +129,7 @@ interface ConfigurationInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\ConfigurationException If the file cannot be loaded.
+	 * @throws \WpAiAgent\Core\Exceptions\ConfigurationException If the file cannot be loaded.
 	 */
 	public function loadFromFile(string $path): void;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\AiClient;
+namespace WpAiAgent\Integration\AiClient;
 
-use PhpCliAgent\Core\Contracts\AiAdapterInterface;
+use WpAiAgent\Core\Contracts\AiAdapterInterface;
 use WordPress\AiClient\Providers\ProviderRegistry;
 
 /**

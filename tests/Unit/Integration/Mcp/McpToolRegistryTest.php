@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Mcp;
+namespace WpAiAgent\Tests\Unit\Integration\Mcp;
 
 use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\DuplicateToolException;
-use PhpCliAgent\Core\Exceptions\McpConnectionException;
-use PhpCliAgent\Integration\Mcp\McpClientManager;
-use PhpCliAgent\Integration\Mcp\McpToolAdapter;
-use PhpCliAgent\Integration\Mcp\McpToolRegistry;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\DuplicateToolException;
+use WpAiAgent\Core\Exceptions\McpConnectionException;
+use WpAiAgent\Integration\Mcp\McpClientManager;
+use WpAiAgent\Integration\Mcp\McpToolAdapter;
+use WpAiAgent\Integration\Mcp\McpToolRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Unit tests for McpToolRegistry.
  *
- * @covers \PhpCliAgent\Integration\Mcp\McpToolRegistry
+ * @covers \WpAiAgent\Integration\Mcp\McpToolRegistry
  */
 final class McpToolRegistryTest extends TestCase
 {

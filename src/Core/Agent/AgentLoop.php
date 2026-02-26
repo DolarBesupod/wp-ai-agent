@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Agent;
+namespace WpAiAgent\Core\Agent;
 
-use PhpCliAgent\Core\Contracts\AiAdapterInterface;
-use PhpCliAgent\Core\Contracts\AiResponseInterface;
-use PhpCliAgent\Core\Contracts\AgentLoopInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\Contracts\ToolExecutorInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\AiAdapterInterface;
+use WpAiAgent\Core\Contracts\AiResponseInterface;
+use WpAiAgent\Core\Contracts\AgentLoopInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;
@@ -238,7 +238,7 @@ final class AgentLoop implements AgentLoopInterface
 
 			// Track token usage on the session.
 			$usage = $response->getUsage();
-			if ($context->getSession() instanceof \PhpCliAgent\Core\Session\Session) {
+			if ($context->getSession() instanceof \WpAiAgent\Core\Session\Session) {
 				$context->getSession()->addTokenUsage($usage['input_tokens'], $usage['output_tokens']);
 			}
 

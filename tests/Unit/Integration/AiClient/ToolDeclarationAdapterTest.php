@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\AiClient;
+namespace WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Integration\AiClient\ToolDeclarationAdapter;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Integration\AiClient\ToolDeclarationAdapter;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Tools\DTO\FunctionDeclaration;
 
 /**
  * Unit tests for ToolDeclarationAdapter in the Integration layer.
  *
- * @covers \PhpCliAgent\Integration\AiClient\ToolDeclarationAdapter
+ * @covers \WpAiAgent\Integration\AiClient\ToolDeclarationAdapter
  */
 final class ToolDeclarationAdapterTest extends TestCase
 {

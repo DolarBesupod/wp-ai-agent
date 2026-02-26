@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Tool\BuiltIn;
+namespace WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Integration\Tool\BuiltIn\ReadFileTool;
+use WpAiAgent\Integration\Tool\BuiltIn\ReadFileTool;
 
 /**
  * Tests for ReadFileTool.
  *
- * @covers \PhpCliAgent\Integration\Tool\BuiltIn\ReadFileTool
+ * @covers \WpAiAgent\Integration\Tool\BuiltIn\ReadFileTool
  */
 final class ReadFileToolTest extends TestCase
 {

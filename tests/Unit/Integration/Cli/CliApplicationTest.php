@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\ConfigurationInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
-use PhpCliAgent\Core\Exceptions\SessionNotFoundException;
-use PhpCliAgent\Core\ValueObjects\SessionId;
-use PhpCliAgent\Integration\Cli\CliApplication;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\ConfigurationInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\Cli\CliApplication;
 
 /**
  * Tests for CliApplication.
  *
- * @covers \PhpCliAgent\Integration\Cli\CliApplication
+ * @covers \WpAiAgent\Integration\Cli\CliApplication
  */
 final class CliApplicationTest extends TestCase
 {
@@ -418,20 +418,20 @@ final class CliApplicationTest extends TestCase
 			$exit_code = $app->run(['agent', 'init', '--force']);
 
 			$this->assertSame(CliApplication::EXIT_SUCCESS, $exit_code);
-			$this->assertDirectoryExists($temp_dir . '/.php-cli-agent');
-			$this->assertFileExists($temp_dir . '/.php-cli-agent/settings.json');
-			$this->assertFileExists($temp_dir . '/.php-cli-agent/mcp.json');
+			$this->assertDirectoryExists($temp_dir . '/.wp-ai-agent');
+			$this->assertFileExists($temp_dir . '/.wp-ai-agent/settings.json');
+			$this->assertFileExists($temp_dir . '/.wp-ai-agent/mcp.json');
 		} finally {
 			chdir((string) $original_dir);
 			// Clean up.
-			if (file_exists($temp_dir . '/.php-cli-agent/settings.json')) {
-				unlink($temp_dir . '/.php-cli-agent/settings.json');
+			if (file_exists($temp_dir . '/.wp-ai-agent/settings.json')) {
+				unlink($temp_dir . '/.wp-ai-agent/settings.json');
 			}
-			if (file_exists($temp_dir . '/.php-cli-agent/mcp.json')) {
-				unlink($temp_dir . '/.php-cli-agent/mcp.json');
+			if (file_exists($temp_dir . '/.wp-ai-agent/mcp.json')) {
+				unlink($temp_dir . '/.wp-ai-agent/mcp.json');
 			}
-			if (is_dir($temp_dir . '/.php-cli-agent')) {
-				rmdir($temp_dir . '/.php-cli-agent');
+			if (is_dir($temp_dir . '/.wp-ai-agent')) {
+				rmdir($temp_dir . '/.wp-ai-agent');
 			}
 			if (is_dir($temp_dir)) {
 				rmdir($temp_dir);
@@ -461,14 +461,14 @@ final class CliApplicationTest extends TestCase
 		} finally {
 			chdir((string) $original_dir);
 			// Clean up.
-			if (file_exists($temp_dir . '/.php-cli-agent/settings.json')) {
-				unlink($temp_dir . '/.php-cli-agent/settings.json');
+			if (file_exists($temp_dir . '/.wp-ai-agent/settings.json')) {
+				unlink($temp_dir . '/.wp-ai-agent/settings.json');
 			}
-			if (file_exists($temp_dir . '/.php-cli-agent/mcp.json')) {
-				unlink($temp_dir . '/.php-cli-agent/mcp.json');
+			if (file_exists($temp_dir . '/.wp-ai-agent/mcp.json')) {
+				unlink($temp_dir . '/.wp-ai-agent/mcp.json');
 			}
-			if (is_dir($temp_dir . '/.php-cli-agent')) {
-				rmdir($temp_dir . '/.php-cli-agent');
+			if (is_dir($temp_dir . '/.wp-ai-agent')) {
+				rmdir($temp_dir . '/.wp-ai-agent');
 			}
 			if (is_dir($temp_dir)) {
 				rmdir($temp_dir);

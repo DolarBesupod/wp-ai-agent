@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
 
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Contracts\SessionRepositoryInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\SessionNotFoundException;
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\CommandExecutorInterface;
+use WpAiAgent\Core\Contracts\CommandRegistryInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use WpAiAgent\Core\ValueObjects\ArgumentList;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Handles built-in CLI commands (starting with /).
@@ -58,6 +61,20 @@ final class CommandHandler
 	private ToolRegistryInterface $tool_registry;
 
 	/**
+	 * Command registry for custom commands.
+	 *
+	 * @var CommandRegistryInterface|null
+	 */
+	private ?CommandRegistryInterface $command_registry;
+
+	/**
+	 * Command executor for executing custom commands.
+	 *
+	 * @var CommandExecutorInterface|null
+	 */
+	private ?CommandExecutorInterface $command_executor;
+
+	/**
 	 * The current model name.
 	 *
 	 * @var string
@@ -74,21 +91,27 @@ final class CommandHandler
 	/**
 	 * Creates a new CommandHandler instance.
 	 *
-	 * @param AgentInterface             $agent              Agent for session management.
-	 * @param OutputHandlerInterface     $output_handler     Output handler for displaying results.
-	 * @param SessionRepositoryInterface $session_repository Session repository for session operations.
-	 * @param ToolRegistryInterface      $tool_registry      Tool registry for listing tools.
+	 * @param AgentInterface                $agent              Agent for session management.
+	 * @param OutputHandlerInterface        $output_handler     Output handler for displaying results.
+	 * @param SessionRepositoryInterface    $session_repository Session repository for session operations.
+	 * @param ToolRegistryInterface         $tool_registry      Tool registry for listing tools.
+	 * @param CommandRegistryInterface|null $command_registry   Optional command registry for custom commands.
+	 * @param CommandExecutorInterface|null $command_executor   Optional executor for custom commands.
 	 */
 	public function __construct(
 		AgentInterface $agent,
 		OutputHandlerInterface $output_handler,
 		SessionRepositoryInterface $session_repository,
-		ToolRegistryInterface $tool_registry
+		ToolRegistryInterface $tool_registry,
+		?CommandRegistryInterface $command_registry = null,
+		?CommandExecutorInterface $command_executor = null
 	) {
 		$this->agent = $agent;
 		$this->output_handler = $output_handler;
 		$this->session_repository = $session_repository;
 		$this->tool_registry = $tool_registry;
+		$this->command_registry = $command_registry;
+		$this->command_executor = $command_executor;
 	}
 
 	/**
@@ -238,7 +261,7 @@ Type your message and press Enter to chat with the agent.
 
 HELP;
 
-		// Add custom commands if any are registered.
+		// Add callable handlers if any are registered.
 		if (count($this->custom_handlers) > 0) {
 			$custom_help = "\nCustom commands:\n";
 			foreach (array_keys($this->custom_handlers) as $cmd) {
@@ -247,9 +270,53 @@ HELP;
 			$help .= $custom_help;
 		}
 
+		// Add commands from the registry.
+		$help .= $this->buildRegistryCommandsHelp();
+
 		$this->output_handler->writeLine($help);
 
 		return CommandResult::handled();
+	}
+
+	/**
+	 * Builds the help text for commands from the registry.
+	 *
+	 * @return string The formatted help text for registry commands.
+	 *
+	 * @since n.e.x.t
+	 */
+	private function buildRegistryCommandsHelp(): string
+	{
+		if ($this->command_registry === null) {
+			return '';
+		}
+
+		$custom_commands = $this->command_registry->getCustomCommands();
+		if (count($custom_commands) === 0) {
+			return '';
+		}
+
+		$help = "\nCustom commands:\n";
+
+		foreach ($custom_commands as $name => $command) {
+			$description = $command->getDescription();
+			$namespace = $command->getNamespace();
+
+			// Truncate description if too long.
+			if (strlen($description) > 35) {
+				$description = substr($description, 0, 32) . '...';
+			}
+
+			// Format namespace indicator.
+			$namespace_tag = '';
+			if ($namespace !== null) {
+				$namespace_tag = sprintf(' (%s)', $namespace);
+			}
+
+			$help .= sprintf("  /%-20s  %s%s\n", $name, $description, $namespace_tag);
+		}
+
+		return $help;
 	}
 
 	/**
@@ -552,6 +619,10 @@ HELP;
 	/**
 	 * Handles custom command or returns unknown command result.
 	 *
+	 * Checks the following sources in order:
+	 * 1. Callable handlers registered via registerCommand()
+	 * 2. Commands from the CommandRegistry (loaded from markdown files)
+	 *
 	 * @param string $command   The command name.
 	 * @param string $arguments The command arguments.
 	 *
@@ -559,6 +630,7 @@ HELP;
 	 */
 	private function handleCustomOrUnknown(string $command, string $arguments): CommandResult
 	{
+		// First check callable handlers.
 		if (isset($this->custom_handlers[$command])) {
 			try {
 				$result = call_user_func($this->custom_handlers[$command], $arguments);
@@ -581,10 +653,73 @@ HELP;
 			}
 		}
 
+		// Then check the command registry.
+		if ($this->command_registry !== null && $this->command_registry->has($command)) {
+			return $this->executeRegistryCommand($command, $arguments);
+		}
+
 		$this->output_handler->writeError(
 			sprintf('Unknown command: /%s. Type /help for available commands.', $command)
 		);
 
 		return CommandResult::handled();
+	}
+
+	/**
+	 * Executes a command from the registry.
+	 *
+	 * @param string $command_name The command name.
+	 * @param string $arguments    The command arguments.
+	 *
+	 * @return CommandResult
+	 *
+	 * @since n.e.x.t
+	 */
+	private function executeRegistryCommand(string $command_name, string $arguments): CommandResult
+	{
+		if ($this->command_registry === null || $this->command_executor === null) {
+			$this->output_handler->writeError(
+				sprintf('Unknown command: /%s. Type /help for available commands.', $command_name)
+			);
+			return CommandResult::handled();
+		}
+
+		$command = $this->command_registry->get($command_name);
+		if ($command === null) {
+			$this->output_handler->writeError(
+				sprintf('Unknown command: /%s. Type /help for available commands.', $command_name)
+			);
+			return CommandResult::handled();
+		}
+
+		try {
+			$argument_list = ArgumentList::fromString($arguments);
+			$execution_result = $this->command_executor->execute($command, $argument_list);
+
+			if (!$execution_result->isSuccess()) {
+				$this->output_handler->writeError(
+					sprintf('Command error: %s', $execution_result->getError() ?? 'Unknown error')
+				);
+				return CommandResult::handled();
+			}
+
+			// Handle direct output (for built-in-like commands).
+			if ($execution_result->hasDirectOutput()) {
+				$this->output_handler->writeLine($execution_result->getDirectOutput() ?? '');
+				return CommandResult::handled();
+			}
+
+			// Handle injection into conversation.
+			if ($execution_result->shouldInjectIntoConversation()) {
+				return CommandResult::inject($execution_result->getExpandedContent());
+			}
+
+			return CommandResult::handled();
+		} catch (\Throwable $exception) {
+			$this->output_handler->writeError(
+				sprintf('Command error: %s', $exception->getMessage())
+			);
+			return CommandResult::handled();
+		}
 	}
 }

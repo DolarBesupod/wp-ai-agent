@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Exceptions;
+namespace WpAiAgent\Core\Exceptions;
 
 /**
  * Base exception for all agent-related exceptions.

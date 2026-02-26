@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Interface for session persistence.
@@ -23,7 +23,7 @@ interface SessionRepositoryInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\SessionPersistenceException If saving fails.
+	 * @throws \WpAiAgent\Core\Exceptions\SessionPersistenceException If saving fails.
 	 */
 	public function save(SessionInterface $session): void;
 
@@ -34,8 +34,8 @@ interface SessionRepositoryInterface
 	 *
 	 * @return SessionInterface The loaded session.
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\SessionNotFoundException If the session doesn't exist.
-	 * @throws \PhpCliAgent\Core\Exceptions\SessionPersistenceException If loading fails.
+	 * @throws \WpAiAgent\Core\Exceptions\SessionNotFoundException If the session doesn't exist.
+	 * @throws \WpAiAgent\Core\Exceptions\SessionPersistenceException If loading fails.
 	 */
 	public function load(SessionId $session_id): SessionInterface;
 
@@ -55,7 +55,7 @@ interface SessionRepositoryInterface
 	 *
 	 * @return bool True if deleted, false if it didn't exist.
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\SessionPersistenceException If deletion fails.
+	 * @throws \WpAiAgent\Core\Exceptions\SessionPersistenceException If deletion fails.
 	 */
 	public function delete(SessionId $session_id): bool;
 

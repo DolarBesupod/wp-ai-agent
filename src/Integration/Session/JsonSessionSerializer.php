@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Session;
+namespace WpAiAgent\Integration\Session;
 
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\Exceptions\SessionPersistenceException;
-use PhpCliAgent\Core\Session\Session;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use WpAiAgent\Core\Session\Session;
 
 /**
  * Serializer for converting sessions to/from JSON format.

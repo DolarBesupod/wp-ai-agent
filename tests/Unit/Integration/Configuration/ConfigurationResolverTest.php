@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Configuration;
+namespace WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use PhpCliAgent\Core\Contracts\ConfigurationInterface;
-use PhpCliAgent\Integration\Configuration\ConfigurationResolver;
-use PhpCliAgent\Integration\Configuration\EnvConfigurationLoader;
-use PhpCliAgent\Integration\Configuration\JsonConfigurationLoader;
-use PhpCliAgent\Integration\Configuration\McpJsonLoader;
+use WpAiAgent\Core\Contracts\ConfigurationInterface;
+use WpAiAgent\Integration\Configuration\ConfigurationResolver;
+use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
+use WpAiAgent\Integration\Configuration\McpJsonLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,10 +16,10 @@ use PHPUnit\Framework\TestCase;
  *
  * Tests the configuration priority chain:
  * 1. Environment variables (highest priority)
- * 2. .php-cli-agent/settings.json + .php-cli-agent/mcp.json
+ * 2. .wp-ai-agent/settings.json + .wp-ai-agent/mcp.json
  * 3. Built-in defaults (lowest priority)
  *
- * @covers \PhpCliAgent\Integration\Configuration\ConfigurationResolver
+ * @covers \WpAiAgent\Integration\Configuration\ConfigurationResolver
  */
 final class ConfigurationResolverTest extends TestCase
 {
@@ -322,7 +322,9 @@ final class ConfigurationResolverTest extends TestCase
 	public function test_resolve_withBypassedTools_loadsFromSettingsJson(): void
 	{
 		$this->createSettingsFile([
-			'bypass_confirmation_tools' => ['think', 'read_file', 'glob'],
+			'permissions' => [
+				'allow' => ['think', 'read_file', 'glob'],
+			],
 		]);
 
 		$env_provider = fn(string $name) => match ($name) {
@@ -346,7 +348,7 @@ final class ConfigurationResolverTest extends TestCase
 	public function test_resolve_withSessionStoragePath_expandsTilde(): void
 	{
 		$this->createSettingsFile([
-			'session_storage_path' => '~/.php-cli-agent/sessions',
+			'session_storage_path' => '~/.wp-ai-agent/sessions',
 		]);
 
 		$env_provider = fn(string $name) => match ($name) {
@@ -359,7 +361,7 @@ final class ConfigurationResolverTest extends TestCase
 
 		$config = $resolver->resolve($this->temp_dir);
 
-		$this->assertSame('/home/testuser/.php-cli-agent/sessions', $config->getSessionStoragePath());
+		$this->assertSame('/home/testuser/.wp-ai-agent/sessions', $config->getSessionStoragePath());
 	}
 
 	/**
@@ -409,7 +411,7 @@ final class ConfigurationResolverTest extends TestCase
 	 */
 	private function createSettingsFile(array $content): void
 	{
-		$settings_dir = $this->temp_dir . '/.php-cli-agent';
+		$settings_dir = $this->temp_dir . '/.wp-ai-agent';
 		if (! is_dir($settings_dir)) {
 			mkdir($settings_dir, 0755, true);
 		}
@@ -426,7 +428,7 @@ final class ConfigurationResolverTest extends TestCase
 	 */
 	private function createMcpJsonFile(array $content): void
 	{
-		$settings_dir = $this->temp_dir . '/.php-cli-agent';
+		$settings_dir = $this->temp_dir . '/.wp-ai-agent';
 		if (! is_dir($settings_dir)) {
 			mkdir($settings_dir, 0755, true);
 		}

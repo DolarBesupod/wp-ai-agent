@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Agent;
+namespace WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Agent\AgentLoop;
-use PhpCliAgent\Core\Agent\AgentState;
-use PhpCliAgent\Core\Contracts\AiAdapterInterface;
-use PhpCliAgent\Core\Contracts\AiResponseInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Contracts\ToolExecutorInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Session\Session;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Agent\AgentLoop;
+use WpAiAgent\Core\Agent\AgentState;
+use WpAiAgent\Core\Contracts\AiAdapterInterface;
+use WpAiAgent\Core\Contracts\AiResponseInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Session\Session;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for AgentLoop.
  *
- * @covers \PhpCliAgent\Core\Agent\AgentLoop
+ * @covers \WpAiAgent\Core\Agent\AgentLoop
  */
 final class AgentLoopTest extends TestCase
 {

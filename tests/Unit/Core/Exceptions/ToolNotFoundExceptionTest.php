@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Exceptions;
+namespace WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Exceptions\ToolNotFoundException;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\ToolNotFoundException;
 
 /**
  * Tests for ToolNotFoundException.
  *
- * @covers \PhpCliAgent\Core\Exceptions\ToolNotFoundException
+ * @covers \WpAiAgent\Core\Exceptions\ToolNotFoundException
  */
 final class ToolNotFoundExceptionTest extends TestCase
 {

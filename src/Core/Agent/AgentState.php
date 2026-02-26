@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Agent;
+namespace WpAiAgent\Core\Agent;
 
 /**
  * Enum representing the possible states of the agent loop.

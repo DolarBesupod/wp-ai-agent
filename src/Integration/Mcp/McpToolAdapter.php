@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Mcp;
+namespace WpAiAgent\Integration\Mcp;
 
 use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 use Throwable;
 
 /**

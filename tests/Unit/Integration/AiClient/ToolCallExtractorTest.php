@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\AiClient;
+namespace WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use PhpCliAgent\Integration\AiClient\ToolCallExtractor;
+use WpAiAgent\Integration\AiClient\ToolCallExtractor;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Messages\DTO\Message;
 use WordPress\AiClient\Messages\DTO\MessagePart;
@@ -17,7 +17,7 @@ use WordPress\AiClient\Tools\DTO\FunctionCall;
 /**
  * Unit tests for ToolCallExtractor.
  *
- * @covers \PhpCliAgent\Integration\AiClient\ToolCallExtractor
+ * @covers \WpAiAgent\Integration\AiClient\ToolCallExtractor
  */
 final class ToolCallExtractorTest extends TestCase
 {

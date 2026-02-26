@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\AiClient;
+namespace WpAiAgent\Integration\AiClient;
 
-use PhpCliAgent\Core\Contracts\AiResponseInterface;
-use PhpCliAgent\Core\Exceptions\AiAdapterException;
-use PhpCliAgent\Core\Exceptions\AiClientException;
-use PhpCliAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\Contracts\AiResponseInterface;
+use WpAiAgent\Core\Exceptions\AiAdapterException;
+use WpAiAgent\Core\Exceptions\AiClientException;
+use WpAiAgent\Core\ValueObjects\Message;
 use WordPress\AiClient\Builders\PromptBuilder;
 use WordPress\AiClient\Common\Exception\InvalidArgumentException as AiClientInvalidArgumentException;
 use WordPress\AiClient\Common\Exception\RuntimeException as AiClientRuntimeException;

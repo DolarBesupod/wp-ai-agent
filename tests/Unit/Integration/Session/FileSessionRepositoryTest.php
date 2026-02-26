@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Session;
+namespace WpAiAgent\Tests\Unit\Integration\Session;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\SessionMetadataInterface;
-use PhpCliAgent\Core\Exceptions\SessionNotFoundException;
-use PhpCliAgent\Core\Exceptions\SessionPersistenceException;
-use PhpCliAgent\Core\Session\Session;
-use PhpCliAgent\Core\Session\SessionMetadata;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\SessionId;
-use PhpCliAgent\Integration\Session\FileSessionRepository;
+use WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use WpAiAgent\Core\Session\Session;
+use WpAiAgent\Core\Session\SessionMetadata;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\Session\FileSessionRepository;
 
 /**
  * Tests for FileSessionRepository.
  *
- * @covers \PhpCliAgent\Integration\Session\FileSessionRepository
+ * @covers \WpAiAgent\Integration\Session\FileSessionRepository
  */
 final class FileSessionRepositoryTest extends TestCase
 {
@@ -52,7 +52,7 @@ final class FileSessionRepositoryTest extends TestCase
 		$repository = new FileSessionRepository(null);
 
 		$storage_path = $repository->getStoragePath();
-		$this->assertStringContainsString('.php-cli-agent', $storage_path);
+		$this->assertStringContainsString('.wp-ai-agent', $storage_path);
 		$this->assertStringContainsString('sessions', $storage_path);
 	}
 

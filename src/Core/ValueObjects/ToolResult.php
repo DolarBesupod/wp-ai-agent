@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\ValueObjects;
+namespace WpAiAgent\Core\ValueObjects;
 
 /**
  * Value object representing the result of a tool execution.

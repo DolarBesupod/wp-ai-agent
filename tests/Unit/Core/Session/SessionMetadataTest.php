@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Session;
+namespace WpAiAgent\Tests\Unit\Core\Session;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Session\SessionMetadata;
+use WpAiAgent\Core\Session\SessionMetadata;
 
 /**
  * Tests for SessionMetadata.
  *
- * @covers \PhpCliAgent\Core\Session\SessionMetadata
+ * @covers \WpAiAgent\Core\Session\SessionMetadata
  */
 final class SessionMetadataTest extends TestCase
 {

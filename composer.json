@@ -1,14 +1,15 @@
 {
-	"name": "galatanovidiu/php-cli-agent",
+	"name": "galatanovidiu/wp-ai-agent",
 	"description": "A CLI-based AI agent using MCP and Anthropic Claude",
 	"type": "project",
 	"license": "MIT",
 	"require": {
-		"php": ">=8.1",
-		"guzzlehttp/guzzle": "^7.10",
+		"php": ">=8.4",
 		"galatanovidiu/php-mcp-client": "dev-trunk",
+		"guzzlehttp/guzzle": "^7.10",
 		"php-http/guzzle7-adapter": "^1.1",
 		"psr/log": "^1.0|^2.0|^3.0",
+		"symfony/yaml": "^8.0",
 		"wordpress/php-ai-client": "dev-trunk"
 	},
 	"require-dev": {
@@ -18,12 +19,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"PhpCliAgent\\": "src/"
+			"WpAiAgent\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"PhpCliAgent\\Tests\\": "tests/"
+			"WpAiAgent\\Tests\\": "tests/"
 		}
 	},
 	"repositories": [
@@ -43,6 +44,9 @@
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"config": {
+		"platform": {
+			"php": "8.4"
+		},
 		"sort-packages": true,
 		"optimize-autoloader": true
 	},

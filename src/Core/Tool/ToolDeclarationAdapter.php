@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Tool;
+namespace WpAiAgent\Core\Tool;
 
-use PhpCliAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Contracts\ToolInterface;
 
 /**
  * Adapter for converting tools to AI model declarations.

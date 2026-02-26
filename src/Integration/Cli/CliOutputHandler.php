@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
 
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * CLI-specific output handler with ANSI color support and formatting.

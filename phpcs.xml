@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="PHP-CLI-Agent">
-	<description>Coding standard for PHP CLI Agent</description>
+<ruleset name="WP-AI-Agent">
+	<description>Coding standard for WP AI Agent</description>
 
 	<!-- What to scan -->
 	<file>./src</file>

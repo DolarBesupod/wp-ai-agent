@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Tool;
+namespace WpAiAgent\Tests\Unit\Integration\Tool;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Integration\Tool\BuiltInToolRegistry;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Tests for BuiltInToolRegistry.
  *
- * @covers \PhpCliAgent\Integration\Tool\BuiltInToolRegistry
+ * @covers \WpAiAgent\Integration\Tool\BuiltInToolRegistry
  */
 final class BuiltInToolRegistryTest extends TestCase
 {

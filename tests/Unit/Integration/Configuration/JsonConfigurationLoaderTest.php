@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Configuration;
+namespace WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
-use PhpCliAgent\Integration\Configuration\EnvConfigurationLoader;
-use PhpCliAgent\Integration\Configuration\JsonConfigurationLoader;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for JsonConfigurationLoader.
  *
- * @covers \PhpCliAgent\Integration\Configuration\JsonConfigurationLoader
+ * @covers \WpAiAgent\Integration\Configuration\JsonConfigurationLoader
  */
 final class JsonConfigurationLoaderTest extends TestCase
 {
@@ -69,7 +69,8 @@ final class JsonConfigurationLoaderTest extends TestCase
 		$this->assertSame('claude-sonnet-4-20250514', $config['provider']['model']);
 		$this->assertSame(8192, $config['provider']['max_tokens']);
 		$this->assertSame(100, $config['max_turns']);
-		$this->assertContains('think', $config['bypass_confirmation_tools']);
+		$this->assertArrayHasKey('permissions', $config);
+		$this->assertArrayHasKey('allow', $config['permissions']);
 	}
 
 	/**
@@ -135,7 +136,7 @@ final class JsonConfigurationLoaderTest extends TestCase
 	 */
 	public function test_load_withInvalidJson_throwsConfigurationException(): void
 	{
-		$settings_dir = $this->temp_dir . '/.php-cli-agent';
+		$settings_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($settings_dir, 0755, true);
 		file_put_contents($settings_dir . '/settings.json', '{invalid json}');
 
@@ -152,7 +153,7 @@ final class JsonConfigurationLoaderTest extends TestCase
 	 */
 	public function test_load_withNonObjectRoot_throwsConfigurationException(): void
 	{
-		$settings_dir = $this->temp_dir . '/.php-cli-agent';
+		$settings_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($settings_dir, 0755, true);
 		file_put_contents($settings_dir . '/settings.json', '["item1", "item2"]');
 
@@ -206,21 +207,23 @@ final class JsonConfigurationLoaderTest extends TestCase
 	}
 
 	/**
-	 * Tests that bypass_confirmation_tools is loaded correctly.
+	 * Tests that permissions.allow is loaded correctly.
 	 */
-	public function test_load_withBypassTools_loadsToolsList(): void
+	public function test_load_withPermissionsAllow_loadsToolsList(): void
 	{
 		$this->createSettingsFile([
-			'bypass_confirmation_tools' => ['think', 'read_file', 'glob'],
+			'permissions' => [
+				'allow' => ['think', 'read_file', 'glob'],
+			],
 		]);
 
 		$loader = new JsonConfigurationLoader();
 
 		$config = $loader->load($this->temp_dir);
 
-		$this->assertContains('think', $config['bypass_confirmation_tools']);
-		$this->assertContains('read_file', $config['bypass_confirmation_tools']);
-		$this->assertContains('glob', $config['bypass_confirmation_tools']);
+		$this->assertContains('think', $config['permissions']['allow']);
+		$this->assertContains('read_file', $config['permissions']['allow']);
+		$this->assertContains('glob', $config['permissions']['allow']);
 	}
 
 	/**
@@ -229,7 +232,7 @@ final class JsonConfigurationLoaderTest extends TestCase
 	public function test_load_withTildeInPaths_expandsTilde(): void
 	{
 		$this->createSettingsFile([
-			'session_storage_path' => '~/.php-cli-agent/sessions',
+			'session_storage_path' => '~/.wp-ai-agent/sessions',
 		]);
 
 		$env_provider = static fn(string $name) => $name === 'HOME' ? '/home/testuser' : false;
@@ -238,7 +241,7 @@ final class JsonConfigurationLoaderTest extends TestCase
 
 		$config = $loader->load($this->temp_dir);
 
-		$this->assertSame('/home/testuser/.php-cli-agent/sessions', $config['session_storage_path']);
+		$this->assertSame('/home/testuser/.wp-ai-agent/sessions', $config['session_storage_path']);
 	}
 
 	/**
@@ -250,7 +253,7 @@ final class JsonConfigurationLoaderTest extends TestCase
 
 		$path = $loader->getSettingsPath('/project/dir');
 
-		$this->assertSame('/project/dir/.php-cli-agent/settings.json', $path);
+		$this->assertSame('/project/dir/.wp-ai-agent/settings.json', $path);
 	}
 
 	/**
@@ -342,7 +345,7 @@ final class JsonConfigurationLoaderTest extends TestCase
 	 */
 	private function createSettingsFile(array $content): void
 	{
-		$settings_dir = $this->temp_dir . '/.php-cli-agent';
+		$settings_dir = $this->temp_dir . '/.wp-ai-agent';
 		if (! is_dir($settings_dir)) {
 			mkdir($settings_dir, 0755, true);
 		}

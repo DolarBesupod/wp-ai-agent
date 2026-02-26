@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Configuration;
+namespace WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use PhpCliAgent\Core\Configuration\McpServerConfiguration;
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
-use PhpCliAgent\Integration\Configuration\EnvConfigurationLoader;
-use PhpCliAgent\Integration\Configuration\McpJsonLoader;
+use WpAiAgent\Core\Configuration\McpServerConfiguration;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use WpAiAgent\Integration\Configuration\McpJsonLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for McpJsonLoader.
  *
- * @covers \PhpCliAgent\Integration\Configuration\McpJsonLoader
+ * @covers \WpAiAgent\Integration\Configuration\McpJsonLoader
  */
 final class McpJsonLoaderTest extends TestCase
 {
@@ -285,7 +285,7 @@ final class McpJsonLoaderTest extends TestCase
 	 */
 	public function test_load_withInvalidJson_throwsConfigurationException(): void
 	{
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0755, true);
 		file_put_contents($config_dir . '/mcp.json', '{invalid json}');
 
@@ -302,7 +302,7 @@ final class McpJsonLoaderTest extends TestCase
 	 */
 	public function test_load_withNonObjectRoot_throwsConfigurationException(): void
 	{
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0755, true);
 		file_put_contents($config_dir . '/mcp.json', '["item1", "item2"]');
 
@@ -345,7 +345,7 @@ final class McpJsonLoaderTest extends TestCase
 
 		$path = $loader->getMcpPath('/project/dir');
 
-		$this->assertSame('/project/dir/.php-cli-agent/mcp.json', $path);
+		$this->assertSame('/project/dir/.wp-ai-agent/mcp.json', $path);
 	}
 
 	/**
@@ -527,7 +527,7 @@ final class McpJsonLoaderTest extends TestCase
 	 */
 	private function createMcpFile(array $content): void
 	{
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		if (! is_dir($config_dir)) {
 			mkdir($config_dir, 0755, true);
 		}

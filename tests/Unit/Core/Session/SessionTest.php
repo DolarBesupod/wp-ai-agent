@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Session;
+namespace WpAiAgent\Tests\Unit\Core\Session;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Session\Session;
-use PhpCliAgent\Core\Session\SessionMetadata;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\Session\Session;
+use WpAiAgent\Core\Session\SessionMetadata;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Tests for Session.
  *
- * @covers \PhpCliAgent\Core\Session\Session
+ * @covers \WpAiAgent\Core\Session\Session
  */
 final class SessionTest extends TestCase
 {

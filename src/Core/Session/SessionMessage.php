@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Session;
+namespace WpAiAgent\Core\Session;
 
 use DateTimeImmutable;
-use PhpCliAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\Message;
 
 /**
  * Wrapper for messages within a session context.

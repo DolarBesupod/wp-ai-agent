@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Mcp;
+namespace WpAiAgent\Integration\Mcp;
 
 use GalatanOvidiu\PhpMcpClient\Core\Client\ClientCapabilities;
 use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
@@ -13,7 +13,7 @@ use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
 use GalatanOvidiu\PhpMcpClient\Core\Exception\TransportException;
 use GalatanOvidiu\PhpMcpClient\Integration\Transport\Http\HttpTransport;
 use GalatanOvidiu\PhpMcpClient\Integration\Transport\StdioTransport;
-use PhpCliAgent\Core\Exceptions\McpConnectionException;
+use WpAiAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

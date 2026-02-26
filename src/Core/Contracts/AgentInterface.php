@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Interface for the main agent that coordinates the conversation loop.
@@ -30,7 +30,7 @@ interface AgentInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \PhpCliAgent\Core\Exceptions\SessionNotFoundException If the session does not exist.
+	 * @throws \WpAiAgent\Core\Exceptions\SessionNotFoundException If the session does not exist.
 	 */
 	public function resumeSession(SessionId $session_id): void;
 

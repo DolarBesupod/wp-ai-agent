@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Configuration;
+namespace WpAiAgent\Integration\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
- * Loads configuration from JSON settings file in .php-cli-agent folder.
+ * Loads configuration from JSON settings file in .wp-ai-agent folder.
  *
- * Supports loading from `.php-cli-agent/settings.json` in the working directory.
+ * Supports loading from `.wp-ai-agent/settings.json` in the working directory.
  * Environment variables using ${VAR_NAME} syntax are expanded.
  * Returns default configuration if the file does not exist.
  * Validates configuration against JSON schema.
@@ -26,7 +26,7 @@ final class JsonConfigurationLoader
 	/**
 	 * The configuration folder name.
 	 */
-	private const CONFIG_FOLDER = '.php-cli-agent';
+	private const CONFIG_FOLDER = '.wp-ai-agent';
 
 	/**
 	 * The environment variable resolver.
@@ -188,13 +188,16 @@ final class JsonConfigurationLoader
 				'max_tokens' => 8192,
 			],
 			'mcp_servers' => [],
-			'session_storage_path' => '~/.php-cli-agent/sessions',
-			'log_path' => '~/.php-cli-agent/logs',
+			'session_storage_path' => '~/.wp-ai-agent/sessions',
+			'log_path' => '~/.wp-ai-agent/logs',
 			'max_turns' => 100,
 			'default_system_prompt' => '',
-			'bypass_confirmation_tools' => ['think'],
 			'debug' => false,
 			'streaming' => true,
+			'permissions' => [
+				'allow' => [],
+				'deny' => [],
+			],
 		];
 	}
 

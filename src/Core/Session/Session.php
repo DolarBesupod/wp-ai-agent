@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Session;
+namespace WpAiAgent\Core\Session;
 
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\Contracts\SessionMetadataInterface;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Session implementation for conversation persistence.

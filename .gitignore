@@ -28,6 +28,7 @@ Thumbs.db
 # Configuration (may contain secrets)
 agent.yaml
 /.php-cli-agent/
+/.wp-ai-agent/
 
 # Logs
 *.log

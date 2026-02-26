@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli\Command;
+namespace WpAiAgent\Tests\Unit\Integration\Cli\Command;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Integration\Cli\Command\InitCommand;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Integration\Cli\Command\InitCommand;
 
 /**
  * Tests for InitCommand.
  *
- * @covers \PhpCliAgent\Integration\Cli\Command\InitCommand
+ * @covers \WpAiAgent\Integration\Cli\Command\InitCommand
  */
 final class InitCommandTest extends TestCase
 {
@@ -35,7 +35,7 @@ final class InitCommandTest extends TestCase
 	}
 
 	/**
-	 * Given .php-cli-agent/ does not exist
+	 * Given .wp-ai-agent/ does not exist
 	 * When init command runs
 	 * Then directory is created
 	 * And settings.json is created with defaults
@@ -55,7 +55,7 @@ final class InitCommandTest extends TestCase
 		$this->assertTrue($result->shouldContinue());
 
 		// Verify directory was created.
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		$this->assertDirectoryExists($config_dir);
 
 		// Verify settings.json was created with defaults.
@@ -86,14 +86,14 @@ final class InitCommandTest extends TestCase
 	}
 
 	/**
-	 * Given .php-cli-agent/ already exists
+	 * Given .wp-ai-agent/ already exists
 	 * When init command runs without --force
 	 * Then user is prompted for confirmation
 	 */
 	public function test_execute_withExistingDirectory_andNoForce_promptsForConfirmation(): void
 	{
 		// Create existing directory.
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0755, true);
 		file_put_contents($config_dir . '/settings.json', '{"old": true}');
 
@@ -129,14 +129,14 @@ final class InitCommandTest extends TestCase
 	}
 
 	/**
-	 * Given .php-cli-agent/ already exists and user confirms
+	 * Given .wp-ai-agent/ already exists and user confirms
 	 * When init command runs without --force
 	 * Then files are overwritten
 	 */
 	public function test_execute_withExistingDirectory_andUserConfirms_overwritesFiles(): void
 	{
 		// Create existing directory.
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0755, true);
 		file_put_contents($config_dir . '/settings.json', '{"old": true}');
 
@@ -169,14 +169,14 @@ final class InitCommandTest extends TestCase
 	}
 
 	/**
-	 * Given .php-cli-agent/ already exists
+	 * Given .wp-ai-agent/ already exists
 	 * When init command runs with --force
 	 * Then files are overwritten without prompt
 	 */
 	public function test_execute_withExistingDirectory_andForce_overwritesWithoutPrompt(): void
 	{
 		// Create existing directory.
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0755, true);
 		file_put_contents($config_dir . '/settings.json', '{"old": true}');
 		file_put_contents($config_dir . '/mcp.json', '{"mcpServers": {"old": {}}}');
@@ -212,7 +212,7 @@ final class InitCommandTest extends TestCase
 	public function test_execute_withShortForceFlag_overwritesWithoutPrompt(): void
 	{
 		// Create existing directory.
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0755, true);
 		file_put_contents($config_dir . '/settings.json', '{"old": true}');
 
@@ -271,7 +271,7 @@ final class InitCommandTest extends TestCase
 	public function test_execute_withError_writesErrorMessage(): void
 	{
 		// Create a read-only directory to cause permission error.
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 		mkdir($config_dir, 0555, true);
 
 		$command = new InitCommand($this->output_handler, $this->temp_dir);
@@ -293,7 +293,7 @@ final class InitCommandTest extends TestCase
 		$command = new InitCommand($this->output_handler, $this->temp_dir);
 		$command->execute([]);
 
-		$config_dir = $this->temp_dir . '/.php-cli-agent';
+		$config_dir = $this->temp_dir . '/.wp-ai-agent';
 
 		// Verify JSON is pretty-printed (has indentation).
 		$settings_content = file_get_contents($config_dir . '/settings.json');
@@ -309,7 +309,7 @@ final class InitCommandTest extends TestCase
 	/**
 	 * Given .gitignore does not exist
 	 * When init command runs
-	 * Then .gitignore is created with ".php-cli-agent/" entry
+	 * Then .gitignore is created with ".wp-ai-agent/" entry
 	 */
 	public function test_execute_withNoGitignore_createsGitignoreWithEntry(): void
 	{
@@ -325,13 +325,13 @@ final class InitCommandTest extends TestCase
 
 		$content = file_get_contents($gitignore_path);
 		$this->assertIsString($content);
-		$this->assertStringContainsString('.php-cli-agent/', $content);
+		$this->assertStringContainsString('.wp-ai-agent/', $content);
 	}
 
 	/**
-	 * Given .gitignore exists without .php-cli-agent entry
+	 * Given .gitignore exists without .wp-ai-agent entry
 	 * When init command runs
-	 * Then ".php-cli-agent/" is appended to .gitignore
+	 * Then ".wp-ai-agent/" is appended to .gitignore
 	 */
 	public function test_execute_withExistingGitignore_withoutEntry_appendsEntry(): void
 	{
@@ -353,11 +353,11 @@ final class InitCommandTest extends TestCase
 		$this->assertStringContainsString('node_modules/', $content);
 
 		// New entry should be added.
-		$this->assertStringContainsString('.php-cli-agent/', $content);
+		$this->assertStringContainsString('.wp-ai-agent/', $content);
 	}
 
 	/**
-	 * Given .gitignore already contains ".php-cli-agent/"
+	 * Given .gitignore already contains ".wp-ai-agent/"
 	 * When init command runs
 	 * Then .gitignore is not modified
 	 */
@@ -365,7 +365,7 @@ final class InitCommandTest extends TestCase
 	{
 		// Create existing .gitignore with the entry already present.
 		$gitignore_path = $this->temp_dir . '/.gitignore';
-		$original_content = "vendor/\n.php-cli-agent/\nnode_modules/\n";
+		$original_content = "vendor/\n.wp-ai-agent/\nnode_modules/\n";
 		file_put_contents($gitignore_path, $original_content);
 
 		$command = new InitCommand($this->output_handler, $this->temp_dir);
@@ -384,7 +384,7 @@ final class InitCommandTest extends TestCase
 	/**
 	 * Given .gitignore exists with no trailing newline
 	 * When init command runs
-	 * Then ".php-cli-agent/" is appended on a new line
+	 * Then ".wp-ai-agent/" is appended on a new line
 	 */
 	public function test_execute_withGitignore_withoutTrailingNewline_appendsOnNewLine(): void
 	{
@@ -402,11 +402,11 @@ final class InitCommandTest extends TestCase
 		$this->assertIsString($content);
 
 		// Entry should be on its own line, not appended to previous entry.
-		$this->assertStringContainsString("vendor/\n.php-cli-agent/", $content);
+		$this->assertStringContainsString("vendor/\n.wp-ai-agent/", $content);
 	}
 
 	/**
-	 * Given .gitignore contains entry with different format (e.g., ".php-cli-agent" without slash)
+	 * Given .gitignore contains entry with different format (e.g., ".wp-ai-agent" without slash)
 	 * When init command runs
 	 * Then .gitignore is not modified (matches both formats)
 	 */
@@ -414,7 +414,7 @@ final class InitCommandTest extends TestCase
 	{
 		// Create .gitignore with entry without trailing slash.
 		$gitignore_path = $this->temp_dir . '/.gitignore';
-		$original_content = "vendor/\n.php-cli-agent\n";
+		$original_content = "vendor/\n.wp-ai-agent\n";
 		file_put_contents($gitignore_path, $original_content);
 
 		$command = new InitCommand($this->output_handler, $this->temp_dir);
@@ -426,7 +426,7 @@ final class InitCommandTest extends TestCase
 		$content = file_get_contents($gitignore_path);
 		$this->assertIsString($content);
 
-		// Content should be unchanged since .php-cli-agent matches.
+		// Content should be unchanged since .wp-ai-agent matches.
 		$this->assertSame($original_content, $content);
 	}
 

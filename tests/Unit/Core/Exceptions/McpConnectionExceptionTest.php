@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Exceptions;
+namespace WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Exceptions\McpConnectionException;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\McpConnectionException;
 
 /**
  * Tests for McpConnectionException.
  *
- * @covers \PhpCliAgent\Core\Exceptions\McpConnectionException
+ * @covers \WpAiAgent\Core\Exceptions\McpConnectionException
  */
 final class McpConnectionExceptionTest extends TestCase
 {

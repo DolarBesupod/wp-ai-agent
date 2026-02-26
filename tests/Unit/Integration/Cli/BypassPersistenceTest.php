@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
-use PhpCliAgent\Integration\Cli\BypassPersistence;
+use WpAiAgent\Integration\Cli\BypassPersistence;
+use WpAiAgent\Integration\Configuration\SettingsWriter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,13 +19,13 @@ use PHPUnit\Framework\TestCase;
 final class BypassPersistenceTest extends TestCase
 {
 	private string $temp_dir;
-	private string $php_cli_agent_dir;
+	private string $wp_ai_agent_dir;
 
 	protected function setUp(): void
 	{
 		$this->temp_dir = sys_get_temp_dir() . '/bypass_persistence_test_' . uniqid();
 		mkdir($this->temp_dir, 0755, true);
-		$this->php_cli_agent_dir = $this->temp_dir . '/.php-cli-agent';
+		$this->wp_ai_agent_dir = $this->temp_dir . '/.wp-ai-agent';
 	}
 
 	protected function tearDown(): void
@@ -63,20 +64,87 @@ final class BypassPersistenceTest extends TestCase
 		rmdir($dir);
 	}
 
-	#[Test]
-	public function constructor_createsDirectory_ifNotExists(): void
+	/**
+	 * Creates a BypassPersistence instance for testing.
+	 */
+	private function createPersistence(): BypassPersistence
 	{
-		$non_existent_dir = $this->temp_dir . '/subdir/nested';
+		return BypassPersistence::forWorkingDirectory($this->temp_dir);
+	}
 
-		new BypassPersistence($non_existent_dir);
+	/**
+	 * Creates a settings file with the given permissions.
+	 *
+	 * @param array<int, string> $tools List of tools to allow.
+	 */
+	private function createSettingsWithPermissions(array $tools): void
+	{
+		if (!is_dir($this->wp_ai_agent_dir)) {
+			mkdir($this->wp_ai_agent_dir, 0755, true);
+		}
 
-		$this->assertDirectoryExists($non_existent_dir);
+		$data = [
+			'permissions' => [
+				'allow' => $tools,
+			],
+		];
+
+		file_put_contents(
+			$this->wp_ai_agent_dir . '/settings.json',
+			json_encode($data, JSON_PRETTY_PRINT)
+		);
+	}
+
+	/**
+	 * Reads the current settings file.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function readSettings(): array
+	{
+		$path = $this->wp_ai_agent_dir . '/settings.json';
+		if (!file_exists($path)) {
+			return [];
+		}
+
+		$content = file_get_contents($path);
+		if ($content === false) {
+			return [];
+		}
+
+		$data = json_decode($content, true);
+		return is_array($data) ? $data : [];
+	}
+
+	// -------------------------------------------------------------------------
+	// Constructor and Factory Tests
+	// -------------------------------------------------------------------------
+
+	#[Test]
+	public function constructor_acceptsSettingsWriterAndWorkingDir(): void
+	{
+		$settings_writer = new SettingsWriter();
+		$persistence = new BypassPersistence($settings_writer, $this->temp_dir);
+
+		$this->assertInstanceOf(BypassPersistence::class, $persistence);
 	}
 
 	#[Test]
-	public function load_returnsEmptyArray_whenFileNotExists(): void
+	public function forWorkingDirectory_createsInstance(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
+		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir);
+
+		$this->assertInstanceOf(BypassPersistence::class, $persistence);
+	}
+
+	// -------------------------------------------------------------------------
+	// Load Tests
+	// -------------------------------------------------------------------------
+
+	#[Test]
+	public function load_returnsEmptyArray_whenNoSettingsFile(): void
+	{
+		$persistence = $this->createPersistence();
 
 		$result = $persistence->load();
 
@@ -84,21 +152,41 @@ final class BypassPersistenceTest extends TestCase
 	}
 
 	#[Test]
-	public function save_createsStateFile_withToolNames(): void
+	public function load_returnsToolsFromPermissionsAllow(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
+		$this->createSettingsWithPermissions(['tool_a', 'tool_b']);
+		$persistence = $this->createPersistence();
+
+		$result = $persistence->load();
+
+		$this->assertSame(['tool_a', 'tool_b'], $result);
+	}
+
+	// -------------------------------------------------------------------------
+	// Save Tests
+	// -------------------------------------------------------------------------
+
+	#[Test]
+	public function save_storesToolsInPermissionsAllow(): void
+	{
+		$persistence = $this->createPersistence();
 		$tools = ['tool_a', 'tool_b'];
 
 		$result = $persistence->save($tools);
 
 		$this->assertTrue($result);
-		$this->assertFileExists($this->temp_dir . '/bypass_state.json');
+
+		$settings = $this->readSettings();
+		$this->assertArrayHasKey('permissions', $settings);
+		$this->assertArrayHasKey('allow', $settings['permissions']);
+		$this->assertContains('tool_a', $settings['permissions']['allow']);
+		$this->assertContains('tool_b', $settings['permissions']['allow']);
 	}
 
 	#[Test]
-	public function save_andLoad_roundtrips_toolNames(): void
+	public function save_andLoad_roundtripsToolNames(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
+		$persistence = $this->createPersistence();
 		$tools = ['tool_a', 'tool_b', 'tool_c'];
 
 		$persistence->save($tools);
@@ -107,22 +195,14 @@ final class BypassPersistenceTest extends TestCase
 		$this->assertSame($tools, $loaded);
 	}
 
-	#[Test]
-	public function save_deduplicates_toolNames(): void
-	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$tools = ['tool_a', 'tool_b', 'tool_a', 'tool_c', 'tool_b'];
-
-		$persistence->save($tools);
-		$loaded = $persistence->load();
-
-		$this->assertSame(['tool_a', 'tool_b', 'tool_c'], $loaded);
-	}
+	// -------------------------------------------------------------------------
+	// AddBypass Tests
+	// -------------------------------------------------------------------------
 
 	#[Test]
 	public function addBypass_addsToolToList(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
+		$persistence = $this->createPersistence();
 
 		$persistence->addBypass('new_tool');
 		$loaded = $persistence->load();
@@ -133,7 +213,7 @@ final class BypassPersistenceTest extends TestCase
 	#[Test]
 	public function addBypass_normalizesToLowercase(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
+		$persistence = $this->createPersistence();
 
 		$persistence->addBypass('MyTool_Name');
 		$loaded = $persistence->load();
@@ -142,35 +222,41 @@ final class BypassPersistenceTest extends TestCase
 	}
 
 	#[Test]
-	public function addBypass_doesNotDuplicate_existingTool(): void
+	public function addBypass_doesNotDuplicateExistingTool(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$persistence->save(['tool_a']);
+		$this->createSettingsWithPermissions(['tool_a']);
+		$persistence = $this->createPersistence();
 
 		$persistence->addBypass('tool_a');
 		$loaded = $persistence->load();
 
-		$this->assertCount(1, $loaded);
-		$this->assertSame(['tool_a'], $loaded);
+		$tool_count = array_count_values($loaded)['tool_a'] ?? 0;
+		$this->assertSame(1, $tool_count);
 	}
+
+	// -------------------------------------------------------------------------
+	// RemoveBypass Tests
+	// -------------------------------------------------------------------------
 
 	#[Test]
 	public function removeBypass_removesToolFromList(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$persistence->save(['tool_a', 'tool_b', 'tool_c']);
+		$this->createSettingsWithPermissions(['tool_a', 'tool_b', 'tool_c']);
+		$persistence = $this->createPersistence();
 
 		$persistence->removeBypass('tool_b');
 		$loaded = $persistence->load();
 
-		$this->assertSame(['tool_a', 'tool_c'], $loaded);
+		$this->assertContains('tool_a', $loaded);
+		$this->assertNotContains('tool_b', $loaded);
+		$this->assertContains('tool_c', $loaded);
 	}
 
 	#[Test]
 	public function removeBypass_normalizesToLowercase(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$persistence->save(['mytool']);
+		$this->createSettingsWithPermissions(['mytool']);
+		$persistence = $this->createPersistence();
 
 		$persistence->removeBypass('MyTool');
 		$loaded = $persistence->load();
@@ -179,10 +265,10 @@ final class BypassPersistenceTest extends TestCase
 	}
 
 	#[Test]
-	public function removeBypass_doesNotFail_whenToolNotInList(): void
+	public function removeBypass_doesNotFailWhenToolNotInList(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$persistence->save(['tool_a']);
+		$this->createSettingsWithPermissions(['tool_a']);
+		$persistence = $this->createPersistence();
 
 		$result = $persistence->removeBypass('nonexistent');
 		$loaded = $persistence->load();
@@ -191,11 +277,15 @@ final class BypassPersistenceTest extends TestCase
 		$this->assertSame(['tool_a'], $loaded);
 	}
 
+	// -------------------------------------------------------------------------
+	// Clear Tests
+	// -------------------------------------------------------------------------
+
 	#[Test]
 	public function clear_removesAllTools(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$persistence->save(['tool_a', 'tool_b', 'tool_c']);
+		$this->createSettingsWithPermissions(['tool_a', 'tool_b', 'tool_c']);
+		$persistence = $this->createPersistence();
 
 		$persistence->clear();
 		$loaded = $persistence->load();
@@ -203,234 +293,142 @@ final class BypassPersistenceTest extends TestCase
 		$this->assertSame([], $loaded);
 	}
 
+	// -------------------------------------------------------------------------
+	// Path Tests
+	// -------------------------------------------------------------------------
+
 	#[Test]
-	public function getStateFilePath_returnsCorrectPath(): void
+	public function getSettingsFilePath_returnsCorrectPath(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
+		$persistence = $this->createPersistence();
 
-		$path = $persistence->getStatFilePath();
+		$path = $persistence->getSettingsFilePath();
 
-		$this->assertSame($this->temp_dir . '/bypass_state.json', $path);
+		$this->assertSame($this->wp_ai_agent_dir . '/settings.json', $path);
 	}
 
 	#[Test]
-	public function load_returnsEmptyArray_whenFileContainsInvalidJson(): void
+	public function getDefaultPath_returnsWpAiAgentPath(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		file_put_contents($this->temp_dir . '/bypass_state.json', 'not valid json');
+		$default_path = BypassPersistence::getDefaultPath($this->temp_dir);
 
-		$result = $persistence->load();
-
-		$this->assertSame([], $result);
+		$this->assertSame($this->wp_ai_agent_dir, $default_path);
 	}
 
 	#[Test]
-	public function load_returnsEmptyArray_whenFileContainsNonArray(): void
+	public function getLegacyFilePath_returnsCorrectPath(): void
 	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		file_put_contents($this->temp_dir . '/bypass_state.json', '"just a string"');
+		$legacy_path = BypassPersistence::getLegacyFilePath($this->temp_dir);
 
-		$result = $persistence->load();
-
-		$this->assertSame([], $result);
+		$this->assertSame($this->wp_ai_agent_dir . '/bypass_state.json', $legacy_path);
 	}
 
-	#[Test]
-	public function load_filtersNonStringValues(): void
-	{
-		$persistence = new BypassPersistence($this->temp_dir);
-		$data = [
-			'bypassed_tools' => ['valid_tool', 123, null, 'another_tool', ['array']],
-		];
-		file_put_contents($this->temp_dir . '/bypass_state.json', json_encode($data));
-
-		$result = $persistence->load();
-
-		$this->assertSame(['valid_tool', 'another_tool'], $result);
-	}
-
-	#[Test]
-	public function stateFile_includesUpdatedAt_timestamp(): void
-	{
-		$persistence = new BypassPersistence($this->temp_dir);
-
-		$persistence->save(['tool_a']);
-		$content = file_get_contents($this->temp_dir . '/bypass_state.json');
-		$data = json_decode((string) $content, true);
-
-		$this->assertArrayHasKey('updated_at', $data);
-		$this->assertIsString($data['updated_at']);
-	}
+	// -------------------------------------------------------------------------
+	// Cross-Instance Persistence Tests
+	// -------------------------------------------------------------------------
 
 	#[Test]
 	public function persistence_worksAcrossInstances(): void
 	{
-		$persistence1 = new BypassPersistence($this->temp_dir);
+		$persistence1 = $this->createPersistence();
 		$persistence1->addBypass('tool_a');
 		$persistence1->addBypass('tool_b');
 
 		// Create new instance (simulating new session).
-		$persistence2 = new BypassPersistence($this->temp_dir);
+		$persistence2 = $this->createPersistence();
 		$loaded = $persistence2->load();
 
-		$this->assertSame(['tool_a', 'tool_b'], $loaded);
+		$this->assertContains('tool_a', $loaded);
+		$this->assertContains('tool_b', $loaded);
 	}
 
 	// -------------------------------------------------------------------------
-	// Tests for .php-cli-agent folder and factory method
+	// Legacy Migration Tests
 	// -------------------------------------------------------------------------
 
 	#[Test]
-	public function forWorkingDirectory_createsPhpCliAgentFolder_whenItDoesNotExist(): void
+	public function migrateFromLegacyFile_migratesToolsToPermissionsAllow(): void
 	{
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir);
-
-		$this->assertDirectoryExists($this->php_cli_agent_dir);
-		$this->assertStringContainsString(
-			'.php-cli-agent/bypass_state.json',
-			$persistence->getStatFilePath()
-		);
-	}
-
-	#[Test]
-	public function forWorkingDirectory_usesExistingPhpCliAgentFolder(): void
-	{
-		// Create the folder first.
-		mkdir($this->php_cli_agent_dir, 0755, true);
-
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir);
-
-		$this->assertSame(
-			$this->php_cli_agent_dir . '/bypass_state.json',
-			$persistence->getStatFilePath()
-		);
-	}
-
-	#[Test]
-	public function forWorkingDirectory_createsStateFile_inPhpCliAgentFolder(): void
-	{
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir);
-
-		$persistence->addBypass('test_tool');
-
-		$this->assertFileExists($this->php_cli_agent_dir . '/bypass_state.json');
-	}
-
-	#[Test]
-	public function forWorkingDirectory_migratesOldStateFile_fromSessionPath(): void
-	{
-		// Create old state file in a legacy location.
-		$old_session_path = $this->temp_dir . '/sessions';
-		mkdir($old_session_path, 0755, true);
-		$old_state_file = $old_session_path . '/bypass_state.json';
-		$old_data = [
-			'bypassed_tools' => ['tool_from_old_location'],
-			'updated_at' => date('c'),
-		];
-		file_put_contents($old_state_file, json_encode($old_data, JSON_PRETTY_PRINT));
-
-		// Create persistence with migration from old path.
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir, $old_session_path);
-
-		// Verify data was migrated.
-		$loaded = $persistence->load();
-		$this->assertContains('tool_from_old_location', $loaded);
-
-		// Verify old file was removed.
-		$this->assertFileDoesNotExist($old_state_file);
-
-		// Verify new file exists.
-		$this->assertFileExists($this->php_cli_agent_dir . '/bypass_state.json');
-	}
-
-	#[Test]
-	public function forWorkingDirectory_doesNotMigrate_whenNewFileAlreadyExists(): void
-	{
-		// Create existing state in new location.
-		mkdir($this->php_cli_agent_dir, 0755, true);
-		$new_data = [
-			'bypassed_tools' => ['tool_in_new_location'],
+		// Create legacy bypass_state.json file.
+		if (!is_dir($this->wp_ai_agent_dir)) {
+			mkdir($this->wp_ai_agent_dir, 0755, true);
+		}
+		$legacy_data = [
+			'bypassed_tools' => ['legacy_tool_a', 'legacy_tool_b'],
 			'updated_at' => date('c'),
 		];
 		file_put_contents(
-			$this->php_cli_agent_dir . '/bypass_state.json',
-			json_encode($new_data, JSON_PRETTY_PRINT)
+			$this->wp_ai_agent_dir . '/bypass_state.json',
+			json_encode($legacy_data, JSON_PRETTY_PRINT)
 		);
 
-		// Create old state file.
-		$old_session_path = $this->temp_dir . '/sessions';
-		mkdir($old_session_path, 0755, true);
-		$old_state_file = $old_session_path . '/bypass_state.json';
-		$old_data = [
-			'bypassed_tools' => ['tool_from_old_location'],
+		// Create persistence - should trigger migration.
+		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir);
+
+		// Verify tools were migrated.
+		$loaded = $persistence->load();
+		$this->assertContains('legacy_tool_a', $loaded);
+		$this->assertContains('legacy_tool_b', $loaded);
+
+		// Verify legacy file was deleted.
+		$this->assertFileDoesNotExist($this->wp_ai_agent_dir . '/bypass_state.json');
+
+		// Verify settings file was created.
+		$this->assertFileExists($this->wp_ai_agent_dir . '/settings.json');
+	}
+
+	#[Test]
+	public function migrateFromLegacyFile_returnsFalseWhenNoLegacyFile(): void
+	{
+		$settings_writer = new SettingsWriter();
+		$persistence = new BypassPersistence($settings_writer, $this->temp_dir);
+
+		$result = $persistence->migrateFromLegacyFile();
+
+		$this->assertFalse($result);
+	}
+
+	#[Test]
+	public function migrateFromLegacyFile_deletesInvalidLegacyFile(): void
+	{
+		// Create invalid legacy file.
+		if (!is_dir($this->wp_ai_agent_dir)) {
+			mkdir($this->wp_ai_agent_dir, 0755, true);
+		}
+		file_put_contents(
+			$this->wp_ai_agent_dir . '/bypass_state.json',
+			'invalid json content'
+		);
+
+		$settings_writer = new SettingsWriter();
+		$persistence = new BypassPersistence($settings_writer, $this->temp_dir);
+
+		$result = $persistence->migrateFromLegacyFile();
+
+		$this->assertFalse($result);
+		$this->assertFileDoesNotExist($this->wp_ai_agent_dir . '/bypass_state.json');
+	}
+
+	#[Test]
+	public function migrateFromLegacyFile_normalizesToLowercase(): void
+	{
+		// Create legacy file with mixed case tools.
+		if (!is_dir($this->wp_ai_agent_dir)) {
+			mkdir($this->wp_ai_agent_dir, 0755, true);
+		}
+		$legacy_data = [
+			'bypassed_tools' => ['MyTool', 'ANOTHER_TOOL'],
 			'updated_at' => date('c'),
 		];
-		file_put_contents($old_state_file, json_encode($old_data, JSON_PRETTY_PRINT));
+		file_put_contents(
+			$this->wp_ai_agent_dir . '/bypass_state.json',
+			json_encode($legacy_data, JSON_PRETTY_PRINT)
+		);
 
-		// Create persistence - should NOT migrate because new file exists.
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir, $old_session_path);
-
-		// Verify new location data is used (not migrated).
+		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir);
 		$loaded = $persistence->load();
-		$this->assertContains('tool_in_new_location', $loaded);
-		$this->assertNotContains('tool_from_old_location', $loaded);
 
-		// Old file should still exist (not deleted since we didn't migrate).
-		$this->assertFileExists($old_state_file);
-	}
-
-	#[Test]
-	public function forWorkingDirectory_handlesNullOldPath(): void
-	{
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir, null);
-
-		$this->assertDirectoryExists($this->php_cli_agent_dir);
-		$persistence->addBypass('test_tool');
-		$this->assertFileExists($this->php_cli_agent_dir . '/bypass_state.json');
-	}
-
-	#[Test]
-	public function forWorkingDirectory_handlesNonExistentOldPath(): void
-	{
-		$non_existent_path = $this->temp_dir . '/non_existent_sessions';
-
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir, $non_existent_path);
-
-		// Should work normally without errors.
-		$persistence->addBypass('test_tool');
-		$loaded = $persistence->load();
-		$this->assertContains('test_tool', $loaded);
-	}
-
-	#[Test]
-	public function forWorkingDirectory_getDefaultPath_returnsPhpCliAgentPath(): void
-	{
-		$default_path = BypassPersistence::getDefaultPath($this->temp_dir);
-
-		$this->assertSame($this->php_cli_agent_dir, $default_path);
-	}
-
-	#[Test]
-	public function forWorkingDirectory_preservesAllBypassesWhenMigrating(): void
-	{
-		// Create old state file with multiple tools.
-		$old_session_path = $this->temp_dir . '/sessions';
-		mkdir($old_session_path, 0755, true);
-		$old_state_file = $old_session_path . '/bypass_state.json';
-		$old_data = [
-			'bypassed_tools' => ['tool_a', 'tool_b', 'tool_c'],
-			'updated_at' => date('c'),
-		];
-		file_put_contents($old_state_file, json_encode($old_data, JSON_PRETTY_PRINT));
-
-		// Create persistence with migration.
-		$persistence = BypassPersistence::forWorkingDirectory($this->temp_dir, $old_session_path);
-
-		// Verify all tools were migrated.
-		$loaded = $persistence->load();
-		$this->assertCount(3, $loaded);
-		$this->assertContains('tool_a', $loaded);
-		$this->assertContains('tool_b', $loaded);
-		$this->assertContains('tool_c', $loaded);
+		$this->assertContains('mytool', $loaded);
+		$this->assertContains('another_tool', $loaded);
 	}
 }

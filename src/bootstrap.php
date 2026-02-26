@@ -8,34 +8,42 @@ declare(strict_types=1);
  * This file initializes all dependencies and returns a configured CliApplication instance.
  * It uses the ConfigurationResolver to load configuration from multiple sources with priority:
  * 1. Environment variables (highest priority)
- * 2. .php-cli-agent/settings.json + .php-cli-agent/mcp.json
+ * 2. .wp-ai-agent/settings.json + .wp-ai-agent/mcp.json
  * 3. Built-in defaults (lowest priority)
  *
  * @since n.e.x.t
  */
 
-namespace PhpCliAgent;
+namespace WpAiAgent;
 
-use PhpCliAgent\Core\Agent\Agent;
-use PhpCliAgent\Core\Agent\AgentLoop;
-use PhpCliAgent\Core\Tool\ToolExecutor;
-use PhpCliAgent\Integration\AiClient\AiClientAdapter;
-use PhpCliAgent\Integration\Cli\BypassPersistence;
-use PhpCliAgent\Integration\Cli\CliApplication;
-use PhpCliAgent\Integration\Cli\CliConfirmationHandler;
-use PhpCliAgent\Integration\Configuration\ConfigurationResolver;
-use PhpCliAgent\Integration\Mcp\McpClientManager;
-use PhpCliAgent\Integration\Mcp\McpServerConfiguration as IntegrationMcpServerConfig;
-use PhpCliAgent\Integration\Mcp\McpToolRegistry;
-use PhpCliAgent\Integration\Tool\BuiltInToolRegistry;
+use WpAiAgent\Core\Agent\Agent;
+use WpAiAgent\Core\Agent\AgentLoop;
+use WpAiAgent\Core\Tool\ToolExecutor;
+use WpAiAgent\Integration\AiClient\AiClientAdapter;
+use WpAiAgent\Integration\Cli\BypassPersistence;
+use WpAiAgent\Integration\Cli\CliApplication;
+use WpAiAgent\Integration\Cli\CliConfirmationHandler;
+use WpAiAgent\Integration\Command\CommandExecutor;
+use WpAiAgent\Integration\Command\CommandLoader;
+use WpAiAgent\Integration\Command\CommandRegistry;
+use WpAiAgent\Integration\Configuration\ConfigurationResolver;
+use WpAiAgent\Integration\Configuration\MarkdownParser;
+use WpAiAgent\Integration\Mcp\McpClientManager;
+use WpAiAgent\Integration\Mcp\McpServerConfiguration as IntegrationMcpServerConfig;
+use WpAiAgent\Integration\Mcp\McpToolRegistry;
+use WpAiAgent\Integration\Settings\ArgumentSubstitutor;
+use WpAiAgent\Integration\Settings\BashCommandExpander;
+use WpAiAgent\Integration\Settings\FileReferenceExpander;
+use WpAiAgent\Integration\Settings\SettingsDiscovery;
+use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Creates and configures the CLI application.
  *
  * @return CliApplication The configured application instance.
  *
- * @throws \PhpCliAgent\Core\Exceptions\AiClientException If AI client initialization fails.
- * @throws \PhpCliAgent\Core\Exceptions\ConfigurationException If configuration is invalid.
+ * @throws \WpAiAgent\Core\Exceptions\AiClientException If AI client initialization fails.
+ * @throws \WpAiAgent\Core\Exceptions\ConfigurationException If configuration is invalid.
  */
 return (static function (): CliApplication {
 	// Create configuration resolver and load configuration from all sources.
@@ -335,16 +343,13 @@ return (static function (): CliApplication {
 	};
 
 	// Create confirmation handler with persistence.
-	// Use .php-cli-agent/ folder in working directory for bypass state,
-	// with migration from old session storage path.
+	// Bypass state is stored in .wp-ai-agent/settings.json under permissions.allow.
+	// Legacy bypass_state.json is migrated automatically on first run.
 	$working_dir = getcwd();
 	if ($working_dir === false) {
 		$working_dir = '.';
 	}
-	$bypass_persistence = BypassPersistence::forWorkingDirectory(
-		$working_dir,
-		$configuration->getSessionStoragePath()
-	);
+	$bypass_persistence = BypassPersistence::forWorkingDirectory($working_dir);
 	$confirmation_handler = new CliConfirmationHandler(
 		null, // output stream (STDOUT)
 		null, // input stream (STDIN)
@@ -404,6 +409,40 @@ return (static function (): CliApplication {
 		fwrite(STDERR, \sprintf("\033[33m[MCP] %s\033[0m\n", $e->getMessage()));
 	}
 
+	// Create command system components.
+	$markdown_parser = new MarkdownParser();
+	$settings_discovery = new SettingsDiscovery($working_dir);
+	$argument_substitutor = new ArgumentSubstitutor();
+	$file_reference_expander = new FileReferenceExpander();
+	$bash_command_expander = new BashCommandExpander();
+
+	// Create command loader and registry.
+	$command_loader = new CommandLoader($markdown_parser);
+	$command_registry = new CommandRegistry($command_loader, $settings_discovery);
+
+	// Auto-discover custom commands from .wp-ai-agent/commands directories.
+	try {
+		$command_registry->discover();
+
+		$custom_commands = $command_registry->getCustomCommands();
+		if (\count($custom_commands) > 0) {
+			fwrite(STDERR, \sprintf(
+				"\033[32m[Commands] Discovered %d custom command(s)\033[0m\n",
+				\count($custom_commands)
+			));
+		}
+	} catch (\Throwable $e) {
+		// Command discovery is optional - continue without it.
+		fwrite(STDERR, \sprintf("\033[33m[Commands] %s\033[0m\n", $e->getMessage()));
+	}
+
+	// Create command executor for processing command content.
+	$command_executor = new CommandExecutor(
+		$argument_substitutor,
+		$file_reference_expander,
+		$bash_command_expander
+	);
+
 	// Create AI adapter.
 	$ai_adapter = new AiClientAdapter(
 		$configuration->getApiKey(),
@@ -435,10 +474,13 @@ return (static function (): CliApplication {
 
 	// Create and return CLI application.
 	// Pass $mcp_client_manager to keep MCP connections alive during application lifecycle.
+	// Pass command system components for custom slash command support.
 	return new CliApplication(
 		$configuration,
 		$agent,
 		$output_handler,
-		$mcp_client_manager
+		$mcp_client_manager,
+		$command_registry,
+		$command_executor
 	);
 })();

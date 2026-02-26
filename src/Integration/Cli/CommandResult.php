@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
 
 /**
  * Represents the result of a CLI command execution.
  *
  * Contains information about whether a command was handled, whether the REPL
- * should continue running, and any output message to display.
+ * should continue running, any output message to display, and content that
+ * should be injected into the conversation with the agent.
  *
  * @since n.e.x.t
  */
@@ -36,17 +37,30 @@ final class CommandResult
 	private ?string $message;
 
 	/**
+	 * Content to inject into the conversation with the agent.
+	 *
+	 * @var string|null
+	 */
+	private ?string $injected_content;
+
+	/**
 	 * Creates a new CommandResult instance.
 	 *
-	 * @param bool        $handled         Whether the input was recognized as a command.
-	 * @param bool        $should_continue Whether the REPL should continue running.
-	 * @param string|null $message         Optional output message.
+	 * @param bool        $handled          Whether the input was recognized as a command.
+	 * @param bool        $should_continue  Whether the REPL should continue running.
+	 * @param string|null $message          Optional output message.
+	 * @param string|null $injected_content Content to inject into conversation.
 	 */
-	public function __construct(bool $handled, bool $should_continue, ?string $message = null)
-	{
+	public function __construct(
+		bool $handled,
+		bool $should_continue,
+		?string $message = null,
+		?string $injected_content = null
+	) {
 		$this->handled = $handled;
 		$this->should_continue = $should_continue;
 		$this->message = $message;
+		$this->injected_content = $injected_content;
 	}
 
 	/**
@@ -133,5 +147,46 @@ final class CommandResult
 	public function hasMessage(): bool
 	{
 		return $this->message !== null;
+	}
+
+	/**
+	 * Creates a result with content to be injected into the conversation.
+	 *
+	 * This factory method is used for custom commands that produce content
+	 * which should be sent to the agent as part of the conversation.
+	 *
+	 * @param string $content The content to inject into the conversation.
+	 *
+	 * @return self
+	 *
+	 * @since n.e.x.t
+	 */
+	public static function inject(string $content): self
+	{
+		return new self(true, true, null, $content);
+	}
+
+	/**
+	 * Checks if the result has content to inject into the conversation.
+	 *
+	 * @return bool True if there is content to inject.
+	 *
+	 * @since n.e.x.t
+	 */
+	public function shouldInject(): bool
+	{
+		return $this->injected_content !== null;
+	}
+
+	/**
+	 * Returns the content to be injected into the conversation.
+	 *
+	 * @return string|null The injected content, or null if none.
+	 *
+	 * @since n.e.x.t
+	 */
+	public function getInjectedContent(): ?string
+	{
+		return $this->injected_content;
 	}
 }

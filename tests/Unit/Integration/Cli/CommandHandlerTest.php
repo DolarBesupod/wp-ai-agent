@@ -2,26 +2,32 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\Contracts\SessionMetadataInterface;
-use PhpCliAgent\Core\Contracts\SessionRepositoryInterface;
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\SessionNotFoundException;
-use PhpCliAgent\Core\ValueObjects\SessionId;
-use PhpCliAgent\Integration\Cli\CommandHandler;
-use PhpCliAgent\Integration\Cli\CommandResult;
+use WpAiAgent\Core\Command\Command;
+use WpAiAgent\Core\Command\CommandConfig;
+use WpAiAgent\Core\Command\CommandExecutionResult;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\CommandExecutorInterface;
+use WpAiAgent\Core\Contracts\CommandRegistryInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use WpAiAgent\Core\ValueObjects\ArgumentList;
+use WpAiAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Integration\Cli\CommandHandler;
+use WpAiAgent\Integration\Cli\CommandResult;
 
 /**
  * Tests for CommandHandler.
  *
- * @covers \PhpCliAgent\Integration\Cli\CommandHandler
+ * @covers \WpAiAgent\Integration\Cli\CommandHandler
  */
 final class CommandHandlerTest extends TestCase
 {
@@ -599,5 +605,351 @@ final class CommandHandlerTest extends TestCase
 
 		// The description should be truncated with ...
 		$this->assertStringContainsString('...', $output);
+	}
+
+	// =========================================================================
+	// Tests for Command Registry Integration
+	// =========================================================================
+
+	public function test_handle_customCommand_fromRegistry_returnsInjectResult(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command = new Command(
+			'review',
+			'Code review helper',
+			'Review this code: $1',
+			CommandConfig::fromFrontmatter([]),
+			'/path/to/commands/review.md',
+			'project'
+		);
+
+		$command_registry->method('has')->with('review')->willReturn(true);
+		$command_registry->method('get')->with('review')->willReturn($command);
+
+		$execution_result = CommandExecutionResult::success('Review this code: file.php');
+		$command_executor->method('execute')
+			->with($command, $this->isInstanceOf(ArgumentList::class))
+			->willReturn($execution_result);
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/review file.php');
+
+		$this->assertTrue($result->wasHandled());
+		$this->assertTrue($result->shouldContinue());
+		$this->assertTrue($result->shouldInject());
+		$this->assertSame('Review this code: file.php', $result->getInjectedContent());
+	}
+
+	public function test_handle_customCommand_fromRegistry_withNoInjection(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command = new Command(
+			'info',
+			'Show information',
+			'Some info content',
+			CommandConfig::fromFrontmatter([]),
+			'/path/to/commands/info.md'
+		);
+
+		$command_registry->method('has')->with('info')->willReturn(true);
+		$command_registry->method('get')->with('info')->willReturn($command);
+
+		$execution_result = CommandExecutionResult::success('Some info content', false);
+		$command_executor->method('execute')->willReturn($execution_result);
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/info');
+
+		$this->assertTrue($result->wasHandled());
+		$this->assertFalse($result->shouldInject());
+	}
+
+	public function test_handle_customCommand_fromRegistry_withDirectOutput(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command = new Command(
+			'status',
+			'Show status',
+			'Status content',
+			CommandConfig::fromFrontmatter([])
+		);
+
+		$command_registry->method('has')->with('status')->willReturn(true);
+		$command_registry->method('get')->with('status')->willReturn($command);
+
+		$execution_result = CommandExecutionResult::directOutput('Current status: OK');
+		$command_executor->method('execute')->willReturn($execution_result);
+
+		$this->output_handler->expects($this->once())
+			->method('writeLine')
+			->with('Current status: OK');
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/status');
+
+		$this->assertTrue($result->wasHandled());
+		$this->assertFalse($result->shouldInject());
+	}
+
+	public function test_handle_customCommand_fromRegistry_withError(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command = new Command(
+			'failing',
+			'A failing command',
+			'Content',
+			CommandConfig::fromFrontmatter([])
+		);
+
+		$command_registry->method('has')->with('failing')->willReturn(true);
+		$command_registry->method('get')->with('failing')->willReturn($command);
+
+		$execution_result = CommandExecutionResult::failure('Something went wrong');
+		$command_executor->method('execute')->willReturn($execution_result);
+
+		$this->output_handler->expects($this->once())
+			->method('writeError')
+			->with($this->stringContains('Something went wrong'));
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/failing');
+
+		$this->assertTrue($result->wasHandled());
+		$this->assertFalse($result->shouldInject());
+	}
+
+	public function test_handle_builtInCommand_takesPrecedenceOverRegistry(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		// Registry has a command named 'help' but built-in should take precedence
+		$command_registry->expects($this->never())->method('has');
+		$command_registry->expects($this->never())->method('get');
+		$command_executor->expects($this->never())->method('execute');
+
+		$this->output_handler->expects($this->once())
+			->method('writeLine')
+			->with($this->stringContains('Available commands'));
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/help');
+
+		$this->assertTrue($result->wasHandled());
+	}
+
+	public function test_handle_unknownCommand_whenNotInRegistry(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command_registry->method('has')->with('notfound')->willReturn(false);
+
+		$this->output_handler->expects($this->once())
+			->method('writeError')
+			->with($this->stringContains('Unknown command: /notfound'));
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/notfound');
+
+		$this->assertTrue($result->wasHandled());
+		$this->assertFalse($result->shouldInject());
+	}
+
+	public function test_handle_customCommand_passesArgumentsCorrectly(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command = new Command(
+			'commit',
+			'Create commit',
+			'Create a commit with message: $1',
+			CommandConfig::fromFrontmatter([])
+		);
+
+		$command_registry->method('has')->with('commit')->willReturn(true);
+		$command_registry->method('get')->with('commit')->willReturn($command);
+
+		$command_executor->expects($this->once())
+			->method('execute')
+			->with(
+				$command,
+				$this->callback(function (ArgumentList $args): bool {
+					return $args->getRaw() === 'fix: bug in parser'
+						&& $args->get(1) === 'fix:'
+						&& $args->get(2) === 'bug'
+						&& $args->get(3) === 'in'
+						&& $args->get(4) === 'parser';
+				})
+			)
+			->willReturn(CommandExecutionResult::success('Create a commit with message: fix: bug in parser'));
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$result = $handler->handle('/commit fix: bug in parser');
+
+		$this->assertTrue($result->shouldInject());
+	}
+
+	public function test_help_includesCustomCommandsFromRegistry(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$review_command = new Command(
+			'review',
+			'Code review helper',
+			'Review content',
+			CommandConfig::fromFrontmatter([]),
+			'/path/to/review.md',
+			'project'
+		);
+
+		$commit_command = new Command(
+			'commit',
+			'Create git commit',
+			'Commit content',
+			CommandConfig::fromFrontmatter([]),
+			'/home/.config/commands/commit.md',
+			'user'
+		);
+
+		$command_registry->method('getCustomCommands')->willReturn([
+			'review' => $review_command,
+			'commit' => $commit_command,
+		]);
+
+		$output = '';
+		$this->output_handler->method('writeLine')
+			->willReturnCallback(function (string $line) use (&$output): void {
+				$output .= $line;
+			});
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$handler->handle('/help');
+
+		$this->assertStringContainsString('Custom commands:', $output);
+		$this->assertStringContainsString('/review', $output);
+		$this->assertStringContainsString('Code review helper', $output);
+		$this->assertStringContainsString('(project)', $output);
+		$this->assertStringContainsString('/commit', $output);
+		$this->assertStringContainsString('Create git commit', $output);
+		$this->assertStringContainsString('(user)', $output);
+	}
+
+	public function test_help_noCustomCommandsSectionWhenRegistryEmpty(): void
+	{
+		$command_registry = $this->createMock(CommandRegistryInterface::class);
+		$command_executor = $this->createMock(CommandExecutorInterface::class);
+
+		$command_registry->method('getCustomCommands')->willReturn([]);
+
+		$output = '';
+		$this->output_handler->method('writeLine')
+			->willReturnCallback(function (string $line) use (&$output): void {
+				$output .= $line;
+			});
+
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry,
+			$command_registry,
+			$command_executor
+		);
+
+		$handler->handle('/help');
+
+		// Should still show built-in commands but not custom commands section
+		$this->assertStringContainsString('Available commands:', $output);
+		$this->assertStringNotContainsString('Custom commands:', $output);
+	}
+
+	public function test_constructor_withoutOptionalDependencies_stillWorks(): void
+	{
+		// This tests backward compatibility - handler works without registry/executor
+		$handler = new CommandHandler(
+			$this->agent,
+			$this->output_handler,
+			$this->session_repository,
+			$this->tool_registry
+		);
+
+		$result = $handler->handle('/help');
+
+		$this->assertTrue($result->wasHandled());
 	}
 }

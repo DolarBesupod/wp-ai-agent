@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\AiClient;
+namespace WpAiAgent\Integration\AiClient;
 
-use PhpCliAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Contracts\ToolInterface;
 use WordPress\AiClient\Tools\DTO\FunctionDeclaration;
 
 /**

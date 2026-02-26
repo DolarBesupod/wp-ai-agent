@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Mcp;
+namespace WpAiAgent\Tests\Unit\Integration\Mcp;
 
-use PhpCliAgent\Integration\Mcp\McpServerConfiguration;
+use WpAiAgent\Integration\Mcp\McpServerConfiguration;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for McpServerConfiguration.
  *
- * @covers \PhpCliAgent\Integration\Mcp\McpServerConfiguration
+ * @covers \WpAiAgent\Integration\Mcp\McpServerConfiguration
  */
 final class McpServerConfigurationTest extends TestCase
 {

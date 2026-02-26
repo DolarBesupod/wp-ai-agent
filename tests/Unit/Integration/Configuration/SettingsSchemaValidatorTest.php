@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Configuration;
+namespace WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
-use PhpCliAgent\Integration\Configuration\SettingsSchemaValidator;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Integration\Configuration\SettingsSchemaValidator;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for SettingsSchemaValidator.
  *
- * @covers \PhpCliAgent\Integration\Configuration\SettingsSchemaValidator
+ * @covers \WpAiAgent\Integration\Configuration\SettingsSchemaValidator
  */
 final class SettingsSchemaValidatorTest extends TestCase
 {
@@ -29,7 +29,9 @@ final class SettingsSchemaValidatorTest extends TestCase
 				'max_tokens' => 8192,
 			],
 			'max_turns' => 100,
-			'bypass_confirmation_tools' => ['think', 'read_file'],
+			'permissions' => [
+				'allow' => ['think', 'read_file'],
+			],
 			'debug' => false,
 			'streaming' => true,
 		];
@@ -168,36 +170,40 @@ final class SettingsSchemaValidatorTest extends TestCase
 	}
 
 	/**
-	 * Tests that bypass_confirmation_tools with non-array throws error.
+	 * Tests that permissions.allow with non-array throws error.
 	 */
-	public function test_validate_withBypassToolsAsString_throwsTypeError(): void
+	public function test_validate_withPermissionsAllowAsString_throwsTypeError(): void
 	{
 		$validator = new SettingsSchemaValidator();
 
 		$config = [
-			'bypass_confirmation_tools' => 'think',
+			'permissions' => [
+				'allow' => 'think',
+			],
 		];
 
 		$this->expectException(ConfigurationException::class);
-		$this->expectExceptionMessage('bypass_confirmation_tools');
+		$this->expectExceptionMessage('permissions.allow');
 		$this->expectExceptionMessage('array');
 
 		$validator->validate($config);
 	}
 
 	/**
-	 * Tests that bypass_confirmation_tools with non-string items throws error.
+	 * Tests that permissions.allow with non-string items throws error.
 	 */
-	public function test_validate_withBypassToolsContainingNonString_throwsTypeError(): void
+	public function test_validate_withPermissionsAllowContainingNonString_throwsTypeError(): void
 	{
 		$validator = new SettingsSchemaValidator();
 
 		$config = [
-			'bypass_confirmation_tools' => ['think', 123, 'read_file'],
+			'permissions' => [
+				'allow' => ['think', 123, 'read_file'],
+			],
 		];
 
 		$this->expectException(ConfigurationException::class);
-		$this->expectExceptionMessage('bypass_confirmation_tools[1]');
+		$this->expectExceptionMessage('permissions.allow[1]');
 		$this->expectExceptionMessage('string');
 
 		$validator->validate($config);

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Exceptions;
+namespace WpAiAgent\Core\Exceptions;
 
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Exception thrown when a session is not found.

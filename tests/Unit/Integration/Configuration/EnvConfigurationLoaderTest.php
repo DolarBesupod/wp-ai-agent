@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Configuration;
+namespace WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
-use PhpCliAgent\Integration\Configuration\EnvConfigurationLoader;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for EnvConfigurationLoader.
  *
- * @covers \PhpCliAgent\Integration\Configuration\EnvConfigurationLoader
+ * @covers \WpAiAgent\Integration\Configuration\EnvConfigurationLoader
  */
 final class EnvConfigurationLoaderTest extends TestCase
 {

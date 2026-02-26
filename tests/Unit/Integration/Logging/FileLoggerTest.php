@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Logging;
+namespace WpAiAgent\Tests\Unit\Integration\Logging;
 
-use PhpCliAgent\Integration\Logging\FileLogger;
+use WpAiAgent\Integration\Logging\FileLogger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

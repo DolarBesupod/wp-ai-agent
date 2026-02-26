@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Tool\BuiltIn;
+namespace WpAiAgent\Integration\Tool\BuiltIn;
 
-use PhpCliAgent\Core\Tool\AbstractTool;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Tool\AbstractTool;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tool for executing bash/shell commands.

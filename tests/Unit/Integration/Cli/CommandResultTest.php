@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Integration\Cli\CommandResult;
+use WpAiAgent\Integration\Cli\CommandResult;
 
 /**
  * Tests for CommandResult value object.
  *
- * @covers \PhpCliAgent\Integration\Cli\CommandResult
+ * @covers \WpAiAgent\Integration\Cli\CommandResult
  */
 final class CommandResultTest extends TestCase
 {
@@ -99,5 +99,64 @@ final class CommandResultTest extends TestCase
 	{
 		$result = CommandResult::handled();
 		$this->assertFalse($result->hasMessage());
+	}
+
+	public function test_inject_createsResultWithInjectedContent(): void
+	{
+		$content = 'Review this code: file.php';
+		$result = CommandResult::inject($content);
+
+		$this->assertTrue($result->wasHandled());
+		$this->assertTrue($result->shouldContinue());
+		$this->assertTrue($result->shouldInject());
+		$this->assertSame($content, $result->getInjectedContent());
+	}
+
+	public function test_inject_withEmptyContent(): void
+	{
+		$result = CommandResult::inject('');
+
+		$this->assertTrue($result->shouldInject());
+		$this->assertSame('', $result->getInjectedContent());
+	}
+
+	public function test_inject_withMultilineContent(): void
+	{
+		$content = "Line 1\nLine 2\nLine 3";
+		$result = CommandResult::inject($content);
+
+		$this->assertTrue($result->shouldInject());
+		$this->assertSame($content, $result->getInjectedContent());
+	}
+
+	public function test_shouldInject_returnsFalseForHandledResult(): void
+	{
+		$result = CommandResult::handled('Some message');
+
+		$this->assertFalse($result->shouldInject());
+		$this->assertNull($result->getInjectedContent());
+	}
+
+	public function test_shouldInject_returnsFalseForExitResult(): void
+	{
+		$result = CommandResult::exit();
+
+		$this->assertFalse($result->shouldInject());
+		$this->assertNull($result->getInjectedContent());
+	}
+
+	public function test_shouldInject_returnsFalseForNotHandledResult(): void
+	{
+		$result = CommandResult::notHandled();
+
+		$this->assertFalse($result->shouldInject());
+		$this->assertNull($result->getInjectedContent());
+	}
+
+	public function test_getInjectedContent_returnsNullForNonInjectResult(): void
+	{
+		$result = CommandResult::handled();
+
+		$this->assertNull($result->getInjectedContent());
 	}
 }

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Agent;
+namespace WpAiAgent\Core\Agent;
 
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\AgentLoopInterface;
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\Contracts\SessionRepositoryInterface;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Exceptions\SessionNotFoundException;
-use PhpCliAgent\Core\Session\Session;
-use PhpCliAgent\Core\ValueObjects\Message;
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\AgentLoopInterface;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use WpAiAgent\Core\Session\Session;
+use WpAiAgent\Core\ValueObjects\Message;
+use WpAiAgent\Core\ValueObjects\SessionId;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -274,7 +274,7 @@ final class Agent implements AgentInterface
 	/**
 	 * Lists all available sessions.
 	 *
-	 * @return array<int, array{id: SessionId, metadata: \PhpCliAgent\Core\Contracts\SessionMetadataInterface}>
+	 * @return array<int, array{id: SessionId, metadata: \WpAiAgent\Core\Contracts\SessionMetadataInterface}>
 	 */
 	public function listSessions(): array
 	{

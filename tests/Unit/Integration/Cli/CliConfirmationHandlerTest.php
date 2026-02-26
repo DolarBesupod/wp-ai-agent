@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
-use PhpCliAgent\Core\Contracts\ConfirmationHandlerInterface;
-use PhpCliAgent\Integration\Cli\CliConfirmationHandler;
+use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use WpAiAgent\Integration\Cli\CliConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for CliConfirmationHandler.
  *
- * @covers \PhpCliAgent\Integration\Cli\CliConfirmationHandler
+ * @covers \WpAiAgent\Integration\Cli\CliConfirmationHandler
  */
 final class CliConfirmationHandlerTest extends TestCase
 {
@@ -711,7 +711,7 @@ final class CliConfirmationHandlerTest extends TestCase
 		mkdir($temp_dir, 0755, true);
 
 		try {
-			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence = \WpAiAgent\Integration\Cli\BypassPersistence::forWorkingDirectory($temp_dir);
 			$persistence->save(['persisted_tool']);
 
 			$handler = new CliConfirmationHandler(
@@ -724,14 +724,7 @@ final class CliConfirmationHandlerTest extends TestCase
 
 			$this->assertTrue($handler->shouldBypass('persisted_tool'));
 		} finally {
-			// Cleanup.
-			$files = glob($temp_dir . '/*');
-			if ($files !== false) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
-			}
-			rmdir($temp_dir);
+			$this->cleanupTestDirectory($temp_dir);
 		}
 	}
 
@@ -744,7 +737,7 @@ final class CliConfirmationHandlerTest extends TestCase
 		mkdir($temp_dir, 0755, true);
 
 		try {
-			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence = \WpAiAgent\Integration\Cli\BypassPersistence::forWorkingDirectory($temp_dir);
 			$handler = new CliConfirmationHandler(
 				$this->output_stream,
 				$this->input_stream,
@@ -759,13 +752,7 @@ final class CliConfirmationHandlerTest extends TestCase
 			$loaded = $persistence->load();
 			$this->assertContains('new_tool', $loaded);
 		} finally {
-			$files = glob($temp_dir . '/*');
-			if ($files !== false) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
-			}
-			rmdir($temp_dir);
+			$this->cleanupTestDirectory($temp_dir);
 		}
 	}
 
@@ -778,7 +765,7 @@ final class CliConfirmationHandlerTest extends TestCase
 		mkdir($temp_dir, 0755, true);
 
 		try {
-			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence = \WpAiAgent\Integration\Cli\BypassPersistence::forWorkingDirectory($temp_dir);
 			$persistence->save(['tool_a', 'tool_b']);
 
 			$handler = new CliConfirmationHandler(
@@ -795,13 +782,7 @@ final class CliConfirmationHandlerTest extends TestCase
 			$this->assertNotContains('tool_a', $loaded);
 			$this->assertContains('tool_b', $loaded);
 		} finally {
-			$files = glob($temp_dir . '/*');
-			if ($files !== false) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
-			}
-			rmdir($temp_dir);
+			$this->cleanupTestDirectory($temp_dir);
 		}
 	}
 
@@ -814,7 +795,7 @@ final class CliConfirmationHandlerTest extends TestCase
 		mkdir($temp_dir, 0755, true);
 
 		try {
-			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence = \WpAiAgent\Integration\Cli\BypassPersistence::forWorkingDirectory($temp_dir);
 			$persistence->save(['tool_a', 'tool_b']);
 
 			$handler = new CliConfirmationHandler(
@@ -830,13 +811,7 @@ final class CliConfirmationHandlerTest extends TestCase
 			$loaded = $persistence->load();
 			$this->assertEmpty($loaded);
 		} finally {
-			$files = glob($temp_dir . '/*');
-			if ($files !== false) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
-			}
-			rmdir($temp_dir);
+			$this->cleanupTestDirectory($temp_dir);
 		}
 	}
 
@@ -849,7 +824,7 @@ final class CliConfirmationHandlerTest extends TestCase
 		mkdir($temp_dir, 0755, true);
 
 		try {
-			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence = \WpAiAgent\Integration\Cli\BypassPersistence::forWorkingDirectory($temp_dir);
 			$handler = new CliConfirmationHandler(
 				$this->output_stream,
 				$this->input_stream,
@@ -867,13 +842,7 @@ final class CliConfirmationHandlerTest extends TestCase
 			$loaded = $persistence->load();
 			$this->assertContains('my_tool', $loaded);
 		} finally {
-			$files = glob($temp_dir . '/*');
-			if ($files !== false) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
-			}
-			rmdir($temp_dir);
+			$this->cleanupTestDirectory($temp_dir);
 		}
 	}
 
@@ -886,7 +855,7 @@ final class CliConfirmationHandlerTest extends TestCase
 		mkdir($temp_dir, 0755, true);
 
 		try {
-			$persistence = new \PhpCliAgent\Integration\Cli\BypassPersistence($temp_dir);
+			$persistence = \WpAiAgent\Integration\Cli\BypassPersistence::forWorkingDirectory($temp_dir);
 
 			// First handler adds a bypass.
 			$handler1 = new CliConfirmationHandler(
@@ -909,13 +878,38 @@ final class CliConfirmationHandlerTest extends TestCase
 
 			$this->assertTrue($handler2->shouldBypass('persistent_tool'));
 		} finally {
-			$files = glob($temp_dir . '/*');
-			if ($files !== false) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
-			}
-			rmdir($temp_dir);
+			$this->cleanupTestDirectory($temp_dir);
 		}
+	}
+
+	/**
+	 * Recursively cleans up a test directory.
+	 *
+	 * @param string $dir The directory to clean up.
+	 */
+	private function cleanupTestDirectory(string $dir): void
+	{
+		if (!is_dir($dir)) {
+			return;
+		}
+
+		$items = glob($dir . '/{,.}*', GLOB_BRACE);
+		if ($items === false) {
+			return;
+		}
+
+		foreach ($items as $item) {
+			$basename = basename($item);
+			if ($basename === '.' || $basename === '..') {
+				continue;
+			}
+
+			if (is_dir($item)) {
+				$this->cleanupTestDirectory($item);
+			} else {
+				unlink($item);
+			}
+		}
+		rmdir($dir);
 	}
 }

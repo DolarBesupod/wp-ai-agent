@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Configuration;
+namespace WpAiAgent\Integration\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Validates settings configuration against a JSON schema.
@@ -295,12 +295,6 @@ final class SettingsSchemaValidator
 					'minimum' => 1,
 					'default' => 100,
 				],
-				'bypass_confirmation_tools' => [
-					'type' => 'array',
-					'items' => [
-						'type' => 'string',
-					],
-				],
 				'debug' => [
 					'type' => 'boolean',
 					'default' => false,
@@ -321,6 +315,23 @@ final class SettingsSchemaValidator
 				'mcp_servers' => [
 					'type' => 'array',
 				],
+				'permissions' => [
+					'type' => 'object',
+					'properties' => [
+						'allow' => [
+							'type' => 'array',
+							'items' => [
+								'type' => 'string',
+							],
+						],
+						'deny' => [
+							'type' => 'array',
+							'items' => [
+								'type' => 'string',
+							],
+						],
+					],
+				],
 			],
 		];
 	}
@@ -339,13 +350,16 @@ final class SettingsSchemaValidator
 				'max_tokens' => 8192,
 			],
 			'max_turns' => 100,
-			'bypass_confirmation_tools' => ['think'],
 			'debug' => false,
 			'streaming' => true,
-			'session_storage_path' => '~/.php-cli-agent/sessions',
-			'log_path' => '~/.php-cli-agent/logs',
+			'session_storage_path' => '~/.wp-ai-agent/sessions',
+			'log_path' => '~/.wp-ai-agent/logs',
 			'default_system_prompt' => '',
 			'mcp_servers' => [],
+			'permissions' => [
+				'allow' => [],
+				'deny' => [],
+			],
 		];
 	}
 }

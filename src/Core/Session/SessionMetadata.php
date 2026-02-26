@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Session;
+namespace WpAiAgent\Core\Session;
 
 use DateTimeImmutable;
-use PhpCliAgent\Core\Contracts\SessionMetadataInterface;
+use WpAiAgent\Core\Contracts\SessionMetadataInterface;
 
 /**
  * Session metadata implementation.

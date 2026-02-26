@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Core\Exceptions;
+namespace WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Exceptions\AgentException;
-use PhpCliAgent\Core\Exceptions\ToolExecutionException;
+use WpAiAgent\Core\Exceptions\AgentException;
+use WpAiAgent\Core\Exceptions\ToolExecutionException;
 
 /**
  * Tests for ToolExecutionException.
  *
- * @covers \PhpCliAgent\Core\Exceptions\ToolExecutionException
+ * @covers \WpAiAgent\Core\Exceptions\ToolExecutionException
  */
 final class ToolExecutionExceptionTest extends TestCase
 {

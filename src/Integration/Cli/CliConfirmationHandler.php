@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli;
+namespace WpAiAgent\Integration\Cli;
 
-use PhpCliAgent\Core\Contracts\ConfirmationHandlerInterface;
+use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
 
 /**
  * CLI-specific confirmation handler with interactive prompts.

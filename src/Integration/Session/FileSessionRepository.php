@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Session;
+namespace WpAiAgent\Integration\Session;
 
-use PhpCliAgent\Core\Contracts\SessionInterface;
-use PhpCliAgent\Core\Contracts\SessionMetadataInterface;
-use PhpCliAgent\Core\Contracts\SessionRepositoryInterface;
-use PhpCliAgent\Core\Exceptions\SessionNotFoundException;
-use PhpCliAgent\Core\Exceptions\SessionPersistenceException;
-use PhpCliAgent\Core\Session\Session;
-use PhpCliAgent\Core\Session\SessionMetadata;
-use PhpCliAgent\Core\ValueObjects\SessionId;
+use WpAiAgent\Core\Contracts\SessionInterface;
+use WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use WpAiAgent\Core\Session\Session;
+use WpAiAgent\Core\Session\SessionMetadata;
+use WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * File-based session repository implementation.
@@ -26,7 +26,7 @@ final class FileSessionRepository implements SessionRepositoryInterface
 	/**
 	 * Default sessions storage directory within the user's home.
 	 */
-	private const DEFAULT_STORAGE_SUBPATH = '.php-cli-agent/sessions';
+	private const DEFAULT_STORAGE_SUBPATH = '.wp-ai-agent/sessions';
 
 	/**
 	 * File extension for session files.
@@ -51,7 +51,7 @@ final class FileSessionRepository implements SessionRepositoryInterface
 	 * Creates a new FileSessionRepository instance.
 	 *
 	 * @param string|null                $storage_path Optional custom storage path.
-	 *                                                  Defaults to ~/.php-cli-agent/sessions/
+	 *                                                  Defaults to ~/.wp-ai-agent/sessions/
 	 * @param JsonSessionSerializer|null $serializer   Optional custom serializer instance.
 	 */
 	public function __construct(

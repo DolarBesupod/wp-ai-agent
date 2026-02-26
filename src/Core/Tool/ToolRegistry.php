@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Tool;
+namespace WpAiAgent\Core\Tool;
 
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\DuplicateToolException;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\DuplicateToolException;
 
 /**
  * Registry for managing tool registration and retrieval.

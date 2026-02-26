@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Mcp;
+namespace WpAiAgent\Integration\Mcp;
 
 /**
  * Configuration for an MCP server connection.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Contracts;
+namespace WpAiAgent\Core\Contracts;
 
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Interface for executing tools with confirmation handling.

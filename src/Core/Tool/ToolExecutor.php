@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Tool;
+namespace WpAiAgent\Core\Tool;
 
-use PhpCliAgent\Core\Contracts\ConfirmationHandlerInterface;
-use PhpCliAgent\Core\Contracts\ToolExecutorInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Exceptions\ToolExecutionException;
-use PhpCliAgent\Core\ValueObjects\ToolResult;
+use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Exceptions\ToolExecutionException;
+use WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Exceptions;
+namespace WpAiAgent\Core\Exceptions;
 
 /**
  * Exception thrown when a requested tool is not found in the registry.

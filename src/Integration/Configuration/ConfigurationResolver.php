@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Configuration;
+namespace WpAiAgent\Integration\Configuration;
 
-use PhpCliAgent\Core\Configuration\McpServerConfiguration;
-use PhpCliAgent\Core\Contracts\ConfigurationInterface;
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Configuration\McpServerConfiguration;
+use WpAiAgent\Core\Contracts\ConfigurationInterface;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Resolves configuration from multiple sources with priority chain.
  *
  * Priority order (highest to lowest):
  * 1. Environment variables
- * 2. .php-cli-agent/settings.json + .php-cli-agent/mcp.json
+ * 2. .wp-ai-agent/settings.json + .wp-ai-agent/mcp.json
  * 3. Built-in defaults
  *
  * @since n.e.x.t
@@ -102,7 +102,7 @@ final class ConfigurationResolver
 		// Apply environment variable overrides (highest priority)
 		$config = $this->applyEnvironmentOverrides($config);
 
-		return $this->createConfiguration($config);
+		return $this->createConfiguration($config, $working_dir);
 	}
 
 	/**
@@ -176,8 +176,8 @@ final class ConfigurationResolver
 				'max_tokens' => 8192,
 			],
 			'mcp_servers' => [],
-			'session_storage_path' => '~/.php-cli-agent/sessions',
-			'log_path' => '~/.php-cli-agent/logs',
+			'session_storage_path' => '.wp-ai-agent/sessions',
+			'log_path' => '~/.wp-ai-agent/logs',
 			'max_turns' => 100,
 			'default_system_prompt' => '',
 			'bypass_confirmation_tools' => ['think'],
@@ -330,27 +330,38 @@ final class ConfigurationResolver
 	/**
 	 * Creates a configuration object from the resolved configuration array.
 	 *
-	 * @param array<string, mixed> $config The configuration array.
+	 * @param array<string, mixed> $config      The configuration array.
+	 * @param string               $working_dir The working directory for relative paths.
 	 *
 	 * @return ConfigurationInterface The configuration object.
 	 */
-	private function createConfiguration(array $config): ConfigurationInterface
+	private function createConfiguration(array $config, string $working_dir): ConfigurationInterface
 	{
 		// Expand tilde in paths
 		$home = $this->getEnv('HOME');
 		if ($home === false) {
 			$home = $this->getEnv('USERPROFILE');
 		}
-		if ($home !== false && $home !== '') {
-			if (isset($config['session_storage_path']) && is_string($config['session_storage_path'])) {
-				if (strpos($config['session_storage_path'], '~') === 0) {
-					$config['session_storage_path'] = $home . substr($config['session_storage_path'], 1);
-				}
+
+		// Process session_storage_path
+		if (isset($config['session_storage_path']) && is_string($config['session_storage_path'])) {
+			$path = $config['session_storage_path'];
+			if ($home !== false && $home !== '' && strpos($path, '~') === 0) {
+				$config['session_storage_path'] = $home . substr($path, 1);
+			} elseif (strpos($path, '/') !== 0 && strpos($path, '~') !== 0) {
+				// Relative path - make it absolute based on working directory
+				$config['session_storage_path'] = rtrim($working_dir, '/') . '/' . $path;
 			}
-			if (isset($config['log_path']) && is_string($config['log_path'])) {
-				if (strpos($config['log_path'], '~') === 0) {
-					$config['log_path'] = $home . substr($config['log_path'], 1);
-				}
+		}
+
+		// Process log_path
+		if (isset($config['log_path']) && is_string($config['log_path'])) {
+			$path = $config['log_path'];
+			if ($home !== false && $home !== '' && strpos($path, '~') === 0) {
+				$config['log_path'] = $home . substr($path, 1);
+			} elseif (strpos($path, '/') !== 0 && strpos($path, '~') !== 0) {
+				// Relative path - make it absolute based on working directory
+				$config['log_path'] = rtrim($working_dir, '/') . '/' . $path;
 			}
 		}
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Cli\Command;
+namespace WpAiAgent\Integration\Cli\Command;
 
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Integration\Cli\CommandResult;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Integration\Cli\CommandResult;
 
 /**
- * Command to initialize the .php-cli-agent/ configuration folder.
+ * Command to initialize the .wp-ai-agent/ configuration folder.
  *
  * Creates the configuration directory and generates default settings.json
  * and mcp.json files. Prompts for confirmation if files already exist
@@ -23,7 +23,7 @@ final class InitCommand
 	 *
 	 * @var string
 	 */
-	public const CONFIG_DIRECTORY = '.php-cli-agent';
+	public const CONFIG_DIRECTORY = '.wp-ai-agent';
 
 	/**
 	 * Default settings configuration.
@@ -107,7 +107,7 @@ final class InitCommand
 	 */
 	public function getDescription(): string
 	{
-		return 'Initialize the .php-cli-agent configuration folder';
+		return 'Initialize the .wp-ai-agent configuration folder';
 	}
 
 	/**
@@ -124,7 +124,7 @@ Options:
   --force, -f    Overwrite existing files without prompting
 
 Description:
-  Creates the .php-cli-agent/ directory in the current project root
+  Creates the .wp-ai-agent/ directory in the current project root
   with default configuration files:
   - settings.json: Agent settings (model, max_tokens, etc.)
   - mcp.json: MCP server configuration
@@ -272,7 +272,7 @@ USAGE;
 	 * Updates the .gitignore file to include the configuration directory.
 	 *
 	 * Creates the .gitignore file if it doesn't exist. Appends the
-	 * .php-cli-agent/ entry if not already present. Handles cases where
+	 * .wp-ai-agent/ entry if not already present. Handles cases where
 	 * the file exists with or without a trailing newline.
 	 *
 	 * @since n.e.x.t
@@ -311,7 +311,7 @@ USAGE;
 	/**
 	 * Checks if the .gitignore content already contains the config directory entry.
 	 *
-	 * Matches both ".php-cli-agent" and ".php-cli-agent/" formats.
+	 * Matches both ".wp-ai-agent" and ".wp-ai-agent/" formats.
 	 *
 	 * @since n.e.x.t
 	 *
@@ -325,7 +325,7 @@ USAGE;
 
 		foreach ($lines as $line) {
 			$line = trim($line);
-			// Match ".php-cli-agent" or ".php-cli-agent/".
+			// Match ".wp-ai-agent" or ".wp-ai-agent/".
 			if ($line === self::CONFIG_DIRECTORY || $line === self::CONFIG_DIRECTORY . '/') {
 				return true;
 			}
@@ -344,8 +344,8 @@ USAGE;
 		$next_steps = <<<STEPS
 
 Next steps:
-  1. Edit .php-cli-agent/settings.json to configure your agent
-  2. Add MCP servers to .php-cli-agent/mcp.json
+  1. Edit .wp-ai-agent/settings.json to configure your agent
+  2. Add MCP servers to .wp-ai-agent/mcp.json
   3. Run 'php agent' to start the agent
 
 STEPS;

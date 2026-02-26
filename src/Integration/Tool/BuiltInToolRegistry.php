@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Integration\Tool;
+namespace WpAiAgent\Integration\Tool;
 
-use PhpCliAgent\Core\Contracts\ToolInterface;
-use PhpCliAgent\Core\Contracts\ToolRegistryInterface;
-use PhpCliAgent\Core\Tool\ToolRegistry;
-use PhpCliAgent\Integration\Tool\BuiltIn\BashTool;
-use PhpCliAgent\Integration\Tool\BuiltIn\GlobTool;
-use PhpCliAgent\Integration\Tool\BuiltIn\GrepTool;
-use PhpCliAgent\Integration\Tool\BuiltIn\ReadFileTool;
-use PhpCliAgent\Integration\Tool\BuiltIn\ThinkTool;
-use PhpCliAgent\Integration\Tool\BuiltIn\WriteFileTool;
+use WpAiAgent\Core\Contracts\ToolInterface;
+use WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use WpAiAgent\Core\Tool\ToolRegistry;
+use WpAiAgent\Integration\Tool\BuiltIn\BashTool;
+use WpAiAgent\Integration\Tool\BuiltIn\GlobTool;
+use WpAiAgent\Integration\Tool\BuiltIn\GrepTool;
+use WpAiAgent\Integration\Tool\BuiltIn\ReadFileTool;
+use WpAiAgent\Integration\Tool\BuiltIn\ThinkTool;
+use WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool;
 
 /**
  * Registry factory for built-in tools.

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Tests\Unit\Integration\Cli;
+namespace WpAiAgent\Tests\Unit\Integration\Cli;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PhpCliAgent\Core\Contracts\AgentInterface;
-use PhpCliAgent\Core\Contracts\OutputHandlerInterface;
-use PhpCliAgent\Core\Contracts\SessionRepositoryInterface;
-use PhpCliAgent\Integration\Cli\ReplRunner;
+use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use WpAiAgent\Integration\Cli\ReplRunner;
 
 /**
  * Tests for ReplRunner.
  *
- * @covers \PhpCliAgent\Integration\Cli\ReplRunner
+ * @covers \WpAiAgent\Integration\Cli\ReplRunner
  */
 final class ReplRunnerTest extends TestCase
 {

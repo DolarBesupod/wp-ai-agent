@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpCliAgent\Core\Configuration;
+namespace WpAiAgent\Core\Configuration;
 
-use PhpCliAgent\Core\Exceptions\ConfigurationException;
+use WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Main configuration for the CLI Agent.
@@ -19,12 +19,12 @@ final class AgentConfiguration
 	/**
 	 * Default session storage path.
 	 */
-	private const DEFAULT_SESSION_STORAGE_PATH = '~/.php-cli-agent/sessions';
+	private const DEFAULT_SESSION_STORAGE_PATH = '~/.wp-ai-agent/sessions';
 
 	/**
 	 * Default log path.
 	 */
-	private const DEFAULT_LOG_PATH = '~/.php-cli-agent/logs';
+	private const DEFAULT_LOG_PATH = '~/.wp-ai-agent/logs';
 
 	/**
 	 * Default maximum turns.
