@@ -59,6 +59,25 @@ namespace {
 			return \Tests\Stubs\WpOptionsStore::delete($option);
 		}
 	}
+
+	if (!function_exists('wp_json_encode')) {
+		/**
+		 * Stub for WordPress wp_json_encode().
+		 *
+		 * Encodes a value to JSON. Mirrors WordPress behaviour by returning
+		 * false on encoding failure.
+		 *
+		 * @param mixed $data  The data to encode.
+		 * @param int   $flags JSON encoding flags.
+		 * @param int   $depth Maximum depth.
+		 *
+		 * @return string|false JSON string or false on failure.
+		 */
+		function wp_json_encode(mixed $data, int $flags = 0, int $depth = 512): string|false
+		{
+			return json_encode($data, $flags, $depth);
+		}
+	}
 }
 
 namespace Tests\Stubs {
