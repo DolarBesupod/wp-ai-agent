@@ -16,7 +16,7 @@ use WpAiAgent\Integration\Settings\BashCommandExpander;
 use WpAiAgent\Integration\Settings\FileReferenceExpander;
 use WpAiAgent\Integration\Skill\SkillLoader;
 use WpAiAgent\Integration\Skill\SkillRegistry;
-use WpAiAgent\Integration\Ability\AbilityToolRegistry;
+use WpAiAgent\Integration\Ability\AbilityStrapTool;
 use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
@@ -231,12 +231,12 @@ final class WpCliBootstrap
 	}
 
 	/**
-	 * Discovers WordPress abilities and registers them as agent tools.
+	 * Registers the STRAP facade tool for WordPress abilities.
 	 *
 	 * Guarded by `function_exists('wp_get_abilities')` so the agent starts
 	 * cleanly on WordPress versions before 6.9 where the Abilities API does
-	 * not exist. Discovery errors are reported via WP_CLI::warning() and
-	 * never abort startup.
+	 * not exist. Registers a single AbilityStrapTool that provides list,
+	 * describe, and execute actions for all WordPress abilities.
 	 *
 	 * @since n.e.x.t
 	 *
@@ -249,11 +249,7 @@ final class WpCliBootstrap
 			return;
 		}
 
-		$ability_registry = new AbilityToolRegistry();
-		$tools_registered = $ability_registry->discoverAndRegister($tool_registry);
-
-		if ($tools_registered > 0) {
-			\WP_CLI::debug(sprintf('[Abilities] Registered %d tool(s)', $tools_registered));
-		}
+		$tool_registry->register(new AbilityStrapTool());
+		\WP_CLI::debug('[Abilities] STRAP facade registered');
 	}
 }
