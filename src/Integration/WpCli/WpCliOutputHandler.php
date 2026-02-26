@@ -131,7 +131,9 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 		}
 
 		$colored_name = \WP_CLI::colorize(sprintf('%%c%s%%n', $tool_name));
-		\WP_CLI::line(sprintf('%s %s: %s', $prefix, $colored_name, substr($output, 0, 200)));
+		$safe_output = str_replace('%', '%%', substr($output, 0, 200));
+		$colored_output = \WP_CLI::colorize(sprintf('%%K%s%%n', $safe_output));
+		\WP_CLI::line(sprintf('%s %s: %s', $prefix, $colored_name, $colored_output));
 	}
 
 	/**

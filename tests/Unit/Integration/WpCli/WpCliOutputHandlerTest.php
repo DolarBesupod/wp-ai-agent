@@ -292,6 +292,40 @@ final class WpCliOutputHandlerTest extends TestCase
 	}
 
 	/**
+	 * Tests that writeToolResult() wraps the output body in dark-grey (%K) color
+	 * tokens so it visually recedes behind the status symbol and tool name.
+	 */
+	public function test_writeToolResult_wrapsOutputBodyInGreyColorTokens(): void
+	{
+		$handler = new WpCliOutputHandler();
+		$result = ToolResult::success('some output');
+
+		$handler->writeToolResult('bash', $result);
+
+		$this->assertCount(1, \WP_CLI::$calls);
+		$line = \WP_CLI::$calls[0][1];
+		$this->assertStringContainsString('%Ksome output%n', $line);
+	}
+
+	/**
+	 * Tests that writeToolResult() escapes percent signs in tool output so
+	 * WP_CLI::colorize() does not interpret them as color tokens.
+	 */
+	public function test_writeToolResult_escapesPercentSignsInOutput(): void
+	{
+		$handler = new WpCliOutputHandler();
+		$result = ToolResult::success('100% done');
+
+		$handler->writeToolResult('bash', $result);
+
+		$this->assertCount(1, \WP_CLI::$calls);
+		$line = \WP_CLI::$calls[0][1];
+		// The `%` in "100%" must be escaped to `%%` before colorize,
+		// so the raw token string contains `%%` (stub returns tokens as-is).
+		$this->assertStringContainsString('100%%', $line);
+	}
+
+	/**
 	 * Tests that setDebugEnabled() stores the flag and isDebugEnabled() reflects changes.
 	 */
 	public function test_setDebugEnabled_persistsFlagAndIsDebugEnabledReflectsIt(): void
