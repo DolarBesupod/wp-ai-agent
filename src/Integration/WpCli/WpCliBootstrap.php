@@ -123,7 +123,7 @@ final class WpCliBootstrap
 			$bash_expander = new BashCommandExpander();
 			$skill_loader = new SkillLoader($markdown_parser);
 			$skill_repository = new WpOptionsSkillRepository();
-			$bundled_skills_dir = dirname(__DIR__, 2) . '/skills';
+			$bundled_skills_dir = dirname(__DIR__, 3) . '/skills';
 
 			$skill_registry = new SkillRegistry(
 				$skill_repository,
