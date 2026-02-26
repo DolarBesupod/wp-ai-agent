@@ -57,7 +57,7 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 			'body'                 => $skill->getBody(),
 			'parameters'           => $skill->getConfig()->getParameters(),
 			'requires_confirmation' => $skill->getConfig()->requiresConfirmation(),
-			'source'               => 'user',
+			'filepath'             => $skill->getFilePath(),
 		];
 
 		\update_option($option_key, \wp_json_encode($data), false);
@@ -210,6 +210,8 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 
 		$config = SkillConfig::fromFrontmatter($frontmatter);
 
-		return new Skill($name, $description, $body, $config, null);
+		$filepath = is_string($data['filepath'] ?? null) ? $data['filepath'] : null;
+
+		return new Skill($name, $description, $body, $config, $filepath);
 	}
 }
