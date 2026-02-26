@@ -16,6 +16,8 @@
 		"phpunit/phpunit": "^10.0",
 		"squizlabs/php_codesniffer": "^3.0",
 		"wordpress/ai-provider-for-anthropic": "dev-trunk",
+		"wordpress/ai-provider-for-google": "dev-trunk",
+		"wordpress/ai-provider-for-openai": "dev-trunk",
 		"wordpress/php-ai-client": "dev-trunk"
 	},
 	"autoload": {
@@ -44,6 +46,14 @@
 		{
 			"type": "vcs",
 			"url": "https://github.com/WordPress/ai-provider-for-anthropic"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/WordPress/ai-provider-for-google"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/WordPress/ai-provider-for-openai"
 		}
 	],
 	"minimum-stability": "dev",
