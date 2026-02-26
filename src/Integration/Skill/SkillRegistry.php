@@ -203,6 +203,7 @@ final class SkillRegistry
 				}
 
 				$tool_registry->register(new SkillTool($skill, $this->file_expander, $this->bash_expander));
+				$this->repository->save($skill);
 				$count++;
 			} catch (Exception $e) {
 				\WP_CLI::warning(
