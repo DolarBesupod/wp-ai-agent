@@ -32,8 +32,8 @@ class WpCliCommand
 	 * [--session=<id>]
 	 * : Resume an existing session by ID.
 	 *
-	 * [--no-save]
-	 * : Skip persisting the session after each turn.
+	 * [--[no-]save]
+	 * : Whether to persist the session after each turn. Default: persist.
 	 *
 	 * [--debug]
 	 * : Enable debug output.
@@ -72,8 +72,8 @@ class WpCliCommand
 	 * [--session=<id>]
 	 * : Resume an existing session by ID instead of starting a new one.
 	 *
-	 * [--no-save]
-	 * : Skip persisting the session.
+	 * [--[no-]save]
+	 * : Whether to persist the session. Default: persist.
 	 *
 	 * [--debug]
 	 * : Enable debug output.

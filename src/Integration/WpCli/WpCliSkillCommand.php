@@ -6,6 +6,7 @@ namespace WpAiAgent\Integration\WpCli;
 
 use WpAiAgent\Core\Skill\Skill;
 use WpAiAgent\Core\Skill\SkillConfig;
+use WpAiAgent\Integration\Configuration\MarkdownParser;
 use WpAiAgent\Integration\Skill\SkillLoader;
 
 /**
@@ -43,17 +44,21 @@ final class WpCliSkillCommand
 	/**
 	 * Creates a new WpCliSkillCommand instance.
 	 *
-	 * @param WpOptionsSkillRepository $repository The WordPress options skill repository.
-	 * @param SkillLoader              $loader     The skill loader for markdown parsing.
+	 * Both parameters are optional so WP-CLI can instantiate this class without
+	 * arguments when registering it via WP_CLI::add_command(). When omitted,
+	 * concrete implementations are created automatically.
+	 *
+	 * @param WpOptionsSkillRepository|null $repository The WordPress options skill repository.
+	 * @param SkillLoader|null              $loader     The skill loader for markdown parsing.
 	 *
 	 * @since n.e.x.t
 	 */
 	public function __construct(
-		WpOptionsSkillRepository $repository,
-		SkillLoader $loader
+		?WpOptionsSkillRepository $repository = null,
+		?SkillLoader $loader = null
 	) {
-		$this->repository = $repository;
-		$this->loader = $loader;
+		$this->repository = $repository ?? new WpOptionsSkillRepository();
+		$this->loader = $loader ?? new SkillLoader(new MarkdownParser());
 	}
 
 	/**
