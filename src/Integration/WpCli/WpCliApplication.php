@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WpAiAgent\Integration\WpCli;
 
 use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\AiAdapterInterface;
 use WpAiAgent\Core\Contracts\ConfigurationInterface;
 use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
 use WpAiAgent\Core\ValueObjects\SessionId;
@@ -81,6 +82,7 @@ class WpCliApplication
 	 * @param WpCliOutputHandler          $output_handler       The output handler.
 	 * @param WpCliConfirmationHandler    $confirmation_handler The confirmation handler.
 	 * @param SessionRepositoryInterface  $session_repository   The session repository.
+	 * @param AiAdapterInterface          $ai_adapter           The AI adapter for model switching.
 	 * @param McpClientManager|null       $mcp_client_manager   MCP client manager (kept alive to prevent GC).
 	 *
 	 * @since n.e.x.t
@@ -93,6 +95,7 @@ class WpCliApplication
 		private readonly WpCliConfirmationHandler $confirmation_handler,
 		/** @phpstan-ignore property.onlyWritten */
 		private readonly SessionRepositoryInterface $session_repository,
+		private readonly AiAdapterInterface $ai_adapter,
 		/** @phpstan-ignore property.onlyWritten */
 		private readonly ?McpClientManager $mcp_client_manager = null,
 	) {
@@ -103,7 +106,8 @@ class WpCliApplication
 	 *
 	 * Starts or resumes a session, then reads lines from STDIN in a loop
 	 * and passes each non-empty, non-quit line to the agent. The loop ends
-	 * on /quit, /exit, or EOF.
+	 * on /quit, /exit, or EOF. The /new command clears the conversation
+	 * context without ending the session.
 	 *
 	 * The greeting is displayed in bold via WP_CLI::colorize() and the prompt
 	 * uses a bright-cyan ❯ arrow. WP-CLI handles TTY detection and --no-color
@@ -157,6 +161,30 @@ class WpCliApplication
 			if ('/yolo off' === $input) {
 				$this->confirmation_handler->setAutoConfirm(false);
 				\WP_CLI::success('Auto-confirm disabled. Tools will prompt for confirmation.');
+				continue;
+			}
+
+			if ('/new' === $input) {
+				$session = $this->agent->getCurrentSession();
+
+				if ($session !== null) {
+					$session->clearMessages();
+					\WP_CLI::success('Context cleared. Starting fresh conversation.');
+				} else {
+					\WP_CLI::warning('No active session.');
+				}
+
+				continue;
+			}
+
+			if (str_starts_with($input, '/model')) {
+				$model_arg = trim(substr($input, 6));
+				if ($model_arg === '') {
+					\WP_CLI::line(sprintf('Current model: %s', $this->ai_adapter->getModel()));
+				} else {
+					$this->ai_adapter->setModel($model_arg);
+					\WP_CLI::success(sprintf('Model switched to %s', $model_arg));
+				}
 				continue;
 			}
 

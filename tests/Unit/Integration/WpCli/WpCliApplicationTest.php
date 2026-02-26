@@ -7,6 +7,7 @@ namespace WpAiAgent\Tests\Unit\Integration\WpCli;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WpAiAgent\Core\Contracts\AgentInterface;
+use WpAiAgent\Core\Contracts\AiAdapterInterface;
 use WpAiAgent\Core\Contracts\ConfigurationInterface;
 use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
 use WpAiAgent\Core\ValueObjects\SessionId;
@@ -60,6 +61,7 @@ final class WpCliApplicationTest extends TestCase
 			new WpCliOutputHandler(),
 			new WpCliConfirmationHandler(),
 			$this->createMock(SessionRepositoryInterface::class),
+			$this->createMock(AiAdapterInterface::class),
 		);
 	}
 
@@ -134,6 +136,7 @@ final class WpCliApplicationTest extends TestCase
 			$output_handler,
 			new WpCliConfirmationHandler(),
 			$this->createMock(SessionRepositoryInterface::class),
+			$this->createMock(AiAdapterInterface::class),
 		);
 
 		$app->ask('test', ['debug' => true]);
@@ -189,6 +192,7 @@ final class WpCliApplicationTest extends TestCase
 			$output,
 			new WpCliConfirmationHandler(),
 			$this->createMock(SessionRepositoryInterface::class),
+			$this->createMock(AiAdapterInterface::class),
 		);
 
 		$this->assertSame($output, $app->getOutputHandler());
@@ -219,6 +223,7 @@ final class WpCliApplicationTest extends TestCase
 			new WpCliOutputHandler(),
 			$confirmation_handler,
 			$this->createMock(SessionRepositoryInterface::class),
+			$this->createMock(AiAdapterInterface::class),
 		);
 
 		// Act
@@ -254,6 +259,7 @@ final class WpCliApplicationTest extends TestCase
 			new WpCliOutputHandler(),
 			$confirmation_handler,
 			$this->createMock(SessionRepositoryInterface::class),
+			$this->createMock(AiAdapterInterface::class),
 		);
 
 		// Act: STDIN is at EOF in the test runner, so the loop will break immediately.
@@ -335,6 +341,115 @@ final class WpCliApplicationTest extends TestCase
 	}
 
 	// -----------------------------------------------------------------------
+	// REPL /new command tests (subprocess-based)
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Tests that the /new REPL command clears the session message history and
+	 * outputs a success message.
+	 */
+	public function test_chat_newCommand_clearsSessionMessages(): void
+	{
+		$result = $this->runChatWithStdin("/new\n/quit\n");
+
+		$this->assertSame(
+			0,
+			$result['message_count'],
+			'/new must clear all messages from the session'
+		);
+		$this->assertStringContainsString(
+			'Context cleared',
+			$result['success_message'],
+			'/new must print a success message confirming context was cleared'
+		);
+	}
+
+	/**
+	 * Tests that the /new REPL command clears history even after messages have
+	 * been sent to the agent.
+	 *
+	 * MinimalAgentStub::sendMessage() is a no-op, but the agent loop in
+	 * WpCliApplication still calls it, and the session's message count is
+	 * checked after /new to confirm the clear.
+	 */
+	public function test_chat_newCommand_afterMessages_clearsHistory(): void
+	{
+		$result = $this->runChatWithStdin("Hello agent\n/new\n/quit\n");
+
+		$this->assertSame(
+			0,
+			$result['message_count'],
+			'/new after sending messages must result in zero messages'
+		);
+		$this->assertStringContainsString(
+			'Context cleared',
+			$result['success_message'],
+			'/new must print the context cleared success message'
+		);
+	}
+
+	// -----------------------------------------------------------------------
+	// REPL /model command tests (subprocess-based)
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Tests that the /model REPL command with no arguments displays the
+	 * current model name via WP_CLI::line().
+	 */
+	public function test_chat_modelCommand_noArgs_displaysCurrentModel(): void
+	{
+		$result = $this->runChatWithStdin("/model\n/quit\n");
+
+		$line_output = implode("\n", $result['line_messages']);
+		$this->assertStringContainsString(
+			'Current model:',
+			$line_output,
+			'/model must display the current model name'
+		);
+		$this->assertStringContainsString(
+			'claude-sonnet-4-20250514',
+			$line_output,
+			'/model must display the default model from MinimalAiAdapterStub'
+		);
+	}
+
+	/**
+	 * Tests that the /model REPL command with an argument switches the model
+	 * and outputs a success message.
+	 */
+	public function test_chat_modelCommand_withArg_switchesModel(): void
+	{
+		$result = $this->runChatWithStdin("/model claude-opus-4-20250514\n/quit\n");
+
+		$this->assertSame(
+			'claude-opus-4-20250514',
+			$result['current_model'],
+			'/model <name> must switch the adapter model'
+		);
+		$this->assertStringContainsString(
+			'Model switched to claude-opus-4-20250514',
+			$result['success_message'],
+			'/model <name> must print a success message'
+		);
+	}
+
+	/**
+	 * Tests that /model after a switch displays the new model name, not the
+	 * original default.
+	 */
+	public function test_chat_modelCommand_afterSwitch_displaysNewModel(): void
+	{
+		$result = $this->runChatWithStdin("/model claude-opus-4-20250514\n/model\n/quit\n");
+
+		$line_output = implode("\n", $result['line_messages']);
+		$this->assertStringContainsString(
+			'Current model: claude-opus-4-20250514',
+			$line_output,
+			'/model after switch must display the new model name'
+		);
+	}
+
+	// -----------------------------------------------------------------------
 	// Helpers
 	// -----------------------------------------------------------------------
 
@@ -350,7 +465,13 @@ final class WpCliApplicationTest extends TestCase
 	 * @param string               $stdin_input The lines to feed into the REPL.
 	 * @param array<string, mixed> $assoc_args  Optional assoc_args for chat().
 	 *
-	 * @return array{auto_confirm: bool, success_message: string} The observed state.
+	 * @return array{
+	 *     auto_confirm: bool,
+	 *     success_message: string,
+	 *     message_count: int,
+	 *     current_model: string,
+	 *     line_messages: array<int, string>
+	 * } The observed state.
 	 */
 	private function runChatWithStdin(string $stdin_input, array $assoc_args = []): array
 	{
@@ -389,7 +510,15 @@ final class WpCliApplicationTest extends TestCase
 
 		$this->assertIsString($json, 'Subprocess must write a non-empty result JSON file');
 
-		/** @var array{auto_confirm: bool, success_message: string} $data */
+		/**
+		 * @var array{
+		 *     auto_confirm: bool,
+		 *     success_message: string,
+		 *     message_count: int,
+		 *     current_model: string,
+		 *     line_messages: array<int, string>
+		 * } $data
+		 */
 		$data = json_decode((string) $json, true);
 
 		return $data;

@@ -24,8 +24,18 @@ class WpCliCommand
 	 * Start an interactive agent REPL session.
 	 *
 	 * Starts (or resumes) a session, then reads lines from STDIN in a loop
-	 * and passes each non-empty line to the agent. Type `/quit` or `/exit`
-	 * inside the session to end it.
+	 * and passes each non-empty line to the agent.
+	 *
+	 * The following slash commands are available during a chat session:
+	 *
+	 * - `/model`        — Display the current AI model.
+	 * - `/model <name>` — Switch to a different AI model for this session.
+	 * - `/new`          — Clear conversation context and start fresh (keeps session).
+	 * - `/yolo`         — Enable auto-confirm for all tool executions.
+	 * - `/yolo on`      — Same as `/yolo`.
+	 * - `/yolo off`     — Disable auto-confirm; tools will prompt again.
+	 * - `/quit`         — End the session and exit.
+	 * - `/exit`         — Same as `/quit`.
 	 *
 	 * ## OPTIONS
 	 *

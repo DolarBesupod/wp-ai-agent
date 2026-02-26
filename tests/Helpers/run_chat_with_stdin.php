@@ -12,8 +12,11 @@
  *   php tests/Helpers/run_chat_with_stdin.php <result_file> <assoc_args_json>
  *
  * The script exits 0 on success. The result file contains a JSON object with:
- *   - auto_confirm   (bool)   : WpCliConfirmationHandler::isAutoConfirm()
- *   - success_message (string): last WP_CLI::success() message recorded
+ *   - auto_confirm   (bool)     : WpCliConfirmationHandler::isAutoConfirm()
+ *   - success_message (string)  : last WP_CLI::success() message recorded
+ *   - message_count   (int)     : session message count (-1 if no session)
+ *   - current_model   (string)  : MinimalAiAdapterStub::getModel()
+ *   - line_messages   (string[]): all WP_CLI::line() messages recorded
  */
 
 declare(strict_types=1);
@@ -31,6 +34,7 @@ use WpAiAgent\Integration\WpCli\WpCliApplication;
 use WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
 use WpAiAgent\Integration\WpCli\WpCliOutputHandler;
 use WpAiAgent\Tests\Stubs\MinimalAgentStub;
+use WpAiAgent\Tests\Stubs\MinimalAiAdapterStub;
 use WpAiAgent\Tests\Stubs\MinimalConfigStub;
 use WpAiAgent\Tests\Stubs\MinimalSessionRepositoryStub;
 
@@ -49,12 +53,15 @@ $assoc_args = json_decode($assoc_json, true) ?? [];
 $initial_auto_confirm = (bool) ($assoc_args['yolo'] ?? false);
 $confirmation_handler = new WpCliConfirmationHandler([], $initial_auto_confirm);
 
+$ai_adapter = new MinimalAiAdapterStub();
+
 $app = new WpCliApplication(
     new MinimalConfigStub(),
     new MinimalAgentStub(),
     new WpCliOutputHandler(),
     $confirmation_handler,
     new MinimalSessionRepositoryStub(),
+    $ai_adapter,
 );
 
 // Run chat(). STDIN is piped from the parent process.
@@ -62,11 +69,19 @@ $app->chat($assoc_args);
 
 // Find the last WP_CLI::success() message recorded by the stub.
 $success_message = '';
+$line_messages   = [];
 foreach (\WP_CLI::$calls as $call) {
     if ($call[0] === 'success') {
         $success_message = (string) $call[1];
     }
+    if ($call[0] === 'line') {
+        $line_messages[] = (string) $call[1];
+    }
 }
+
+// Capture session message count for /new command tests.
+$session       = $app->getAgent()->getCurrentSession();
+$message_count = $session !== null ? $session->getMessageCount() : -1;
 
 // Write the result for the parent test to assert on.
 file_put_contents(
@@ -74,5 +89,8 @@ file_put_contents(
     json_encode([
         'auto_confirm'    => $confirmation_handler->isAutoConfirm(),
         'success_message' => $success_message,
+        'message_count'   => $message_count,
+        'current_model'   => $ai_adapter->getModel(),
+        'line_messages'   => $line_messages,
     ])
 );

@@ -111,7 +111,15 @@ final class WpCliBootstrap
 		// Step 11 — Agent.
 		$agent = new Agent($agent_loop, $session_repo, $config->getSystemPrompt());
 
-		return new WpCliApplication($config, $agent, $output, $confirmation, $session_repo, $mcp_client_manager);
+		return new WpCliApplication(
+			$config,
+			$agent,
+			$output,
+			$confirmation,
+			$session_repo,
+			$ai_adapter,
+			$mcp_client_manager
+		);
 	}
 
 	/**

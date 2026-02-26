@@ -67,7 +67,20 @@ The API key can come from a PHP constant, environment variable, or the database.
 ```bash
 wp agent chat
 wp agent chat --session=abc123   # resume a session
+wp agent chat --yolo             # auto-confirm all tool executions
 ```
+
+During a chat session the following slash commands are available:
+
+| Command | Description |
+|---------|-------------|
+| `/model` | Display the current AI model |
+| `/model <name>` | Switch to a different AI model for this session |
+| `/new` | Clear conversation context and start fresh (keeps the session) |
+| `/yolo` | Enable auto-confirm — tools execute without prompting |
+| `/yolo off` | Disable auto-confirm — tools prompt for confirmation again |
+| `/quit` | End the session and exit |
+| `/exit` | Same as `/quit` |
 
 ### One-shot message
 
