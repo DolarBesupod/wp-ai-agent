@@ -16,7 +16,8 @@
 		"php-stubs/wp-cli-stubs": "^2.12",
 		"phpstan/phpstan": "^1.0",
 		"phpunit/phpunit": "^10.0",
-		"squizlabs/php_codesniffer": "^3.0"
+		"squizlabs/php_codesniffer": "^3.0",
+		"wordpress/ai-provider-for-anthropic": "dev-trunk"
 	},
 	"autoload": {
 		"psr-4": {
@@ -40,6 +41,10 @@
 		{
 			"type": "vcs",
 			"url": "https://github.com/WordPress/php-mcp-schema"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/WordPress/ai-provider-for-anthropic"
 		}
 	],
 	"minimum-stability": "dev",
