@@ -10,3 +10,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 if (!class_exists('WP_CLI')) {
 	require_once __DIR__ . '/Stubs/WpCliStub.php';
 }
+
+// Load WordPress function stubs so tests that cover WpCli integration classes
+// can call get_option(), update_option(), and delete_option() without a real
+// WordPress runtime. The guards inside the stub prevent redeclaration.
+require_once __DIR__ . '/Stubs/WpFunctionsStub.php';
