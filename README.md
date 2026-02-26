@@ -10,11 +10,12 @@ A WordPress plugin that adds an AI agent powered by Claude to WP-CLI. Features a
 - **MCP Integration**: Connect to external MCP servers via `PHP_CLI_AGENT_MCP_SERVERS` constant
 - **Session Persistence**: Save and resume conversations stored as WordPress options
 - **WordPress Configuration**: All settings stored as PHP constants in `wp-config.php`
+- **Core AI Client**: Uses the new `WordPress\AiClient` APIs natively bundled in WordPress 7.0.
 
 ## Requirements
 
 - PHP 8.4 or higher
-- WordPress 6.0+
+- WordPress 7.0+ (requires the core-bundled AI client)
 - WP-CLI 2.0+
 - Anthropic credentials (API key or subscription secret)
 
