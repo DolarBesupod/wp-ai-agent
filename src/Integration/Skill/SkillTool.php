@@ -198,20 +198,21 @@ final class SkillTool extends AbstractTool
 		}
 
 		$content = $this->skill->getBody();
-		$base_path = $this->resolveBasePath();
+		$file_base_path = $this->resolveBasePath();
+		$bash_working_dir = (string) getcwd();
 
 		// Step 3: Named parameter substitution ($param_name → value).
 		$content = $this->substituteParameters($content, $arguments);
 
-		// Step 4: File reference expansion (errors captured inline).
-		$file_expansion_result = $this->expandFileReferences($content, $base_path);
+		// Step 4: File reference expansion — relative @paths resolve from the skill file's directory.
+		$file_expansion_result = $this->expandFileReferences($content, $file_base_path);
 		$content = $file_expansion_result['content'];
 		if ($file_expansion_result['error'] !== null) {
 			$content = sprintf('[Error: %s] ', $file_expansion_result['error']) . $content;
 		}
 
-		// Step 5: Bash command expansion (errors captured inline).
-		$bash_expansion_result = $this->expandBashCommands($content, $base_path);
+		// Step 5: Bash command expansion — commands run in the CWD where the agent was invoked.
+		$bash_expansion_result = $this->expandBashCommands($content, $bash_working_dir);
 		$content = $bash_expansion_result['content'];
 		if ($bash_expansion_result['error'] !== null) {
 			$content = sprintf('[Error: %s] ', $bash_expansion_result['error']) . $content;
@@ -221,13 +222,16 @@ final class SkillTool extends AbstractTool
 	}
 
 	/**
-	 * Resolves the base path for file and command expansions.
+	 * Resolves the base path for @file reference expansion.
 	 *
-	 * When the skill was loaded from a file, uses that file's directory.
-	 * For built-in skills with no file path, falls back to the current
-	 * working directory.
+	 * When the skill was loaded from a file, relative @path references
+	 * resolve from that file's directory. For skills with no file path,
+	 * falls back to the current working directory.
 	 *
-	 * @return string The base path for expansions.
+	 * Note: bash command expansion always uses getcwd() so that !`wp ...`
+	 * commands run in the directory where the agent was invoked.
+	 *
+	 * @return string The base path for file reference resolution.
 	 *
 	 * @since n.e.x.t
 	 */
