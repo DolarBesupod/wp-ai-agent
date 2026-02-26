@@ -76,6 +76,14 @@ namespace {
 				throw new \WP_CLI\ExitException('Cancelled');
 			}
 		}
+
+		/**
+		 * @param array<string, mixed> $options
+		 */
+		public static function runcommand(string $command, array $options = []): void
+		{
+			self::$calls[] = ['runcommand', $command, $options];
+		}
 	}
 }
 
@@ -87,5 +95,23 @@ namespace WP_CLI {
 	 * WpCliConfirmationHandler catches it and returns false.
 	 */
 	class ExitException extends \RuntimeException {}
+}
+
+namespace WP_CLI\Utils {
+	/**
+	 * Minimal format_items stub for unit tests.
+	 *
+	 * Records calls in WP_CLI::$calls so tests can assert that the correct
+	 * format, rows, and columns were passed, without requiring a real WP-CLI
+	 * runtime.
+	 *
+	 * @param string               $format  Output format (e.g., 'table').
+	 * @param iterable<int, array<string, mixed>> $items   The rows to format.
+	 * @param array<int, string>   $fields  The columns to display.
+	 */
+	function format_items(string $format, iterable $items, array $fields): void
+	{
+		\WP_CLI::$calls[] = ['format_items', $format, $items, $fields];
+	}
 }
 // phpcs:enable
