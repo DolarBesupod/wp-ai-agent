@@ -8,9 +8,14 @@ use WpAiAgent\Core\Agent\Agent;
 use WpAiAgent\Core\Agent\AgentLoop;
 use WpAiAgent\Core\Tool\ToolExecutor;
 use WpAiAgent\Integration\AiClient\AiClientAdapter;
+use WpAiAgent\Integration\Configuration\MarkdownParser;
 use WpAiAgent\Integration\Mcp\McpClientManager;
 use WpAiAgent\Integration\Mcp\McpServerConfiguration;
 use WpAiAgent\Integration\Mcp\McpToolRegistry;
+use WpAiAgent\Integration\Settings\BashCommandExpander;
+use WpAiAgent\Integration\Settings\FileReferenceExpander;
+use WpAiAgent\Integration\Skill\SkillLoader;
+use WpAiAgent\Integration\Skill\SkillRegistry;
 use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
@@ -38,10 +43,11 @@ final class WpCliBootstrap
 	 * 4. WpOptionsSessionRepository — WordPress options-backed session storage.
 	 * 5. BuiltInToolRegistry — all built-in tools registered.
 	 * 6. ToolExecutor — uses registry + confirmation handler.
-	 * 7. MCP servers — connects from PHP_CLI_AGENT_MCP_SERVERS constant if defined.
-	 * 8. AiClientAdapter — authenticated with API key, model, and token limits.
-	 * 9. AgentLoop — wires AI adapter, executor, registry, and output.
-	 * 10. Agent — session orchestrator with system prompt.
+	 * 7. SkillRegistry — discovers skills from options; falls back to bundled skills/.
+	 * 8. MCP servers — connects from PHP_CLI_AGENT_MCP_SERVERS constant if defined.
+	 * 9. AiClientAdapter — authenticated with API key, model, and token limits.
+	 * 10. AgentLoop — wires AI adapter, executor, registry, and output.
+	 * 11. Agent — session orchestrator with system prompt.
 	 *
 	 * @return WpCliApplication The fully-wired application.
 	 *
@@ -70,10 +76,13 @@ final class WpCliBootstrap
 		// Step 6 — Tool executor.
 		$tool_executor = new ToolExecutor($tool_registry, $confirmation);
 
-		// Step 7 — MCP servers (optional, backward-compatible constant).
+		// Step 7 — Skills (options-backed, falls back to bundled skills/ on first run).
+		self::discoverSkills($tool_registry);
+
+		// Step 8 — MCP servers (optional, backward-compatible constant).
 		$mcp_client_manager = self::connectMcpServers($tool_registry);
 
-		// Step 8 — AI adapter.
+		// Step 9 — AI adapter.
 		$ai_adapter = new AiClientAdapter(
 			$config->getApiKey(),
 			$config->getModel(),
@@ -81,14 +90,53 @@ final class WpCliBootstrap
 		);
 		$ai_adapter->setTemperature($config->getTemperature());
 
-		// Step 9 — Agent loop.
+		// Step 10 — Agent loop.
 		$agent_loop = new AgentLoop($ai_adapter, $tool_executor, $tool_registry, $output);
 		$agent_loop->setMaxIterations($config->getMaxIterations());
 
-		// Step 10 — Agent.
+		// Step 11 — Agent.
 		$agent = new Agent($agent_loop, $session_repo, $config->getSystemPrompt());
 
 		return new WpCliApplication($config, $agent, $output, $confirmation, $session_repo, $mcp_client_manager);
+	}
+
+	/**
+	 * Discovers skills and registers them into the tool registry.
+	 *
+	 * Skills are loaded from the WordPress options table. When the skill index
+	 * option has never been set, bundled skills from the plugin's skills/ directory
+	 * are used as a first-run fallback. Discovery errors are reported via
+	 * WP_CLI::warning() and never abort startup.
+	 *
+	 * @param \WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry The tool registry.
+	 *
+	 * @return void
+	 *
+	 * @since n.e.x.t
+	 */
+	private static function discoverSkills(
+		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
+	): void {
+		try {
+			$markdown_parser = new MarkdownParser();
+			$file_expander = new FileReferenceExpander();
+			$bash_expander = new BashCommandExpander();
+			$skill_loader = new SkillLoader($markdown_parser);
+			$skill_repository = new WpOptionsSkillRepository();
+			$bundled_skills_dir = dirname(__DIR__, 2) . '/skills';
+
+			$skill_registry = new SkillRegistry(
+				$skill_repository,
+				$skill_loader,
+				$file_expander,
+				$bash_expander,
+				$bundled_skills_dir
+			);
+
+			$skill_registry->discoverAndRegister($tool_registry);
+		} catch (\Throwable $e) {
+			\WP_CLI::warning(sprintf('[Skills] %s', $e->getMessage()));
+		}
 	}
 
 	/**
