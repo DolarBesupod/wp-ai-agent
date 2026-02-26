@@ -11,6 +11,12 @@
 	<exclude-pattern>./.phpunit.cache/*</exclude-pattern>
 	<!-- Exclude bootstrap.php as it uses anonymous classes for configuration -->
 	<exclude-pattern>./src/bootstrap.php</exclude-pattern>
+	<!-- Exclude test stubs as they intentionally define global-namespace classes
+	     that mirror third-party runtime classes (e.g. WP_CLI) and cannot comply
+	     with namespace, naming, or strict_types rules. -->
+	<exclude-pattern>./tests/Stubs/*</exclude-pattern>
+	<!-- Exclude the test bootstrap which loads vendor autoloader and stubs. -->
+	<exclude-pattern>./tests/bootstrap.php</exclude-pattern>
 
 	<!-- Show progress and sniff codes in all reports -->
 	<arg value="ps"/>
