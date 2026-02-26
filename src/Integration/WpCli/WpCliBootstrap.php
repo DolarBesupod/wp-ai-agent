@@ -65,7 +65,10 @@ final class WpCliBootstrap
 		}
 
 		// Step 3 — Confirmation handler.
-		$confirmation = new WpCliConfirmationHandler($config->getBypassedTools());
+		$confirmation = new WpCliConfirmationHandler(
+			$config->getBypassedTools(),
+			$config->getAutoConfirm()
+		);
 
 		// Step 4 — Session repository.
 		$session_repo = new WpOptionsSessionRepository();
