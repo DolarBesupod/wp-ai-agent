@@ -194,6 +194,7 @@ final class JsonConfigurationLoader
 			'default_system_prompt' => '',
 			'debug' => false,
 			'streaming' => true,
+			'auto_confirm' => false,
 			'permissions' => [
 				'allow' => [],
 				'deny' => [],

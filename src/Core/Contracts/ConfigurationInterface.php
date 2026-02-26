@@ -116,6 +116,18 @@ interface ConfigurationInterface
 	public function getBypassedTools(): array;
 
 	/**
+	 * Returns whether auto-confirm mode is enabled.
+	 *
+	 * When true, all tool executions are confirmed automatically without
+	 * prompting the user, equivalent to the --yolo flag at runtime.
+	 *
+	 * @return bool
+	 *
+	 * @since n.e.x.t
+	 */
+	public function getAutoConfirm(): bool;
+
+	/**
 	 * Returns all configuration values as an array.
 	 *
 	 * @return array<string, mixed>

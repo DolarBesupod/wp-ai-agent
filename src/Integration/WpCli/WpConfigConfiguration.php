@@ -33,6 +33,7 @@ final class WpConfigConfiguration implements ConfigurationInterface
 		'streaming',
 		'max_iterations',
 		'bypassed_tools',
+		'auto_confirm',
 		'session_storage_path',
 	];
 
@@ -196,6 +197,22 @@ PROMPT;
 	}
 
 	/**
+	 * Returns whether auto-confirm mode is enabled.
+	 *
+	 * Reads the WP_AI_AGENT_AUTO_CONFIRM PHP constant. When defined and truthy,
+	 * all tool executions are confirmed automatically without prompting.
+	 *
+	 * @return bool
+	 *
+	 * @since n.e.x.t
+	 */
+	public function getAutoConfirm(): bool
+	{
+		return defined('WP_AI_AGENT_AUTO_CONFIRM')
+			&& (bool) constant('WP_AI_AGENT_AUTO_CONFIRM');
+	}
+
+	/**
 	 * Returns the session storage directory path.
 	 *
 	 * Not applicable to the WordPress path — sessions are stored as options.
@@ -235,6 +252,7 @@ PROMPT;
 			'streaming'            => $this->isStreamingEnabled(),
 			'max_iterations'       => $this->getMaxIterations(),
 			'bypassed_tools'       => $this->getBypassedTools(),
+			'auto_confirm'         => $this->getAutoConfirm(),
 			'session_storage_path' => $this->getSessionStoragePath(),
 			default                => $default,
 		};
@@ -275,6 +293,7 @@ PROMPT;
 			'streaming'            => $this->isStreamingEnabled(),
 			'max_iterations'       => $this->getMaxIterations(),
 			'bypassed_tools'       => $this->getBypassedTools(),
+			'auto_confirm'         => $this->getAutoConfirm(),
 			'session_storage_path' => $this->getSessionStoragePath(),
 		];
 	}

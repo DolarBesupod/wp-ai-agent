@@ -303,6 +303,10 @@ final class SettingsSchemaValidator
 					'type' => 'boolean',
 					'default' => true,
 				],
+				'auto_confirm' => [
+					'type' => 'boolean',
+					'default' => false,
+				],
 				'session_storage_path' => [
 					'type' => 'string',
 				],
@@ -352,6 +356,7 @@ final class SettingsSchemaValidator
 			'max_turns' => 100,
 			'debug' => false,
 			'streaming' => true,
+			'auto_confirm' => false,
 			'session_storage_path' => '~/.wp-ai-agent/sessions',
 			'log_path' => '~/.wp-ai-agent/logs',
 			'default_system_prompt' => '',

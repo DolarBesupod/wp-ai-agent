@@ -225,6 +225,21 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	}
 
 	/**
+	 * Returns whether auto-confirm mode is enabled.
+	 *
+	 * When true, all tool executions are confirmed automatically without
+	 * prompting the user, equivalent to the --yolo flag at runtime.
+	 *
+	 * @return bool
+	 *
+	 * @since n.e.x.t
+	 */
+	public function getAutoConfirm(): bool
+	{
+		return (bool) ( $this->config['auto_confirm'] ?? false );
+	}
+
+	/**
 	 * Returns all configuration values as an array.
 	 *
 	 * @return array<string, mixed>
