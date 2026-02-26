@@ -45,7 +45,8 @@ final class WpCliBootstrap
 	 * 6. ToolExecutor — uses registry + confirmation handler.
 	 * 7. SkillRegistry — discovers skills from options; falls back to bundled skills/.
 	 * 8. MCP servers — connects from PHP_CLI_AGENT_MCP_SERVERS constant if defined.
-	 * 9. AiClientAdapter — authenticated with API key, model, and token limits.
+	 * 9. CredentialResolver — resolves API key via constant, env, or DB credential.
+	 *    AiClientAdapter — authenticated with resolved key, model, and token limits.
 	 * 10. AgentLoop — wires AI adapter, executor, registry, and output.
 	 * 11. Agent — session orchestrator with system prompt.
 	 *
@@ -85,9 +86,13 @@ final class WpCliBootstrap
 		// Step 8 — MCP servers (optional, backward-compatible constant).
 		$mcp_client_manager = self::connectMcpServers($tool_registry);
 
-		// Step 9 — AI adapter.
+		// Step 9 — Credential resolution and AI adapter.
+		$credential_repository = new WpOptionsCredentialRepository();
+		$credential_resolver = new CredentialResolver($credential_repository);
+		$resolved_credential = $credential_resolver->resolve('anthropic');
+
 		$ai_adapter = new AiClientAdapter(
-			$config->getApiKey(),
+			$resolved_credential->getSecret(),
 			$config->getModel(),
 			$config->getMaxTokens()
 		);
