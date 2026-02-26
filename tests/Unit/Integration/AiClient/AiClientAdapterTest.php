@@ -11,7 +11,10 @@ use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
+use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
 use WordPress\AiClient\Providers\ProviderRegistry;
+use WordPress\AnthropicAiProvider\Authentication\AnthropicApiKeyRequestAuthentication;
+use WordPress\GoogleAiProvider\Authentication\GoogleApiKeyRequestAuthentication;
 
 /**
  * Unit tests for AiClientAdapter.
@@ -21,11 +24,11 @@ use WordPress\AiClient\Providers\ProviderRegistry;
 final class AiClientAdapterTest extends TestCase
 {
 	/**
-	 * Stores original environment value.
+	 * Stores original environment values.
 	 *
-	 * @var string|false
+	 * @var array<string, string|false>
 	 */
-	private $original_api_key;
+	private array $original_env_keys;
 
 	/**
 	 * Mock HTTP transporter used across tests.
@@ -40,7 +43,11 @@ final class AiClientAdapterTest extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->original_api_key = getenv('ANTHROPIC_API_KEY');
+		$this->original_env_keys = [
+			'ANTHROPIC_API_KEY' => getenv('ANTHROPIC_API_KEY'),
+			'OPENAI_API_KEY' => getenv('OPENAI_API_KEY'),
+			'GOOGLE_API_KEY' => getenv('GOOGLE_API_KEY'),
+		];
 		$this->mock_transporter = $this->createMock(HttpTransporterInterface::class);
 	}
 
@@ -49,10 +56,12 @@ final class AiClientAdapterTest extends TestCase
 	 */
 	protected function tearDown(): void
 	{
-		if ($this->original_api_key !== false) {
-			putenv('ANTHROPIC_API_KEY=' . $this->original_api_key);
-		} else {
-			putenv('ANTHROPIC_API_KEY');
+		foreach ($this->original_env_keys as $key => $value) {
+			if ($value !== false) {
+				putenv($key . '=' . $value);
+			} else {
+				putenv($key);
+			}
 		}
 		parent::tearDown();
 	}
@@ -60,10 +69,11 @@ final class AiClientAdapterTest extends TestCase
 	/**
 	 * Creates an adapter with the mock transporter for testing.
 	 *
-	 * @param string $api_key    The API key.
-	 * @param AuthMode $auth_mode Authentication mode.
-	 * @param string $model      The model to use.
-	 * @param int    $max_tokens Maximum tokens.
+	 * @param string   $api_key     The API key.
+	 * @param AuthMode $auth_mode   Authentication mode.
+	 * @param string   $model       The model to use.
+	 * @param int      $max_tokens  Maximum tokens.
+	 * @param string   $provider_id The provider identifier.
 	 *
 	 * @return AiClientAdapter
 	 */
@@ -71,14 +81,16 @@ final class AiClientAdapterTest extends TestCase
 		string $api_key = 'test_key',
 		AuthMode $auth_mode = AuthMode::API_KEY,
 		string $model = 'claude-sonnet-4-20250514',
-		int $max_tokens = 4096
+		int $max_tokens = 4096,
+		string $provider_id = 'anthropic'
 	): AiClientAdapter {
 		return new AiClientAdapter(
 			$api_key,
 			$auth_mode,
 			$model,
 			$max_tokens,
-			$this->mock_transporter
+			$this->mock_transporter,
+			$provider_id
 		);
 	}
 
@@ -224,7 +236,7 @@ final class AiClientAdapterTest extends TestCase
 	}
 
 	/**
-	 * Tests that getProviderId returns anthropic.
+	 * Tests that getProviderId returns anthropic by default.
 	 */
 	public function test_getProviderId_returnsAnthropic(): void
 	{
@@ -285,5 +297,262 @@ final class AiClientAdapterTest extends TestCase
 		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('anthropic');
 
 		$this->assertInstanceOf(AnthropicSubscriptionRequestAuthentication::class, $authentication);
+	}
+
+	// ── Multi-provider constructor tests ──
+
+	/**
+	 * Tests that constructor with openai provider_id registers OpenAI provider.
+	 */
+	public function test_constructor_withOpenaiProvider_succeeds(): void
+	{
+		$adapter = $this->createAdapter('sk-test-key', AuthMode::API_KEY, 'gpt-4o', 4096, 'openai');
+
+		$this->assertSame('openai', $adapter->getProviderId());
+		$this->assertTrue($adapter->isConfigured());
+	}
+
+	/**
+	 * Tests that constructor with google provider_id registers Google provider.
+	 */
+	public function test_constructor_withGoogleProvider_succeeds(): void
+	{
+		$adapter = $this->createAdapter('AIza-test-key', AuthMode::API_KEY, 'gemini-2.0-flash', 4096, 'google');
+
+		$this->assertSame('google', $adapter->getProviderId());
+		$this->assertTrue($adapter->isConfigured());
+	}
+
+	/**
+	 * Tests that constructor with unknown provider throws exception.
+	 */
+	public function test_constructor_withUnknownProvider_throwsException(): void
+	{
+		$this->expectException(AiClientException::class);
+		$this->expectExceptionMessage('Unsupported AI provider: "llama"');
+
+		$this->createAdapter('test_key', AuthMode::API_KEY, 'llama-3', 4096, 'llama');
+	}
+
+	/**
+	 * Tests that OpenAI provider uses standard Bearer token authentication.
+	 */
+	public function test_constructor_withOpenaiProvider_usesApiKeyAuthentication(): void
+	{
+		$adapter = $this->createAdapter('sk-test-key', AuthMode::API_KEY, 'gpt-4o', 4096, 'openai');
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('openai');
+
+		$this->assertInstanceOf(ApiKeyRequestAuthentication::class, $authentication);
+		// Ensure it is NOT the Anthropic or Google subclass
+		$this->assertNotInstanceOf(AnthropicApiKeyRequestAuthentication::class, $authentication);
+		$this->assertNotInstanceOf(GoogleApiKeyRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that Google provider uses Google-specific authentication.
+	 */
+	public function test_constructor_withGoogleProvider_usesGoogleAuthentication(): void
+	{
+		$adapter = $this->createAdapter('AIza-test-key', AuthMode::API_KEY, 'gemini-2.0-flash', 4096, 'google');
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('google');
+
+		$this->assertInstanceOf(GoogleApiKeyRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that Anthropic provider uses Anthropic-specific authentication.
+	 */
+	public function test_constructor_withAnthropicProvider_usesAnthropicAuthentication(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('anthropic');
+
+		$this->assertInstanceOf(AnthropicApiKeyRequestAuthentication::class, $authentication);
+	}
+
+	// ── getApiKeyFromEnvironment per-provider tests ──
+
+	/**
+	 * Tests that OpenAI adapter reads OPENAI_API_KEY from environment.
+	 */
+	public function test_constructor_withOpenaiEnvKey_readsCorrectVariable(): void
+	{
+		putenv('OPENAI_API_KEY=sk-env-test');
+
+		$adapter = new AiClientAdapter(
+			null,
+			AuthMode::API_KEY,
+			'gpt-4o',
+			4096,
+			$this->mock_transporter,
+			'openai'
+		);
+
+		$this->assertTrue($adapter->isConfigured());
+		$this->assertSame('openai', $adapter->getProviderId());
+	}
+
+	/**
+	 * Tests that Google adapter reads GOOGLE_API_KEY from environment.
+	 */
+	public function test_constructor_withGoogleEnvKey_readsCorrectVariable(): void
+	{
+		putenv('GOOGLE_API_KEY=AIza-env-test');
+
+		$adapter = new AiClientAdapter(
+			null,
+			AuthMode::API_KEY,
+			'gemini-2.0-flash',
+			4096,
+			$this->mock_transporter,
+			'google'
+		);
+
+		$this->assertTrue($adapter->isConfigured());
+		$this->assertSame('google', $adapter->getProviderId());
+	}
+
+	/**
+	 * Tests that OpenAI adapter without key throws exception.
+	 */
+	public function test_constructor_withOpenaiNoKey_throwsException(): void
+	{
+		putenv('OPENAI_API_KEY');
+
+		$this->expectException(AiClientException::class);
+		$this->expectExceptionMessage('Invalid or missing API key');
+
+		new AiClientAdapter(
+			null,
+			AuthMode::API_KEY,
+			'gpt-4o',
+			4096,
+			$this->mock_transporter,
+			'openai'
+		);
+	}
+
+	// ── switchProvider tests ──
+
+	/**
+	 * Tests that switchProvider changes the active provider.
+	 */
+	public function test_switchProvider_changesToNewProvider(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider('openai', 'sk-new-key');
+
+		$this->assertSame('openai', $adapter->getProviderId());
+	}
+
+	/**
+	 * Tests that switchProvider to Google works correctly.
+	 */
+	public function test_switchProvider_toGoogle_succeeds(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider('google', 'AIza-new-key');
+
+		$this->assertSame('google', $adapter->getProviderId());
+	}
+
+	/**
+	 * Tests that switchProvider back to Anthropic works.
+	 */
+	public function test_switchProvider_backToAnthropic_succeeds(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider('openai', 'sk-key');
+		$adapter->switchProvider('anthropic', 'ant-key');
+
+		$this->assertSame('anthropic', $adapter->getProviderId());
+	}
+
+	/**
+	 * Tests that switchProvider with unknown provider throws exception.
+	 */
+	public function test_switchProvider_withUnknownProvider_throwsException(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$this->expectException(AiClientException::class);
+		$this->expectExceptionMessage('Unsupported AI provider: "cohere"');
+
+		$adapter->switchProvider('cohere', 'some-key');
+	}
+
+	/**
+	 * Tests that switchProvider preserves the provider registry instance.
+	 */
+	public function test_switchProvider_preservesRegistry(): void
+	{
+		$adapter = $this->createAdapter();
+		$registry_before = $adapter->getProviderRegistry();
+
+		$adapter->switchProvider('openai', 'sk-key');
+
+		$this->assertSame($registry_before, $adapter->getProviderRegistry());
+	}
+
+	/**
+	 * Tests that switchProvider sets correct authentication for OpenAI.
+	 */
+	public function test_switchProvider_toOpenai_setsCorrectAuth(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider('openai', 'sk-key');
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('openai');
+		$this->assertInstanceOf(ApiKeyRequestAuthentication::class, $authentication);
+		$this->assertNotInstanceOf(AnthropicApiKeyRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that switchProvider sets correct authentication for Google.
+	 */
+	public function test_switchProvider_toGoogle_setsCorrectAuth(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider('google', 'AIza-key');
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('google');
+		$this->assertInstanceOf(GoogleApiKeyRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that switchProvider with Anthropic subscription mode works.
+	 */
+	public function test_switchProvider_toAnthropicSubscription_setsCorrectAuth(): void
+	{
+		$adapter = $this->createAdapter('sk-key', AuthMode::API_KEY, 'gpt-4o', 4096, 'openai');
+
+		$adapter->switchProvider('anthropic', 'sub-key', AuthMode::SUBSCRIPTION);
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('anthropic');
+		$this->assertInstanceOf(AnthropicSubscriptionRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that switchProvider does not change provider on failure.
+	 */
+	public function test_switchProvider_onFailure_preservesOriginalProvider(): void
+	{
+		$adapter = $this->createAdapter();
+
+		try {
+			$adapter->switchProvider('cohere', 'some-key');
+		} catch (AiClientException) {
+			// Expected.
+		}
+
+		$this->assertSame('anthropic', $adapter->getProviderId());
 	}
 }

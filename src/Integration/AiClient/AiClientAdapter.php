@@ -16,8 +16,9 @@ use WordPress\AiClient\Messages\DTO\Message as AiClientMessage;
 use WordPress\AiClient\Messages\DTO\MessagePart;
 use WordPress\AiClient\Messages\DTO\ModelMessage;
 use WordPress\AiClient\Messages\DTO\UserMessage;
-use WordPress\AiClient\Messages\Enums\MessageRoleEnum;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
+use WordPress\AiClient\Providers\Http\Contracts\RequestAuthenticationInterface;
+use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
 use WordPress\AiClient\Providers\Http\Exception\ClientException;
 use WordPress\AiClient\Providers\Http\Exception\NetworkException;
 use WordPress\AiClient\Providers\Http\Exception\ServerException;
@@ -25,6 +26,9 @@ use WordPress\AiClient\Providers\Http\HttpTransporterFactory;
 use WordPress\AiClient\Providers\ProviderRegistry;
 use WordPress\AnthropicAiProvider\Authentication\AnthropicApiKeyRequestAuthentication;
 use WordPress\AnthropicAiProvider\Provider\AnthropicProvider;
+use WordPress\GoogleAiProvider\Authentication\GoogleApiKeyRequestAuthentication;
+use WordPress\GoogleAiProvider\Provider\GoogleProvider;
+use WordPress\OpenAiAiProvider\Provider\OpenAiProvider;
 use WordPress\AiClient\Tools\DTO\FunctionCall;
 use WordPress\AiClient\Tools\DTO\FunctionDeclaration;
 use WordPress\AiClient\Tools\DTO\FunctionResponse;
@@ -34,8 +38,9 @@ use WordPress\AiClient\Tools\DTO\FunctionResponse;
  *
  * This adapter implements the AiClientAdapterInterface, providing a bridge
  * between the agent's core layer and the WordPress AI Client library.
- * It configures the Anthropic Claude provider and handles message conversion,
- * tool declarations, and response parsing.
+ * It dynamically registers the correct vendor provider (Anthropic, OpenAI,
+ * or Google) and handles message conversion, tool declarations, and
+ * response parsing.
  *
  * @since n.e.x.t
  */
@@ -54,6 +59,28 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 * @var int
 	 */
 	private const DEFAULT_MAX_TOKENS = 4096;
+
+	/**
+	 * Mapping of provider IDs to their vendor provider classes.
+	 *
+	 * @var array<string, class-string>
+	 */
+	private const PROVIDER_CLASSES = [
+		'anthropic' => AnthropicProvider::class,
+		'openai' => OpenAiProvider::class,
+		'google' => GoogleProvider::class,
+	];
+
+	/**
+	 * Mapping of provider IDs to their environment variable names for API keys.
+	 *
+	 * @var array<string, string>
+	 */
+	private const PROVIDER_ENV_KEYS = [
+		'anthropic' => 'ANTHROPIC_API_KEY',
+		'openai' => 'OPENAI_API_KEY',
+		'google' => 'GOOGLE_API_KEY',
+	];
 
 	/**
 	 * The provider registry instance.
@@ -105,6 +132,13 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	private AuthMode $auth_mode;
 
 	/**
+	 * The current provider identifier.
+	 *
+	 * @var string
+	 */
+	private string $provider_id;
+
+	/**
 	 * Whether the adapter has been initialized.
 	 *
 	 * @var bool
@@ -121,12 +155,15 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Creates a new AiClientAdapter instance.
 	 *
-	 * @param string|null                    $api_key          Optional API key. If not provided,
-	 *                                                         will be read from ANTHROPIC_API_KEY environment variable.
-	 * @param AuthMode                       $auth_mode        Authentication mode (api_key or subscription).
-	 * @param string                         $model            The model to use.
-	 * @param int                            $max_tokens       Maximum tokens for responses.
-	 * @param HttpTransporterInterface|null  $http_transporter Optional HTTP transporter.
+	 * @since n.e.x.t
+	 *
+	 * @param string|null                   $api_key          Optional API key. If not provided,
+	 *                                                        will be read from the provider's environment variable.
+	 * @param AuthMode                      $auth_mode        Authentication mode (api_key or subscription).
+	 * @param string                        $model            The model to use.
+	 * @param int                           $max_tokens       Maximum tokens for responses.
+	 * @param HttpTransporterInterface|null $http_transporter Optional HTTP transporter.
+	 * @param string                        $provider_id      The provider ID (e.g., 'anthropic', 'openai', 'google').
 	 *
 	 * @throws AiClientException If initialization fails.
 	 */
@@ -135,11 +172,13 @@ final class AiClientAdapter implements AiClientAdapterInterface
 		AuthMode $auth_mode = AuthMode::API_KEY,
 		string $model = self::DEFAULT_MODEL,
 		int $max_tokens = self::DEFAULT_MAX_TOKENS,
-		?HttpTransporterInterface $http_transporter = null
+		?HttpTransporterInterface $http_transporter = null,
+		string $provider_id = 'anthropic'
 	) {
 		$this->model = $model;
 		$this->max_tokens = $max_tokens;
 		$this->auth_mode = $auth_mode;
+		$this->provider_id = $provider_id;
 
 		$this->api_key = $api_key ?? $this->getApiKeyFromEnvironment();
 
@@ -162,7 +201,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 			$function_declarations = $this->convertToolsToDeclarations($tools);
 
 			$builder = new PromptBuilder($this->provider_registry, $ai_messages);
-			$builder->usingProvider('anthropic');
+			$builder->usingProvider($this->provider_id);
 			$builder->usingModelPreference($this->model);
 			$builder->usingSystemInstruction($system);
 			$builder->usingMaxTokens($this->max_tokens);
@@ -226,6 +265,8 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Gets the streaming handler instance.
 	 *
+	 * @since n.e.x.t
+	 *
 	 * @return StreamingHandler
 	 */
 	public function getStreamingHandler(): StreamingHandler
@@ -239,6 +280,8 @@ final class AiClientAdapter implements AiClientAdapterInterface
 
 	/**
 	 * Sets a custom streaming handler.
+	 *
+	 * @since n.e.x.t
 	 *
 	 * @param StreamingHandler $handler The streaming handler to use.
 	 */
@@ -308,11 +351,42 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 */
 	public function getProviderId(): string
 	{
-		return 'anthropic';
+		return $this->provider_id;
 	}
 
 	/**
-	 * Initializes the provider registry with the Anthropic provider.
+	 * {@inheritDoc}
+	 */
+	public function switchProvider(string $provider_id, string $api_key, AuthMode $auth_mode = AuthMode::API_KEY): void
+	{
+		if (!isset(self::PROVIDER_CLASSES[$provider_id])) {
+			throw AiClientException::unsupportedProvider($provider_id);
+		}
+
+		try {
+			$provider_class = self::PROVIDER_CLASSES[$provider_id];
+			$this->provider_registry->registerProvider($provider_class);
+
+			$authentication = $this->createAuthentication($provider_id, $auth_mode, $api_key);
+			$this->provider_registry->setProviderRequestAuthentication($provider_id, $authentication);
+		} catch (AiClientException $exception) {
+			throw $exception;
+		} catch (\Throwable $exception) {
+			throw AiClientException::initializationFailed(
+				sprintf('Failed to switch to provider "%s": %s', $provider_id, $exception->getMessage()),
+				$exception
+			);
+		}
+
+		$this->provider_id = $provider_id;
+		$this->api_key = $api_key;
+		$this->auth_mode = $auth_mode;
+	}
+
+	/**
+	 * Initializes the provider registry with the configured provider.
+	 *
+	 * @since n.e.x.t
 	 *
 	 * @param HttpTransporterInterface|null $http_transporter Optional HTTP transporter.
 	 *
@@ -320,26 +394,63 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 */
 	private function initializeProvider(?HttpTransporterInterface $http_transporter): void
 	{
+		if (!isset(self::PROVIDER_CLASSES[$this->provider_id])) {
+			throw AiClientException::unsupportedProvider($this->provider_id);
+		}
+
 		try {
 			$this->provider_registry = new ProviderRegistry();
 
 			$transporter = $http_transporter ?? HttpTransporterFactory::createTransporter();
 			$this->provider_registry->setHttpTransporter($transporter);
 
-			$this->provider_registry->registerProvider(AnthropicProvider::class);
+			$provider_class = self::PROVIDER_CLASSES[$this->provider_id];
+			$this->provider_registry->registerProvider($provider_class);
 
-			$authentication = $this->auth_mode === AuthMode::SUBSCRIPTION
-				? new AnthropicSubscriptionRequestAuthentication((string) $this->api_key)
-				: new AnthropicApiKeyRequestAuthentication((string) $this->api_key);
-			$this->provider_registry->setProviderRequestAuthentication('anthropic', $authentication);
+			$authentication = $this->createAuthentication(
+				$this->provider_id,
+				$this->auth_mode,
+				(string) $this->api_key
+			);
+			$this->provider_registry->setProviderRequestAuthentication($this->provider_id, $authentication);
 
 			$this->initialized = true;
+		} catch (AiClientException $exception) {
+			throw $exception;
 		} catch (\Throwable $exception) {
 			throw AiClientException::initializationFailed(
 				$exception->getMessage(),
 				$exception
 			);
 		}
+	}
+
+	/**
+	 * Creates the appropriate authentication object for a given provider.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @param string   $provider_id The provider identifier.
+	 * @param AuthMode $auth_mode   The authentication mode.
+	 * @param string   $api_key     The API key.
+	 *
+	 * @return RequestAuthenticationInterface The authentication instance.
+	 */
+	private function createAuthentication(
+		string $provider_id,
+		AuthMode $auth_mode,
+		string $api_key
+	): RequestAuthenticationInterface {
+		if ($provider_id === 'anthropic' && $auth_mode === AuthMode::SUBSCRIPTION) {
+			return new AnthropicSubscriptionRequestAuthentication($api_key);
+		}
+
+		return match ($provider_id) {
+			'anthropic' => new AnthropicApiKeyRequestAuthentication($api_key),
+			'google' => new GoogleApiKeyRequestAuthentication($api_key),
+			'openai' => new ApiKeyRequestAuthentication($api_key),
+			default => throw AiClientException::unsupportedProvider($provider_id),
+		};
 	}
 
 	/**
@@ -357,17 +468,21 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	}
 
 	/**
-	 * Gets the API key from environment variables.
+	 * Gets the API key from environment variables for the current provider.
+	 *
+	 * @since n.e.x.t
 	 *
 	 * @return string|null The API key, or null if not set.
 	 */
 	private function getApiKeyFromEnvironment(): ?string
 	{
-		$api_key = getenv('ANTHROPIC_API_KEY');
+		$env_key = self::PROVIDER_ENV_KEYS[$this->provider_id] ?? 'ANTHROPIC_API_KEY';
+
+		$api_key = getenv($env_key);
 
 		if ($api_key === false) {
-			if (defined('ANTHROPIC_API_KEY')) {
-				return (string) constant('ANTHROPIC_API_KEY');
+			if (defined($env_key)) {
+				return (string) constant($env_key);
 			}
 			return null;
 		}

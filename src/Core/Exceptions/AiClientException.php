@@ -123,6 +123,25 @@ class AiClientException extends AgentException
 	}
 
 	/**
+	 * Creates an exception for unsupported provider.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @param string $provider_id The unsupported provider identifier.
+	 *
+	 * @return self
+	 */
+	public static function unsupportedProvider(string $provider_id): self
+	{
+		return new self(
+			sprintf('Unsupported AI provider: "%s".', $provider_id),
+			0,
+			null,
+			['type' => 'unsupported_provider', 'provider_id' => $provider_id]
+		);
+	}
+
+	/**
 	 * Creates an exception for quota exceeded.
 	 *
 	 * @param string|null $limit_type The type of limit exceeded (tokens, requests, etc.).
