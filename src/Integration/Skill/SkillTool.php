@@ -151,7 +151,7 @@ final class SkillTool extends AbstractTool
 
 		$json_schema = [
 			'type' => 'object',
-			'properties' => $properties,
+			'properties' => empty($properties) ? new \stdClass() : $properties,
 		];
 
 		if (count($required) > 0) {

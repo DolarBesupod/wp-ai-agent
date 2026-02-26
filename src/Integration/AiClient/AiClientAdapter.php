@@ -443,10 +443,11 @@ final class AiClientAdapter implements AiClientAdapterInterface
 		}
 
 		foreach ($message->getToolCalls() as $tool_call) {
+			$arguments = $tool_call['arguments'];
 			$function_call = new FunctionCall(
 				$tool_call['id'],
 				$tool_call['name'],
-				$tool_call['arguments']
+				empty($arguments) ? new \stdClass() : $arguments
 			);
 			$parts[] = new MessagePart($function_call);
 		}
