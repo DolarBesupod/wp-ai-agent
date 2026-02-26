@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Tests\Unit\Integration\AiClient;
 
+use WpAiAgent\Core\Credential\AuthMode;
 use WpAiAgent\Core\Exceptions\AiClientException;
 use WpAiAgent\Integration\AiClient\AiClientAdapter;
 use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
 use WordPress\AiClient\Providers\ProviderRegistry;
@@ -59,6 +61,7 @@ final class AiClientAdapterTest extends TestCase
 	 * Creates an adapter with the mock transporter for testing.
 	 *
 	 * @param string $api_key    The API key.
+	 * @param AuthMode $auth_mode Authentication mode.
 	 * @param string $model      The model to use.
 	 * @param int    $max_tokens Maximum tokens.
 	 *
@@ -66,11 +69,13 @@ final class AiClientAdapterTest extends TestCase
 	 */
 	private function createAdapter(
 		string $api_key = 'test_key',
+		AuthMode $auth_mode = AuthMode::API_KEY,
 		string $model = 'claude-sonnet-4-20250514',
 		int $max_tokens = 4096
 	): AiClientAdapter {
 		return new AiClientAdapter(
 			$api_key,
+			$auth_mode,
 			$model,
 			$max_tokens,
 			$this->mock_transporter
@@ -97,7 +102,7 @@ final class AiClientAdapterTest extends TestCase
 		$this->expectException(AiClientException::class);
 		$this->expectExceptionMessage('Invalid or missing API key');
 
-		new AiClientAdapter(null, 'claude-sonnet-4-20250514', 4096, $this->mock_transporter);
+			new AiClientAdapter(null, AuthMode::API_KEY, 'claude-sonnet-4-20250514', 4096, $this->mock_transporter);
 	}
 
 	/**
@@ -117,7 +122,13 @@ final class AiClientAdapterTest extends TestCase
 	{
 		putenv('ANTHROPIC_API_KEY=env_api_key_456');
 
-		$adapter = new AiClientAdapter(null, 'claude-sonnet-4-20250514', 4096, $this->mock_transporter);
+		$adapter = new AiClientAdapter(
+			null,
+			AuthMode::API_KEY,
+			'claude-sonnet-4-20250514',
+			4096,
+			$this->mock_transporter
+		);
 
 		$this->assertTrue($adapter->isConfigured());
 	}
@@ -127,7 +138,7 @@ final class AiClientAdapterTest extends TestCase
 	 */
 	public function test_getModel_returnsConfiguredModel(): void
 	{
-		$adapter = $this->createAdapter('test_key', 'claude-opus-4-20250514');
+		$adapter = $this->createAdapter('test_key', AuthMode::API_KEY, 'claude-opus-4-20250514');
 
 		$this->assertSame('claude-opus-4-20250514', $adapter->getModel());
 	}
@@ -231,6 +242,7 @@ final class AiClientAdapterTest extends TestCase
 
 		$adapter = new AiClientAdapter(
 			'test_key',
+			AuthMode::API_KEY,
 			'claude-sonnet-4-20250514',
 			4096,
 			$custom_transporter
@@ -249,7 +261,7 @@ final class AiClientAdapterTest extends TestCase
 		$this->expectException(AiClientException::class);
 		$this->expectExceptionMessage('Invalid or missing API key');
 
-		new AiClientAdapter('', 'claude-sonnet-4-20250514', 4096, $this->mock_transporter);
+		new AiClientAdapter('', AuthMode::API_KEY, 'claude-sonnet-4-20250514', 4096, $this->mock_transporter);
 	}
 
 	/**
@@ -257,9 +269,21 @@ final class AiClientAdapterTest extends TestCase
 	 */
 	public function test_constructor_withCustomMaxTokens_succeeds(): void
 	{
-		$adapter = $this->createAdapter('test_key', 'claude-sonnet-4-20250514', 8192);
+		$adapter = $this->createAdapter('test_key', AuthMode::API_KEY, 'claude-sonnet-4-20250514', 8192);
 
 		// Verify the adapter is properly configured
 		$this->assertTrue($adapter->isConfigured());
+	}
+
+	/**
+	 * Tests that subscription mode wires subscription request authentication.
+	 */
+	public function test_constructor_withSubscriptionMode_usesSubscriptionAuthentication(): void
+	{
+		$adapter = $this->createAdapter('subscription-secret', AuthMode::SUBSCRIPTION);
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('anthropic');
+
+		$this->assertInstanceOf(AnthropicSubscriptionRequestAuthentication::class, $authentication);
 	}
 }

@@ -4,7 +4,7 @@ A WordPress plugin that adds an AI agent powered by Claude to WP-CLI. Features a
 
 ## Features
 
-- **WP-CLI Native**: `wp agent chat`, `wp agent ask`, `wp agent init`, `wp agent config`
+- **WP-CLI Native**: `wp agent chat`, `wp agent ask`, `wp agent init`, `wp agent config`, `wp agent auth`
 - **ReAct Loop**: Think → Act → Observe reasoning pattern for tool usage
 - **Tool Execution**: Built-in tools with `WP_CLI::confirm()` prompts before execution
 - **MCP Integration**: Connect to external MCP servers via `PHP_CLI_AGENT_MCP_SERVERS` constant
@@ -16,7 +16,7 @@ A WordPress plugin that adds an AI agent powered by Claude to WP-CLI. Features a
 - PHP 8.4 or higher
 - WordPress 6.0+
 - WP-CLI 2.0+
-- Anthropic API key
+- Anthropic credentials (API key or subscription secret)
 
 ## Installation
 
@@ -56,6 +56,10 @@ wp agent config get model
 wp agent config set model claude-opus-4-6
 ```
 
+### Authentication
+
+The API key can come from a PHP constant, environment variable, or the database. See [Authentication](docs/authentication.md) for the full priority chain and credential management commands.
+
 ## Usage
 
 ### Interactive chat
@@ -70,6 +74,14 @@ wp agent chat --session=abc123   # resume a session
 ```bash
 wp agent ask "What plugins are active?"
 wp agent ask "Run a health check" --debug
+```
+
+### Manage credentials
+
+```bash
+wp agent auth set --provider=anthropic    # store API key in database
+wp agent auth set --provider=anthropic --mode=subscription
+wp agent auth status                      # view all credentials and their sources
 ```
 
 ### Initialise configuration

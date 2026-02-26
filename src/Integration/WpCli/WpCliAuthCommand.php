@@ -21,6 +21,16 @@ use WpAiAgent\Core\Exceptions\CredentialNotFoundException;
 final class WpCliAuthCommand
 {
 	/**
+	 * Expected Anthropic setup-token prefix.
+	 */
+	private const ANTHROPIC_SETUP_TOKEN_PREFIX = 'sk-ant-oat01-';
+
+	/**
+	 * Minimum expected setup-token length.
+	 */
+	private const ANTHROPIC_SETUP_TOKEN_MIN_LENGTH = 80;
+
+	/**
 	 * The WordPress options credential repository.
 	 *
 	 * @var WpOptionsCredentialRepository
@@ -35,9 +45,9 @@ final class WpCliAuthCommand
 	private CredentialResolver $resolver;
 
 	/**
-	 * Callable that prompts the user for input.
+	 * Callable that prompts the user for secret input.
 	 *
-	 * Signature: fn(string $question, string $default, string $marker, bool $hide): string
+	 * Signature: fn(string $message): string
 	 *
 	 * @var callable
 	 */
@@ -52,8 +62,9 @@ final class WpCliAuthCommand
 	 *
 	 * @param WpOptionsCredentialRepository|null $repository      The credential repository.
 	 * @param CredentialResolver|null            $resolver        The credential resolver.
-	 * @param callable|null                      $prompt_callable Callable for prompting user input.
-	 *                                                            Defaults to WP_CLI\Utils\prompt().
+	 * @param callable|null                      $prompt_callable Callable for prompting secret input.
+	 *                                                            Signature: fn(string $message): string.
+	 *                                                            Defaults to STDIN with hidden echo.
 	 *
 	 * @since n.e.x.t
 	 */
@@ -64,15 +75,18 @@ final class WpCliAuthCommand
 	) {
 		$this->repository = $repository ?? new WpOptionsCredentialRepository();
 		$this->resolver = $resolver ?? new CredentialResolver($this->repository);
-		// WP_CLI\Utils\prompt() exists at runtime but is absent from the bundled stubs.
-		$this->prompt_callable = $prompt_callable ?? static function (
-			string $question,
-			string $default = '',
-			string $marker = ': ',
-			bool $hide = false
-		): string {
-			// @phpstan-ignore function.notFound
-			return \WP_CLI\Utils\prompt($question, $default, $marker, $hide);
+		$this->prompt_callable = $prompt_callable ?? static function (string $message): string {
+			fwrite(STDERR, $message);
+			$is_tty = function_exists('posix_isatty') && posix_isatty(STDIN);
+			if ($is_tty) {
+				shell_exec('stty -echo');
+			}
+			$value = trim((string) fgets(STDIN));
+			if ($is_tty) {
+				shell_exec('stty echo');
+				fwrite(STDERR, PHP_EOL);
+			}
+			return $value;
 		};
 	}
 
@@ -93,12 +107,14 @@ final class WpCliAuthCommand
 	 * default: api_key
 	 * options:
 	 *   - api_key
+	 *   - subscription
 	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp agent auth set --provider=anthropic
 	 *     wp agent auth set --provider=anthropic --mode=api_key
+	 *     wp agent auth set --provider=anthropic --mode=subscription
 	 *
 	 * @subcommand set
 	 *
@@ -128,11 +144,27 @@ final class WpCliAuthCommand
 			return;
 		}
 
-		$secret = ($this->prompt_callable)('Enter secret', '', ': ', true);
+		if ($auth_mode === AuthMode::SUBSCRIPTION) {
+			\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
+			\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
+		}
+
+		$prompt = $auth_mode === AuthMode::SUBSCRIPTION
+			? 'Paste Anthropic setup-token: '
+			: 'Enter API key: ';
+		$secret = ($this->prompt_callable)($prompt);
 
 		if ('' === $secret) {
 			\WP_CLI::error('Secret must not be empty.');
 			return;
+		}
+
+		if ($auth_mode === AuthMode::SUBSCRIPTION) {
+			$validation_error = $this->validateSubscriptionSecret($secret);
+			if ($validation_error !== null) {
+				\WP_CLI::error($validation_error);
+				return;
+			}
 		}
 
 		try {
@@ -330,5 +362,30 @@ final class WpCliAuthCommand
 	private function maskSecret(string $secret): string
 	{
 		return substr($secret, 0, 8) . '****';
+	}
+
+	/**
+	 * Validates Anthropic subscription setup-token format.
+	 *
+	 * @param string $secret The raw secret.
+	 *
+	 * @return string|null Error message if invalid, null if valid.
+	 */
+	private function validateSubscriptionSecret(string $secret): ?string
+	{
+		$trimmed = trim($secret);
+
+		if (!str_starts_with($trimmed, self::ANTHROPIC_SETUP_TOKEN_PREFIX)) {
+			return sprintf(
+				'Invalid setup-token format. Expected prefix "%s". Run `claude setup-token` and paste the full token.',
+				self::ANTHROPIC_SETUP_TOKEN_PREFIX
+			);
+		}
+
+		if (strlen($trimmed) < self::ANTHROPIC_SETUP_TOKEN_MIN_LENGTH) {
+			return 'Setup-token looks too short. Paste the full token produced by `claude setup-token`.';
+		}
+
+		return null;
 	}
 }

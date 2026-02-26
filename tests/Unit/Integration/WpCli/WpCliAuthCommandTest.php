@@ -31,7 +31,6 @@ final class WpCliAuthCommandTest extends TestCase
 	{
 		\WP_CLI::$calls = [];
 		\WP_CLI::$confirm_throws = false;
-		\WP_CLI::$prompt_return = '';
 		WpOptionsStore::reset();
 	}
 
@@ -40,11 +39,13 @@ final class WpCliAuthCommandTest extends TestCase
 	 */
 	public function test_set_withValidProvider_promptsAndStoresCredential(): void
 	{
-		\WP_CLI::$prompt_return = 'sk-ant-test-secret-1234';
-
 		$repository = new WpOptionsCredentialRepository();
 		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
-		$command = new WpCliAuthCommand($repository, $resolver);
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'sk-ant-test-secret-1234'
+		);
 
 		$command->set([], ['provider' => 'anthropic']);
 
@@ -60,15 +61,65 @@ final class WpCliAuthCommandTest extends TestCase
 	}
 
 	/**
+	 * Tests that set() stores a subscription credential when mode=subscription is provided.
+	 */
+	public function test_set_withSubscriptionMode_storesSubscriptionCredential(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'sk-ant-oat01-' . str_repeat('a', 90)
+		);
+
+		$command->set([], ['provider' => 'anthropic', 'mode' => 'subscription']);
+
+		$credential = $repository->getCredential('anthropic');
+		$this->assertSame(AuthMode::SUBSCRIPTION, $credential->getAuthMode());
+
+		$log_calls = $this->filterCalls('log');
+		$log_messages = array_map(static fn(array $c): string => $c[1], $log_calls);
+		$this->assertStringContainsString(
+			'claude setup-token',
+			implode("\n", $log_messages),
+			'Subscription mode should instruct user about setup-token workflow'
+		);
+	}
+
+	/**
+	 * Tests that invalid subscription token is rejected and not stored.
+	 */
+	public function test_set_withInvalidSubscriptionToken_callsWpCliError(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'bad-token'
+		);
+
+		$command->set([], ['provider' => 'anthropic', 'mode' => 'subscription']);
+
+		$error_calls = $this->filterCalls('error');
+		$this->assertNotEmpty($error_calls);
+		$this->assertStringContainsString('setup-token', $error_calls[0][1]);
+		$this->assertFalse($repository->hasCredential('anthropic'));
+	}
+
+	/**
 	 * Tests that set() with an empty secret calls WP_CLI::error().
 	 */
 	public function test_set_withEmptySecret_callsWpCliError(): void
 	{
-		\WP_CLI::$prompt_return = '';
-
 		$repository = new WpOptionsCredentialRepository();
 		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
-		$command = new WpCliAuthCommand($repository, $resolver);
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => ''
+		);
 
 		$command->set([], ['provider' => 'anthropic']);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Integration\AiClient;
 
+use WpAiAgent\Core\Credential\AuthMode;
 use WpAiAgent\Core\Contracts\AiResponseInterface;
 use WpAiAgent\Core\Exceptions\AiAdapterException;
 use WpAiAgent\Core\Exceptions\AiClientException;
@@ -97,6 +98,13 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	private ?string $api_key = null;
 
 	/**
+	 * Authentication mode used for provider requests.
+	 *
+	 * @var AuthMode
+	 */
+	private AuthMode $auth_mode;
+
+	/**
 	 * Whether the adapter has been initialized.
 	 *
 	 * @var bool
@@ -115,6 +123,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 *
 	 * @param string|null                    $api_key          Optional API key. If not provided,
 	 *                                                         will be read from ANTHROPIC_API_KEY environment variable.
+	 * @param AuthMode                       $auth_mode        Authentication mode (api_key or subscription).
 	 * @param string                         $model            The model to use.
 	 * @param int                            $max_tokens       Maximum tokens for responses.
 	 * @param HttpTransporterInterface|null  $http_transporter Optional HTTP transporter.
@@ -123,12 +132,14 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 */
 	public function __construct(
 		?string $api_key = null,
+		AuthMode $auth_mode = AuthMode::API_KEY,
 		string $model = self::DEFAULT_MODEL,
 		int $max_tokens = self::DEFAULT_MAX_TOKENS,
 		?HttpTransporterInterface $http_transporter = null
 	) {
 		$this->model = $model;
 		$this->max_tokens = $max_tokens;
+		$this->auth_mode = $auth_mode;
 
 		$this->api_key = $api_key ?? $this->getApiKeyFromEnvironment();
 
@@ -317,7 +328,9 @@ final class AiClientAdapter implements AiClientAdapterInterface
 
 			$this->provider_registry->registerProvider(AnthropicProvider::class);
 
-			$authentication = new AnthropicApiKeyRequestAuthentication((string) $this->api_key);
+			$authentication = $this->auth_mode === AuthMode::SUBSCRIPTION
+				? new AnthropicSubscriptionRequestAuthentication((string) $this->api_key)
+				: new AnthropicApiKeyRequestAuthentication((string) $this->api_key);
 			$this->provider_registry->setProviderRequestAuthentication('anthropic', $authentication);
 
 			$this->initialized = true;
@@ -478,7 +491,11 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Converts tool declarations to FunctionDeclaration objects.
 	 *
-	 * @param array<int, array{name: string, description: string, parameters?: array<string, mixed>}> $tools The tool declarations.
+	 * @param array<int, array{
+	 *     name: string,
+	 *     description: string,
+	 *     parameters?: array<string, mixed>
+	 * }> $tools The tool declarations.
 	 *
 	 * @return array<int, FunctionDeclaration> The function declarations.
 	 */

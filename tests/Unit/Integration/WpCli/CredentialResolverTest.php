@@ -116,6 +116,36 @@ final class CredentialResolverTest extends TestCase
 	}
 
 	/**
+	 * Tests that resolve() supports subscription credentials from dedicated constant.
+	 */
+	public function test_resolve_withSubscriptionConstant_returnsSubscriptionMode(): void
+	{
+		$this->constants['ANTHROPIC_SUBSCRIPTION_KEY'] = 'sub-const-key';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('anthropic');
+
+		$this->assertSame('sub-const-key', $result->getSecret());
+		$this->assertSame(AuthMode::SUBSCRIPTION, $result->getAuthMode());
+		$this->assertSame('constant', $result->getSource());
+	}
+
+	/**
+	 * Tests that resolve() supports subscription credentials from dedicated env var.
+	 */
+	public function test_resolve_withSubscriptionEnv_returnsSubscriptionMode(): void
+	{
+		$this->env_vars['ANTHROPIC_SUBSCRIPTION_KEY'] = 'sub-env-key';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('anthropic');
+
+		$this->assertSame('sub-env-key', $result->getSecret());
+		$this->assertSame(AuthMode::SUBSCRIPTION, $result->getAuthMode());
+		$this->assertSame('env', $result->getSource());
+	}
+
+	/**
 	 * Tests that resolve() throws ConfigurationException when no credential
 	 * is found from any source.
 	 */
@@ -190,7 +220,7 @@ final class CredentialResolverTest extends TestCase
 	 */
 	public function test_getStatus_returnsAllProvidersWithResolutionInfo(): void
 	{
-		$this->constants['ANTHROPIC_API_KEY'] = 'sk-ant-const';
+		$this->constants['ANTHROPIC_SUBSCRIPTION_KEY'] = 'sub-ant-const';
 		$this->repository->setCredential('openai', AuthMode::API_KEY, 'sk-openai-test');
 
 		$resolver = $this->createResolver();
@@ -202,8 +232,8 @@ final class CredentialResolverTest extends TestCase
 		// Anthropic resolved from constant.
 		$anthropic = $this->findStatusEntry($status, 'anthropic');
 		$this->assertNotNull($anthropic);
-		$this->assertSame('api_key', $anthropic['auth_mode']);
-		$this->assertSame('constant', $anthropic['source']);
+			$this->assertSame('subscription', $anthropic['auth_mode']);
+			$this->assertSame('constant', $anthropic['source']);
 		$this->assertTrue($anthropic['available']);
 
 		// OpenAI resolved from DB.

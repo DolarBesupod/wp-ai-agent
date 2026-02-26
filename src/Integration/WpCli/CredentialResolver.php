@@ -16,8 +16,9 @@ use WpAiAgent\Core\Exceptions\CredentialNotFoundException;
  * Resolution order (highest to lowest):
  * 1. PHP constant (e.g. ANTHROPIC_API_KEY)
  * 2. Environment variable (e.g. ANTHROPIC_API_KEY)
- * 3. Database credential via CredentialRepositoryInterface
- * 4. Throws ConfigurationException if none found
+ * 3. Subscription constant/env (e.g. ANTHROPIC_SUBSCRIPTION_KEY)
+ * 4. Database credential via CredentialRepositoryInterface
+ * 5. Throws ConfigurationException if none found
  *
  * @since n.e.x.t
  */
@@ -30,6 +31,15 @@ final class CredentialResolver
 	 */
 	private const PROVIDER_CONSTANTS = [
 		'anthropic' => 'ANTHROPIC_API_KEY',
+	];
+
+	/**
+	 * Maps provider names to subscription credential constants.
+	 *
+	 * @var array<string, string>
+	 */
+	private const PROVIDER_SUBSCRIPTION_CONSTANTS = [
+		'anthropic' => 'ANTHROPIC_SUBSCRIPTION_KEY',
 	];
 
 	/**
@@ -101,6 +111,7 @@ final class CredentialResolver
 	public function resolve(string $provider): ResolvedCredential
 	{
 		$constant_name = self::PROVIDER_CONSTANTS[$provider] ?? null;
+		$subscription_constant_name = self::PROVIDER_SUBSCRIPTION_CONSTANTS[$provider] ?? null;
 
 		// 1. PHP constant (highest priority).
 		if ($constant_name !== null) {
@@ -120,7 +131,22 @@ final class CredentialResolver
 			}
 		}
 
-		// 3. Database credential.
+		// 3. Subscription constant or environment variable.
+		if ($subscription_constant_name !== null) {
+			$subscription_constant = ($this->constant_checker)($subscription_constant_name);
+
+			if ($subscription_constant !== false && $subscription_constant !== '') {
+				return new ResolvedCredential($subscription_constant, AuthMode::SUBSCRIPTION, 'constant');
+			}
+
+			$subscription_env = ($this->env_getter)($subscription_constant_name);
+
+			if ($subscription_env !== false && $subscription_env !== '') {
+				return new ResolvedCredential($subscription_env, AuthMode::SUBSCRIPTION, 'env');
+			}
+		}
+
+		// 4. Database credential.
 		try {
 			$credential = $this->repository->getCredential($provider);
 
@@ -133,16 +159,17 @@ final class CredentialResolver
 			// Fall through to exception.
 		}
 
-		// 4. No credential found.
+		// 5. No credential found.
 		$key_name = $constant_name ?? strtoupper($provider) . '_API_KEY';
+		$subscription_key_name = $subscription_constant_name ?? strtoupper($provider) . '_SUBSCRIPTION_KEY';
 		throw new ConfigurationException(
 			sprintf(
 				'No API key found for provider "%s". '
-				. 'Define the %s constant in wp-config.php, set the %s environment variable, '
+				. 'Define %s or %s in wp-config.php, set them as environment variables, '
 				. 'or run: wp agent auth set --provider=%s',
 				$provider,
 				$key_name,
-				$key_name,
+				$subscription_key_name,
 				$provider
 			)
 		);
@@ -160,7 +187,10 @@ final class CredentialResolver
 	 */
 	public function getStatus(): array
 	{
-		$providers = array_keys(self::PROVIDER_CONSTANTS);
+		$providers = array_unique(array_merge(
+			array_keys(self::PROVIDER_CONSTANTS),
+			array_keys(self::PROVIDER_SUBSCRIPTION_CONSTANTS)
+		));
 
 		// Merge DB providers that may not be in the constant map.
 		$db_providers = $this->repository->listProviders();
