@@ -237,8 +237,58 @@ final class WpCliOutputHandlerTest extends TestCase
 		$handler->writeToolResult('grep', $result);
 
 		$this->assertCount(1, \WP_CLI::$calls);
-		// The line prefix is "[OK] grep: " — the output segment must not exceed 200 chars.
+		// The output segment must not exceed 200 characters.
 		$this->assertStringNotContainsString(str_repeat('X', 201), \WP_CLI::$calls[0][1]);
+	}
+
+	/**
+	 * Tests that writeStatus() prepends the cyan ellipsis colorize prefix to the status message.
+	 */
+	public function test_writeStatus_includesCyanEllipsisPrefix(): void
+	{
+		$handler = new WpCliOutputHandler();
+
+		$handler->writeStatus('Thinking...');
+
+		$this->assertCount(1, \WP_CLI::$calls);
+		$this->assertSame('log', \WP_CLI::$calls[0][0]);
+		$expected_prefix = \WP_CLI::colorize('%c…%n ');
+		$this->assertStringStartsWith($expected_prefix, \WP_CLI::$calls[0][1]);
+		$this->assertStringEndsWith('Thinking...', \WP_CLI::$calls[0][1]);
+	}
+
+	/**
+	 * Tests that writeToolResult() for a successful result includes the green checkmark
+	 * and cyan tool-name colorize tokens in the output line.
+	 */
+	public function test_writeToolResult_success_includesColorizeTokens(): void
+	{
+		$handler = new WpCliOutputHandler();
+		$result = ToolResult::success('output');
+
+		$handler->writeToolResult('bash', $result);
+
+		$this->assertCount(1, \WP_CLI::$calls);
+		$line = \WP_CLI::$calls[0][1];
+		$this->assertStringContainsString('%G✓%n', $line);
+		$this->assertStringContainsString('%cbash%n', $line);
+	}
+
+	/**
+	 * Tests that writeToolResult() for a failed result includes the red cross
+	 * and cyan tool-name colorize tokens in the output line.
+	 */
+	public function test_writeToolResult_failure_includesColorizeTokens(): void
+	{
+		$handler = new WpCliOutputHandler();
+		$result = ToolResult::failure('command not found');
+
+		$handler->writeToolResult('bash', $result);
+
+		$this->assertCount(1, \WP_CLI::$calls);
+		$line = \WP_CLI::$calls[0][1];
+		$this->assertStringContainsString('%R✗%n', $line);
+		$this->assertStringContainsString('%cbash%n', $line);
 	}
 
 	/**
