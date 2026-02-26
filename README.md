@@ -122,7 +122,7 @@ Platform-agnostic business logic with no WordPress or HTTP dependencies:
 WordPress and WP-CLI specific implementations:
 
 - **WpCli**: `WpCliApplication`, `WpCliCommand`, `WpCliConfigCommand`, `WpCliBootstrap`
-- **AI Client**: Anthropic Claude via `wordpress/php-ai-client`
+- **AI Client**: Anthropic Claude via the WordPress 7.0 core-bundled AI client
 - **MCP**: MCP protocol via `galatanovidiu/php-mcp-client`
 - **Configuration**: `WpConfigConfiguration` — reads `WP_AI_AGENT_*` constants
 - **Session Storage**: `WpOptionsSessionRepository` — persists sessions as WordPress options

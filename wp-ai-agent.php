@@ -30,19 +30,25 @@ if (! file_exists($wp_ai_agent_autoloader)) {
 
 require_once $wp_ai_agent_autoloader;
 
-// Require WordPress 7.0+ for bundled AI client (WordPress\AiClient namespace).
+// Block activation on WordPress < 7.0 (must be registered before the runtime guard).
+register_activation_hook(__FILE__, function () {
+	if (! class_exists('WordPress\AiClient\Builders\PromptBuilder')) {
+		deactivate_plugins(plugin_basename(__FILE__));
+		wp_die(
+			'WP AI Agent requires WordPress 7.0 or later (bundled AI client not found).',
+			'Plugin Activation Error',
+			['back_link' => true]
+		);
+	}
+});
+
+// Runtime guard: WordPress 7.0+ bundled AI client (WordPress\AiClient namespace).
 if (! class_exists('WordPress\AiClient\Builders\PromptBuilder')) {
 	if (defined('WP_CLI') && WP_CLI) {
 		WP_CLI::warning('WP AI Agent requires WordPress 7.0 or later (bundled AI client not found).');
 	}
 	return;
 }
-
-register_activation_hook(__FILE__, function () {
-	if (! class_exists('WordPress\AiClient\Builders\PromptBuilder')) {
-		die('WP AI Agent requires WordPress 7.0 or later (bundled AI client not found).');
-	}
-});
 
 // Register WP-CLI commands.
 if (defined('WP_CLI') && WP_CLI) {
