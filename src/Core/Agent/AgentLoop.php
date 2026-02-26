@@ -271,6 +271,10 @@ final class AgentLoop implements AgentLoopInterface
 				'error' => $exception->getMessage(),
 			]);
 
+			$this->output_handler->writeError(
+				sprintf('AI call failed: %s', $exception->getMessage())
+			);
+
 			return $context->withError(
 				sprintf('AI call failed: %s', $exception->getMessage()),
 				$exception
