@@ -37,11 +37,12 @@ final class FileLoggerTest extends TestCase
 	protected function tearDown(): void
 	{
 		if (is_dir($this->test_dir)) {
-			$files = glob($this->test_dir . '/*');
-			if (is_array($files)) {
-				foreach ($files as $file) {
-					unlink($file);
-				}
+			$iterator = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator($this->test_dir, \RecursiveDirectoryIterator::SKIP_DOTS),
+				\RecursiveIteratorIterator::CHILD_FIRST
+			);
+			foreach ($iterator as $file) {
+				$file->isDir() ? rmdir($file->getPathname()) : unlink($file->getPathname());
 			}
 			rmdir($this->test_dir);
 		}
