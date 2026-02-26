@@ -42,23 +42,33 @@ final class WpCliSkillCommand
 	private SkillLoader $loader;
 
 	/**
+	 * Absolute path to the plugin's bundled skills/ directory.
+	 *
+	 * @var string
+	 */
+	private string $bundled_skills_dir;
+
+	/**
 	 * Creates a new WpCliSkillCommand instance.
 	 *
-	 * Both parameters are optional so WP-CLI can instantiate this class without
+	 * All parameters are optional so WP-CLI can instantiate this class without
 	 * arguments when registering it via WP_CLI::add_command(). When omitted,
 	 * concrete implementations are created automatically.
 	 *
-	 * @param WpOptionsSkillRepository|null $repository The WordPress options skill repository.
-	 * @param SkillLoader|null              $loader     The skill loader for markdown parsing.
+	 * @param WpOptionsSkillRepository|null $repository         The WordPress options skill repository.
+	 * @param SkillLoader|null              $loader             The skill loader for markdown parsing.
+	 * @param string|null                   $bundled_skills_dir Absolute path to the bundled skills/ directory.
 	 *
 	 * @since n.e.x.t
 	 */
 	public function __construct(
 		?WpOptionsSkillRepository $repository = null,
-		?SkillLoader $loader = null
+		?SkillLoader $loader = null,
+		?string $bundled_skills_dir = null
 	) {
 		$this->repository = $repository ?? new WpOptionsSkillRepository();
 		$this->loader = $loader ?? new SkillLoader(new MarkdownParser());
+		$this->bundled_skills_dir = $bundled_skills_dir ?? dirname(__DIR__, 3) . '/skills';
 	}
 
 	/**
@@ -82,6 +92,8 @@ final class WpCliSkillCommand
 	 */
 	public function list(array $args, array $assoc_args): void
 	{
+		$this->seedBundledSkillsIfNeeded();
+
 		$names = $this->repository->listNames();
 		$rows = [];
 
@@ -402,6 +414,47 @@ final class WpCliSkillCommand
 		} catch (\Exception $e) {
 			\WP_CLI::error(sprintf('Failed to parse skill file "%s": %s', $filepath, $e->getMessage()));
 			return null;
+		}
+	}
+
+	/**
+	 * Seeds bundled skills from the plugin's skills/ directory if the index has never been set.
+	 *
+	 * Only runs when the wp_ai_agent_skills option is null (not yet initialised).
+	 * Saves each bundled skill to the repository so subsequent calls to listNames()
+	 * return them without requiring the full agent bootstrap.
+	 *
+	 * @return void
+	 *
+	 * @since n.e.x.t
+	 */
+	private function seedBundledSkillsIfNeeded(): void
+	{
+		if (null !== \get_option('wp_ai_agent_skills', null)) {
+			return;
+		}
+
+		if (!is_dir($this->bundled_skills_dir)) {
+			return;
+		}
+
+		$files = glob($this->bundled_skills_dir . '/*.md');
+
+		if (false === $files) {
+			return;
+		}
+
+		foreach ($files as $filepath) {
+			try {
+				$skill = $this->loader->load($filepath);
+				$this->repository->save($skill);
+			} catch (\Exception $e) {
+				\WP_CLI::warning(sprintf(
+					'Could not seed bundled skill from "%s": %s',
+					$filepath,
+					$e->getMessage()
+				));
+			}
 		}
 	}
 }
