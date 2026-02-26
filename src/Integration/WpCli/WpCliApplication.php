@@ -106,6 +106,10 @@ class WpCliApplication
 	 * and passes each non-empty, non-quit line to the agent. The loop ends
 	 * on /quit, /exit, or EOF.
 	 *
+	 * The greeting is displayed in bold via WP_CLI::colorize() and the prompt
+	 * uses a bright-cyan ❯ arrow. WP-CLI handles TTY detection and --no-color
+	 * automatically so output degrades gracefully.
+	 *
 	 * @param array<string, mixed> $assoc_args WP-CLI associative arguments.
 	 *                                          Supported keys:
 	 *                                          - 'session' (string): session ID to resume.
@@ -119,10 +123,10 @@ class WpCliApplication
 	{
 		$this->resolveSession($assoc_args);
 
-		\WP_CLI::line('WP AI Agent — type /quit to exit');
+		\WP_CLI::line(\WP_CLI::colorize('%_WP AI Agent%n — type /quit to exit'));
 
 		while (true) {
-			\WP_CLI::out('> ');
+			\WP_CLI::out(\WP_CLI::colorize('%C❯%n '));
 
 			$input = \fgets(\STDIN);
 

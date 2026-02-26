@@ -89,7 +89,7 @@ final class WpCliOutputHandlerTest extends TestCase
 	}
 
 	/**
-	 * Tests that writeStatus() delegates to WP_CLI::log().
+	 * Tests that writeStatus() delegates to WP_CLI::log() with a cyan ellipsis prefix.
 	 */
 	public function test_writeStatus_callsWpCliLog(): void
 	{
@@ -97,7 +97,7 @@ final class WpCliOutputHandlerTest extends TestCase
 
 		$handler->writeStatus('Loading...');
 
-		$this->assertSame([['log', 'Loading...']], \WP_CLI::$calls);
+		$this->assertSame([['log', '%c…%n Loading...']], \WP_CLI::$calls);
 	}
 
 	/**
@@ -189,7 +189,8 @@ final class WpCliOutputHandlerTest extends TestCase
 	}
 
 	/**
-	 * Tests that writeToolResult() for a successful result outputs [OK] prefix via WP_CLI::line().
+	 * Tests that writeToolResult() for a successful result outputs a green checkmark
+	 * prefix, the tool name in cyan tokens, and the output body via WP_CLI::line().
 	 */
 	public function test_writeToolResult_withSuccess_callsWpCliLineWithOkPrefix(): void
 	{
@@ -200,14 +201,14 @@ final class WpCliOutputHandlerTest extends TestCase
 
 		$this->assertCount(1, \WP_CLI::$calls);
 		$this->assertSame('line', \WP_CLI::$calls[0][0]);
-		$this->assertStringContainsString('[OK]', \WP_CLI::$calls[0][1]);
+		$this->assertStringContainsString('%G✓%n', \WP_CLI::$calls[0][1]);
 		$this->assertStringContainsString('read_file', \WP_CLI::$calls[0][1]);
 		$this->assertStringContainsString('file contents here', \WP_CLI::$calls[0][1]);
 	}
 
 	/**
-	 * Tests that writeToolResult() for a failed result outputs [FAIL] prefix and the
-	 * error message, not the captured stdout output.
+	 * Tests that writeToolResult() for a failed result outputs a red cross prefix
+	 * and the error message, not the captured stdout output.
 	 */
 	public function test_writeToolResult_withFailure_callsWpCliLineWithFailPrefixAndError(): void
 	{
@@ -218,7 +219,7 @@ final class WpCliOutputHandlerTest extends TestCase
 
 		$this->assertCount(1, \WP_CLI::$calls);
 		$this->assertSame('line', \WP_CLI::$calls[0][0]);
-		$this->assertStringContainsString('[FAIL]', \WP_CLI::$calls[0][1]);
+		$this->assertStringContainsString('%R✗%n', \WP_CLI::$calls[0][1]);
 		$this->assertStringContainsString('bash', \WP_CLI::$calls[0][1]);
 		// Failed results must show the error message, not the captured stdout.
 		$this->assertStringContainsString('Permission denied', \WP_CLI::$calls[0][1]);

@@ -84,6 +84,24 @@ namespace {
 		{
 			self::$calls[] = ['runcommand', $command, $options];
 		}
+
+		/**
+		 * Passthrough colorize stub — returns the string unchanged.
+		 *
+		 * At runtime WP-CLI replaces color tokens with ANSI sequences or strips
+		 * them on non-TTY outputs. In tests there is no real WP-CLI runtime, so
+		 * we return the raw token string so assertions can match against it.
+		 *
+		 * @param string $string The string containing WP-CLI color tokens.
+		 *
+		 * @return string The string with tokens left intact.
+		 *
+		 * @since n.e.x.t
+		 */
+		public static function colorize(string $string): string
+		{
+			return $string;
+		}
 	}
 }
 

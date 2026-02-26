@@ -104,8 +104,10 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	/**
 	 * Writes a tool execution result as a formatted WP-CLI line.
 	 *
-	 * Shows [OK] or [FAIL] prefix, the tool name, and up to 200 characters
-	 * of output. For failed results, shows the error message instead of output.
+	 * Shows a green ✓ or red ✗ prefix, the tool name in cyan, and up to
+	 * 200 characters of output. For failed results, shows the error message
+	 * instead of output. Color tokens are applied via WP_CLI::colorize() so
+	 * WP-CLI handles TTY detection and --no-color automatically.
 	 *
 	 * @param string     $tool_name The name of the executed tool.
 	 * @param ToolResult $result    The execution result.
@@ -116,7 +118,11 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 */
 	public function writeToolResult(string $tool_name, ToolResult $result): void
 	{
-		$status = $result->isSuccess() ? 'OK' : 'FAIL';
+		if ($result->isSuccess()) {
+			$prefix = \WP_CLI::colorize('%G✓%n');
+		} else {
+			$prefix = \WP_CLI::colorize('%R✗%n');
+		}
 
 		if (!$result->isSuccess() && $result->getError() !== null) {
 			$output = $result->getError();
@@ -124,7 +130,8 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 			$output = $result->getOutput();
 		}
 
-		\WP_CLI::line(sprintf('[%s] %s: %s', $status, $tool_name, substr($output, 0, 200)));
+		$colored_name = \WP_CLI::colorize(sprintf('%%c%s%%n', $tool_name));
+		\WP_CLI::line(sprintf('%s %s: %s', $prefix, $colored_name, substr($output, 0, 200)));
 	}
 
 	/**
@@ -145,7 +152,9 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 * Writes a streaming chunk of the assistant's response.
 	 *
 	 * Echoes the chunk directly without a newline, bypassing WP-CLI
-	 * formatting to preserve streaming behaviour.
+	 * formatting to preserve streaming behaviour. Flushes STDOUT after every
+	 * chunk so tokens appear immediately in piped and CI environments that
+	 * would otherwise buffer PHP output.
 	 *
 	 * @param string $chunk The text chunk.
 	 *
@@ -156,10 +165,15 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	public function writeStreamChunk(string $chunk): void
 	{
 		echo $chunk;
+		fflush(STDOUT);
 	}
 
 	/**
-	 * Writes a status message via WP_CLI::log().
+	 * Writes a status message via WP_CLI::log() with a cyan ellipsis prefix.
+	 *
+	 * The cyan `…` symbol visually recedes status messages (e.g., "Thinking…",
+	 * "Running tool…") from main content. The prefix is applied via
+	 * WP_CLI::colorize() so WP-CLI handles TTY detection and --no-color.
 	 *
 	 * @param string $status The status message.
 	 *
@@ -169,7 +183,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 */
 	public function writeStatus(string $status): void
 	{
-		\WP_CLI::log($status);
+		\WP_CLI::log(\WP_CLI::colorize('%c…%n ') . $status);
 	}
 
 	/**
