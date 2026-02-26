@@ -102,7 +102,30 @@ final class WpConfigConfiguration implements ConfigurationInterface
 	}
 
 	/**
-	 * Returns the system prompt template.
+	 * Default system prompt used when WP_AI_AGENT_SYSTEM_PROMPT is not defined.
+	 *
+	 * @var string
+	 */
+	private const DEFAULT_SYSTEM_PROMPT = <<<'PROMPT'
+You are an expert WordPress assistant with full WP-CLI access to this site.
+You can inspect and manage plugins, themes, users, options, posts, and the database.
+
+## Guidelines
+- Always prefer non-destructive reads before making any changes.
+- Use `wp help` or `wp <command> --help` to discover available commands and their options.
+- When running WP-CLI commands, use the site's current working directory.
+- Before making a change (activating a plugin, updating an option, etc.), briefly explain what you are about to do and why.
+- Be concise. Format output as markdown tables when listing items.
+
+## Site info
+You do not have site details pre-loaded. Use the `wp_site_overview` skill or run `wp` commands to discover the current installation when needed.
+PROMPT;
+
+	/**
+	 * Returns the system prompt.
+	 *
+	 * Uses the WP_AI_AGENT_SYSTEM_PROMPT constant when defined, otherwise
+	 * falls back to the built-in default prompt.
 	 *
 	 * @return string
 	 *
@@ -110,7 +133,9 @@ final class WpConfigConfiguration implements ConfigurationInterface
 	 */
 	public function getSystemPrompt(): string
 	{
-		return defined('WP_AI_AGENT_SYSTEM_PROMPT') ? (string) constant('WP_AI_AGENT_SYSTEM_PROMPT') : '';
+		return defined('WP_AI_AGENT_SYSTEM_PROMPT')
+			? (string) constant('WP_AI_AGENT_SYSTEM_PROMPT')
+			: self::DEFAULT_SYSTEM_PROMPT;
 	}
 
 	/**
