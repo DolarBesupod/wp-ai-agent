@@ -31,5 +31,6 @@ require_once $wp_ai_agent_autoloader;
 
 // Register WP-CLI commands.
 if (defined('WP_CLI') && WP_CLI) {
-	WP_CLI::add_command('agent', \WpAiAgent\Integration\WpCli\WpCliCommand::class);
+	\WP_CLI::add_command('agent', \WpAiAgent\Integration\WpCli\WpCliCommand::class);
+	\WP_CLI::add_command('agent config', \WpAiAgent\Integration\WpCli\WpCliConfigCommand::class);
 }
