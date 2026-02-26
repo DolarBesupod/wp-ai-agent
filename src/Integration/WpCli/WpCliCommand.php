@@ -38,6 +38,9 @@ class WpCliCommand
 	 * [--debug]
 	 * : Enable debug output.
 	 *
+	 * [--yolo]
+	 * : Auto-confirm all tool executions without prompting. Use with caution.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp agent chat
@@ -77,6 +80,9 @@ class WpCliCommand
 	 *
 	 * [--debug]
 	 * : Enable debug output.
+	 *
+	 * [--yolo]
+	 * : Auto-confirm all tool executions without prompting. Use with caution.
 	 *
 	 * ## EXAMPLES
 	 *

@@ -90,7 +90,6 @@ class WpCliApplication
 		private readonly ConfigurationInterface $configuration,
 		private readonly AgentInterface $agent,
 		private readonly WpCliOutputHandler $output_handler,
-		/** @phpstan-ignore property.onlyWritten */
 		private readonly WpCliConfirmationHandler $confirmation_handler,
 		/** @phpstan-ignore property.onlyWritten */
 		private readonly SessionRepositoryInterface $session_repository,
@@ -123,6 +122,10 @@ class WpCliApplication
 	{
 		$this->resolveSession($assoc_args);
 
+		if (! empty($assoc_args['yolo'])) {
+			$this->confirmation_handler->setAutoConfirm(true);
+		}
+
 		\WP_CLI::line(\WP_CLI::colorize('%_WP AI Agent%n — type /quit to exit'));
 
 		while (true) {
@@ -138,6 +141,18 @@ class WpCliApplication
 			$input = \trim($input);
 
 			if ($input === '') {
+				continue;
+			}
+
+			if ('/yolo' === $input || '/yolo on' === $input) {
+				$this->confirmation_handler->setAutoConfirm(true);
+				\WP_CLI::success('Auto-confirm enabled. All tools will execute without prompting.');
+				continue;
+			}
+
+			if ('/yolo off' === $input) {
+				$this->confirmation_handler->setAutoConfirm(false);
+				\WP_CLI::success('Auto-confirm disabled. Tools will prompt for confirmation.');
 				continue;
 			}
 
@@ -167,6 +182,10 @@ class WpCliApplication
 	public function ask(string $message, array $assoc_args): void
 	{
 		$this->resolveSession($assoc_args);
+
+		if (! empty($assoc_args['yolo'])) {
+			$this->confirmation_handler->setAutoConfirm(true);
+		}
 
 		if (!empty($assoc_args['debug'])) {
 			$this->output_handler->setDebugEnabled(true);
