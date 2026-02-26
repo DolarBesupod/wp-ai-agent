@@ -33,6 +33,15 @@ namespace {
 		 */
 		public static bool $confirm_throws = false;
 
+		/**
+		 * Value returned by WP_CLI\Utils\prompt() stub.
+		 *
+		 * Tests set this before calling code that invokes prompt().
+		 *
+		 * @var string
+		 */
+		public static string $prompt_return = '';
+
 		public static function line(string $msg): void
 		{
 			self::$calls[] = ['line', $msg];
@@ -130,6 +139,27 @@ namespace WP_CLI\Utils {
 	function format_items(string $format, iterable $items, array $fields): void
 	{
 		\WP_CLI::$calls[] = ['format_items', $format, $items, $fields];
+	}
+
+	/**
+	 * Minimal prompt stub for unit tests.
+	 *
+	 * Records calls in WP_CLI::$calls and returns the value from the static
+	 * $prompt_return property. Tests set that property to control what the
+	 * prompt "returns" without real terminal interaction.
+	 *
+	 * @param string $question The prompt text.
+	 * @param string $default  Default value.
+	 * @param string $marker   Visual marker (unused).
+	 * @param bool   $hide     Whether to hide input (unused by stub).
+	 *
+	 * @return string The simulated user input.
+	 */
+	function prompt(string $question, string $default = '', string $marker = ': ', bool $hide = false): string
+	{
+		\WP_CLI::$calls[] = ['prompt', $question, $default, $marker, $hide];
+
+		return \WP_CLI::$prompt_return;
 	}
 }
 // phpcs:enable
