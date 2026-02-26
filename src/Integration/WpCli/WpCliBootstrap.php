@@ -16,6 +16,7 @@ use WpAiAgent\Integration\Settings\BashCommandExpander;
 use WpAiAgent\Integration\Settings\FileReferenceExpander;
 use WpAiAgent\Integration\Skill\SkillLoader;
 use WpAiAgent\Integration\Skill\SkillRegistry;
+use WpAiAgent\Integration\Ability\AbilityToolRegistry;
 use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
@@ -85,6 +86,9 @@ final class WpCliBootstrap
 
 		// Step 8 — MCP servers (optional, backward-compatible constant).
 		$mcp_client_manager = self::connectMcpServers($tool_registry);
+
+		// Step 8b — WordPress abilities (WP 6.9+, silently skipped otherwise).
+		self::discoverAbilities($tool_registry);
 
 		// Step 9 — Credential resolution and AI adapter.
 		$credential_repository = new WpOptionsCredentialRepository();
@@ -223,6 +227,33 @@ final class WpCliBootstrap
 		} catch (\Throwable $e) {
 			\WP_CLI::warning(sprintf('[MCP] %s', $e->getMessage()));
 			return null;
+		}
+	}
+
+	/**
+	 * Discovers WordPress abilities and registers them as agent tools.
+	 *
+	 * Guarded by `function_exists('wp_get_abilities')` so the agent starts
+	 * cleanly on WordPress versions before 6.9 where the Abilities API does
+	 * not exist. Discovery errors are reported via WP_CLI::warning() and
+	 * never abort startup.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @param \WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry Tool registry to register abilities into.
+	 */
+	private static function discoverAbilities(
+		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
+	): void {
+		if (!function_exists('wp_get_abilities')) {
+			return;
+		}
+
+		$ability_registry = new AbilityToolRegistry();
+		$tools_registered = $ability_registry->discoverAndRegister($tool_registry);
+
+		if ($tools_registered > 0) {
+			\WP_CLI::debug(sprintf('[Abilities] Registered %d tool(s)', $tools_registered));
 		}
 	}
 }
