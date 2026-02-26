@@ -4,6 +4,7 @@
  * Plugin Name: WP AI Agent
  * Description: A CLI AI agent powered by Claude with MCP support. Exposes WP-CLI commands: wp agent run (interactive REPL) and wp agent ask (one-shot). Works standalone via `php agent` too.
  * Version: 0.1.0
+ * Requires at least: 7.0
  * Requires PHP: 8.1
  *
  * @package WpAiAgent
@@ -28,6 +29,20 @@ if (! file_exists($wp_ai_agent_autoloader)) {
 }
 
 require_once $wp_ai_agent_autoloader;
+
+// Require WordPress 7.0+ for bundled AI client (WordPress\AiClient namespace).
+if (! class_exists('WordPress\AiClient\Builders\PromptBuilder')) {
+	if (defined('WP_CLI') && WP_CLI) {
+		WP_CLI::warning('WP AI Agent requires WordPress 7.0 or later (bundled AI client not found).');
+	}
+	return;
+}
+
+register_activation_hook(__FILE__, function () {
+	if (! class_exists('WordPress\AiClient\Builders\PromptBuilder')) {
+		die('WP AI Agent requires WordPress 7.0 or later (bundled AI client not found).');
+	}
+});
 
 // Register WP-CLI commands.
 if (defined('WP_CLI') && WP_CLI) {
