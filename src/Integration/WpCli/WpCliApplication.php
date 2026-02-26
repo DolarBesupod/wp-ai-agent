@@ -128,6 +128,10 @@ class WpCliApplication
 
 		\WP_CLI::line(\WP_CLI::colorize('%_WP AI Agent%n — type /quit to exit'));
 
+		if ($this->confirmation_handler->isAutoConfirm()) {
+			\WP_CLI::warning(\WP_CLI::colorize('%RYolo mode active%n — all tools will execute without confirmation.'));
+		}
+
 		while (true) {
 			\WP_CLI::out(\WP_CLI::colorize('%C❯%n '));
 
