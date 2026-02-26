@@ -313,6 +313,42 @@ final class SettingsSchemaValidatorTest extends TestCase
 		$validator->validate($config);
 	}
 
+	// -----------------------------------------------------------------------
+	// auto_confirm
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Tests that settings array with auto_confirm: true validates without errors.
+	 */
+	public function test_validate_withAutoConfirmTrue_passes(): void
+	{
+		$validator = new SettingsSchemaValidator();
+
+		$config = [
+			'auto_confirm' => true,
+		];
+
+		// Should not throw
+		$validator->validate($config);
+		$this->assertTrue(true);
+	}
+
+	/**
+	 * Tests that settings array with auto_confirm: false validates without errors.
+	 */
+	public function test_validate_withAutoConfirmFalse_passes(): void
+	{
+		$validator = new SettingsSchemaValidator();
+
+		$config = [
+			'auto_confirm' => false,
+		];
+
+		// Should not throw
+		$validator->validate($config);
+		$this->assertTrue(true);
+	}
+
 	/**
 	 * Tests getSchema returns the JSON schema.
 	 */

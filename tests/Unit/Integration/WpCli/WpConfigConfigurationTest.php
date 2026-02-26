@@ -344,6 +344,45 @@ final class WpConfigConfigurationTest extends TestCase
 	}
 
 	// -----------------------------------------------------------------------
+	// getAutoConfirm()
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Tests that getAutoConfirm() returns true when WP_AI_AGENT_AUTO_CONFIRM
+	 * is defined as true.
+	 *
+	 * Runs in a separate process so we can define the constant safely without
+	 * affecting other tests (PHP constants cannot be undefined once defined).
+	 *
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_getAutoConfirm_withConstantDefined_returnsTrue(): void
+	{
+		define('WP_AI_AGENT_AUTO_CONFIRM', true);
+
+		$config = new WpConfigConfiguration();
+
+		$this->assertTrue($config->getAutoConfirm());
+	}
+
+	/**
+	 * Tests that getAutoConfirm() returns false when WP_AI_AGENT_AUTO_CONFIRM
+	 * is not defined.
+	 *
+	 * Runs in a separate process to guarantee the constant is absent.
+	 *
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_getAutoConfirm_withoutConstant_returnsFalse(): void
+	{
+		$config = new WpConfigConfiguration();
+
+		$this->assertFalse($config->getAutoConfirm());
+	}
+
+	// -----------------------------------------------------------------------
 	// Interface contract
 	// -----------------------------------------------------------------------
 
