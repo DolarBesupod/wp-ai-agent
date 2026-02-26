@@ -648,6 +648,107 @@ final class AbilityStrapToolTest extends TestCase
 	}
 
 	// ---------------------------------------------------------------
+	// User-context guard (execute requires logged-in user)
+	// ---------------------------------------------------------------
+
+	/**
+	 * Tests that execute action with no logged-in user returns failure with wordpress_users hint.
+	 */
+	public function test_execute_withExecuteAction_withNoLoggedInUser_returnsFailure(): void
+	{
+		$tool = new AbilityStrapTool(
+			fn () => [
+				$this->createStubAbility(
+					'core/get-site-info',
+					'Get Site Info',
+					'Returns site information',
+					['annotations' => ['readonly' => true]],
+					null,
+					['name' => 'My Site'],
+				),
+			],
+			fn () => false,
+		);
+
+		$result = $tool->execute([
+			'action' => 'execute',
+			'ability_name' => 'core/get-site-info',
+		]);
+
+		$this->assertFalse($result->isSuccess());
+		$this->assertStringContainsString('No WordPress user context is set', $result->getError());
+		$this->assertStringContainsString('wordpress_users', $result->getError());
+	}
+
+	/**
+	 * Tests that execute action with logged-in user proceeds normally.
+	 */
+	public function test_execute_withExecuteAction_withLoggedInUser_proceedsNormally(): void
+	{
+		$tool = new AbilityStrapTool(
+			fn () => [
+				$this->createStubAbility(
+					'core/get-site-info',
+					'Get Site Info',
+					'Returns site information',
+					['annotations' => ['readonly' => true]],
+					null,
+					['name' => 'My Site'],
+				),
+			],
+			fn () => true,
+		);
+
+		$result = $tool->execute([
+			'action' => 'execute',
+			'ability_name' => 'core/get-site-info',
+		]);
+
+		$this->assertTrue($result->isSuccess());
+		$this->assertStringContainsString('My Site', $result->getOutput());
+	}
+
+	/**
+	 * Tests that list action works when no user is logged in (no guard on list).
+	 */
+	public function test_execute_withListAction_withNoLoggedInUser_succeedsWithoutGuard(): void
+	{
+		$tool = new AbilityStrapTool(
+			fn () => [
+				$this->createStubAbility('core/get-site-info', 'Get Site Info', 'Returns site information'),
+			],
+			fn () => false,
+		);
+
+		$result = $tool->execute(['action' => 'list']);
+
+		$this->assertTrue($result->isSuccess());
+
+		$data = json_decode($result->getOutput(), true);
+		$this->assertSame(1, $data['count']);
+	}
+
+	/**
+	 * Tests that describe action works when no user is logged in (no guard on describe).
+	 */
+	public function test_execute_withDescribeAction_withNoLoggedInUser_succeedsWithoutGuard(): void
+	{
+		$tool = new AbilityStrapTool(
+			fn () => [
+				$this->createStubAbility('core/get-site-info', 'Get Site Info', 'Returns site information'),
+			],
+			fn () => false,
+		);
+
+		$result = $tool->execute(['action' => 'describe', 'ability_name' => 'core/get-site-info']);
+
+		$this->assertTrue($result->isSuccess());
+
+		$data = json_decode($result->getOutput(), true);
+		$this->assertSame('core/get-site-info', $data['name']);
+	}
+
+	// ---------------------------------------------------------------
 	// Lazy discovery
 	// ---------------------------------------------------------------
 

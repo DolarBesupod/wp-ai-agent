@@ -17,6 +17,7 @@ use WpAiAgent\Integration\Settings\FileReferenceExpander;
 use WpAiAgent\Integration\Skill\SkillLoader;
 use WpAiAgent\Integration\Skill\SkillRegistry;
 use WpAiAgent\Integration\Ability\AbilityStrapTool;
+use WpAiAgent\Integration\User\UserContextTool;
 use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
@@ -251,5 +252,8 @@ final class WpCliBootstrap
 
 		$tool_registry->register(new AbilityStrapTool());
 		\WP_CLI::debug('[Abilities] STRAP facade registered');
+
+		$tool_registry->register(new UserContextTool());
+		\WP_CLI::debug('[Abilities] User context tool registered');
 	}
 }
