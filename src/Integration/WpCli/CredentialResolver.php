@@ -31,6 +31,8 @@ final class CredentialResolver
 	 */
 	private const PROVIDER_CONSTANTS = [
 		'anthropic' => 'ANTHROPIC_API_KEY',
+		'openai'    => 'OPENAI_API_KEY',
+		'google'    => 'GOOGLE_API_KEY',
 	];
 
 	/**

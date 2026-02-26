@@ -199,15 +199,71 @@ final class CredentialResolverTest extends TestCase
 	 */
 	public function test_resolve_withUnknownProvider_usesDbCredential(): void
 	{
-		$this->repository->setCredential('openai', AuthMode::API_KEY, 'sk-openai-test');
+		$this->repository->setCredential('custom-llm', AuthMode::API_KEY, 'sk-custom-test');
 
 		$resolver = $this->createResolver();
 
-		$result = $resolver->resolve('openai');
+		$result = $resolver->resolve('custom-llm');
 
-		$this->assertSame('sk-openai-test', $result->getSecret());
+		$this->assertSame('sk-custom-test', $result->getSecret());
 		$this->assertSame(AuthMode::API_KEY, $result->getAuthMode());
 		$this->assertSame('db', $result->getSource());
+	}
+
+	// -----------------------------------------------------------------------
+	// resolve() — OpenAI provider
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Tests that resolve('openai') returns the constant value when
+	 * OPENAI_API_KEY is defined as a PHP constant.
+	 */
+	public function test_resolve_withOpenaiConstant_returnsApiKeyMode(): void
+	{
+		$this->constants['OPENAI_API_KEY'] = 'sk-openai-constant';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('openai');
+
+		$this->assertInstanceOf(ResolvedCredential::class, $result);
+		$this->assertSame('sk-openai-constant', $result->getSecret());
+		$this->assertSame(AuthMode::API_KEY, $result->getAuthMode());
+		$this->assertSame('constant', $result->getSource());
+	}
+
+	/**
+	 * Tests that resolve('openai') throws ConfigurationException when no
+	 * credential is found from any source, and the message mentions OPENAI_API_KEY.
+	 */
+	public function test_resolve_withNoOpenaiCredential_throwsConfigurationException(): void
+	{
+		$resolver = $this->createResolver();
+
+		$this->expectException(ConfigurationException::class);
+		$this->expectExceptionMessage('OPENAI_API_KEY');
+
+		$resolver->resolve('openai');
+	}
+
+	// -----------------------------------------------------------------------
+	// resolve() — Google provider
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Tests that resolve('google') returns the env var value when
+	 * GOOGLE_API_KEY is set as an environment variable.
+	 */
+	public function test_resolve_withGoogleEnvVar_returnsApiKeyMode(): void
+	{
+		$this->env_vars['GOOGLE_API_KEY'] = 'AIza-google-env';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('google');
+
+		$this->assertInstanceOf(ResolvedCredential::class, $result);
+		$this->assertSame('AIza-google-env', $result->getSecret());
+		$this->assertSame(AuthMode::API_KEY, $result->getAuthMode());
+		$this->assertSame('env', $result->getSource());
 	}
 
 	// -----------------------------------------------------------------------
@@ -215,33 +271,72 @@ final class CredentialResolverTest extends TestCase
 	// -----------------------------------------------------------------------
 
 	/**
-	 * Tests that getStatus() returns entries for all known providers and DB
-	 * providers with correct resolution info.
+	 * Tests that getStatus() returns entries for all known providers with
+	 * correct resolution info.
 	 */
 	public function test_getStatus_returnsAllProvidersWithResolutionInfo(): void
 	{
 		$this->constants['ANTHROPIC_SUBSCRIPTION_KEY'] = 'sub-ant-const';
-		$this->repository->setCredential('openai', AuthMode::API_KEY, 'sk-openai-test');
+		$this->constants['OPENAI_API_KEY'] = 'sk-openai-const';
+		$this->env_vars['GOOGLE_API_KEY'] = 'AIza-google-env';
 
 		$resolver = $this->createResolver();
 
 		$status = $resolver->getStatus();
 
-		$this->assertCount(2, $status);
+		$this->assertCount(3, $status);
 
-		// Anthropic resolved from constant.
+		// Anthropic resolved from subscription constant.
 		$anthropic = $this->findStatusEntry($status, 'anthropic');
 		$this->assertNotNull($anthropic);
-			$this->assertSame('subscription', $anthropic['auth_mode']);
-			$this->assertSame('constant', $anthropic['source']);
+		$this->assertSame('subscription', $anthropic['auth_mode']);
+		$this->assertSame('constant', $anthropic['source']);
 		$this->assertTrue($anthropic['available']);
 
-		// OpenAI resolved from DB.
+		// OpenAI resolved from constant.
 		$openai = $this->findStatusEntry($status, 'openai');
 		$this->assertNotNull($openai);
 		$this->assertSame('api_key', $openai['auth_mode']);
-		$this->assertSame('db', $openai['source']);
+		$this->assertSame('constant', $openai['source']);
 		$this->assertTrue($openai['available']);
+
+		// Google resolved from env var.
+		$google = $this->findStatusEntry($status, 'google');
+		$this->assertNotNull($google);
+		$this->assertSame('api_key', $google['auth_mode']);
+		$this->assertSame('env', $google['source']);
+		$this->assertTrue($google['available']);
+	}
+
+	/**
+	 * Tests that getStatus() includes DB-only providers alongside the three
+	 * known providers.
+	 */
+	public function test_getStatus_includesDbProvidersAlongsideKnownProviders(): void
+	{
+		$this->repository->setCredential('custom-llm', AuthMode::API_KEY, 'sk-custom');
+
+		$resolver = $this->createResolver();
+
+		$status = $resolver->getStatus();
+
+		// 3 known providers (anthropic, openai, google) + 1 DB-only.
+		$this->assertCount(4, $status);
+
+		$custom = $this->findStatusEntry($status, 'custom-llm');
+		$this->assertNotNull($custom);
+		$this->assertSame('api_key', $custom['auth_mode']);
+		$this->assertSame('db', $custom['source']);
+		$this->assertTrue($custom['available']);
+
+		// Known providers without credentials should show as unavailable.
+		$openai = $this->findStatusEntry($status, 'openai');
+		$this->assertNotNull($openai);
+		$this->assertFalse($openai['available']);
+
+		$google = $this->findStatusEntry($status, 'google');
+		$this->assertNotNull($google);
+		$this->assertFalse($google['available']);
 	}
 
 	// -----------------------------------------------------------------------
