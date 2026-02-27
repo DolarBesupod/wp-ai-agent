@@ -31,6 +31,11 @@ final class WpCliAuthCommand
 	private const ANTHROPIC_SETUP_TOKEN_MIN_LENGTH = 80;
 
 	/**
+	 * Minimum expected length for OpenAI Codex tokens.
+	 */
+	private const OPENAI_CODEX_TOKEN_MIN_LENGTH = 10;
+
+	/**
 	 * The WordPress options credential repository.
 	 *
 	 * @var WpOptionsCredentialRepository
@@ -145,13 +150,22 @@ final class WpCliAuthCommand
 		}
 
 		if ($auth_mode === AuthMode::SUBSCRIPTION) {
-			\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
-			\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
+			if ($provider === 'openai') {
+				\WP_CLI::log('Subscription mode requires an OpenAI Codex CLI token.');
+				\WP_CLI::log('Run `codex login`, then paste the access token from ~/.codex/auth.json below.');
+			} else {
+				\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
+				\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
+			}
 		}
 
-		$prompt = $auth_mode === AuthMode::SUBSCRIPTION
-			? 'Paste Anthropic setup-token: '
-			: 'Enter API key: ';
+		if ($auth_mode === AuthMode::SUBSCRIPTION && $provider === 'openai') {
+			$prompt = 'Paste OpenAI Codex token: ';
+		} elseif ($auth_mode === AuthMode::SUBSCRIPTION) {
+			$prompt = 'Paste Anthropic setup-token: ';
+		} else {
+			$prompt = 'Enter API key: ';
+		}
 		$secret = ($this->prompt_callable)($prompt);
 
 		if ('' === $secret) {
@@ -160,7 +174,7 @@ final class WpCliAuthCommand
 		}
 
 		if ($auth_mode === AuthMode::SUBSCRIPTION) {
-			$validation_error = $this->validateSubscriptionSecret($secret);
+			$validation_error = $this->validateSubscriptionSecret($secret, $provider);
 			if ($validation_error !== null) {
 				\WP_CLI::error($validation_error);
 				return;
@@ -365,25 +379,45 @@ final class WpCliAuthCommand
 	}
 
 	/**
-	 * Validates Anthropic subscription setup-token format.
+	 * Validates a subscription secret based on the provider.
 	 *
-	 * @param string $secret The raw secret.
+	 * - Anthropic: requires `sk-ant-oat01-` prefix and minimum 80 characters.
+	 * - OpenAI: minimal length check (Codex tokens have no predictable prefix).
+	 * - Other providers: no subscription validation (returns null).
+	 *
+	 * @param string $secret   The raw secret.
+	 * @param string $provider The provider name.
 	 *
 	 * @return string|null Error message if invalid, null if valid.
+	 *
+	 * @since n.e.x.t
 	 */
-	private function validateSubscriptionSecret(string $secret): ?string
+	private function validateSubscriptionSecret(string $secret, string $provider): ?string
 	{
 		$trimmed = trim($secret);
 
-		if (!str_starts_with($trimmed, self::ANTHROPIC_SETUP_TOKEN_PREFIX)) {
-			return sprintf(
-				'Invalid setup-token format. Expected prefix "%s". Run `claude setup-token` and paste the full token.',
-				self::ANTHROPIC_SETUP_TOKEN_PREFIX
-			);
+		if ($provider === 'anthropic') {
+			if (!str_starts_with($trimmed, self::ANTHROPIC_SETUP_TOKEN_PREFIX)) {
+				return sprintf(
+					'Invalid setup-token format. Expected prefix "%s".'
+					. ' Run `claude setup-token` and paste the full token.',
+					self::ANTHROPIC_SETUP_TOKEN_PREFIX
+				);
+			}
+
+			if (strlen($trimmed) < self::ANTHROPIC_SETUP_TOKEN_MIN_LENGTH) {
+				return 'Setup-token looks too short. Paste the full token produced by `claude setup-token`.';
+			}
+
+			return null;
 		}
 
-		if (strlen($trimmed) < self::ANTHROPIC_SETUP_TOKEN_MIN_LENGTH) {
-			return 'Setup-token looks too short. Paste the full token produced by `claude setup-token`.';
+		if ($provider === 'openai') {
+			if (strlen($trimmed) < self::OPENAI_CODEX_TOKEN_MIN_LENGTH) {
+				return 'Token looks too short. Run `codex login` and paste the access token from ~/.codex/auth.json.';
+			}
+
+			return null;
 		}
 
 		return null;

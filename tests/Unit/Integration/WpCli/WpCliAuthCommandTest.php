@@ -88,9 +88,9 @@ final class WpCliAuthCommandTest extends TestCase
 	}
 
 	/**
-	 * Tests that invalid subscription token is rejected and not stored.
+	 * Tests that invalid Anthropic subscription token is rejected and not stored.
 	 */
-	public function test_set_withInvalidSubscriptionToken_callsWpCliError(): void
+	public function test_set_withInvalidAnthropicSubscriptionToken_callsWpCliError(): void
 	{
 		$repository = new WpOptionsCredentialRepository();
 		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
@@ -106,6 +106,83 @@ final class WpCliAuthCommandTest extends TestCase
 		$this->assertNotEmpty($error_calls);
 		$this->assertStringContainsString('setup-token', $error_calls[0][1]);
 		$this->assertFalse($repository->hasCredential('anthropic'));
+	}
+
+	/**
+	 * Tests that OpenAI subscription mode stores a valid Codex token.
+	 */
+	public function test_set_withOpenaiSubscriptionMode_storesCodexToken(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.longtoken'
+		);
+
+		$command->set([], ['provider' => 'openai', 'mode' => 'subscription']);
+
+		$this->assertTrue($repository->hasCredential('openai'), 'OpenAI credential must be stored');
+
+		$credential = $repository->getCredential('openai');
+		$this->assertSame(AuthMode::SUBSCRIPTION, $credential->getAuthMode());
+
+		$log_calls = $this->filterCalls('log');
+		$log_messages = array_map(static fn(array $c): string => $c[1], $log_calls);
+		$this->assertStringContainsString(
+			'codex login',
+			implode("\n", $log_messages),
+			'OpenAI subscription mode should instruct user about codex login workflow'
+		);
+
+		$success_calls = $this->filterCalls('success');
+		$this->assertNotEmpty($success_calls, 'set() must call WP_CLI::success()');
+	}
+
+	/**
+	 * Tests that OpenAI subscription rejects tokens that are too short.
+	 */
+	public function test_set_withShortOpenaiSubscriptionToken_callsWpCliError(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'short'
+		);
+
+		$command->set([], ['provider' => 'openai', 'mode' => 'subscription']);
+
+		$error_calls = $this->filterCalls('error');
+		$this->assertNotEmpty($error_calls);
+		$this->assertStringContainsString('codex login', $error_calls[0][1]);
+		$this->assertFalse($repository->hasCredential('openai'));
+	}
+
+	/**
+	 * Tests that unknown providers pass subscription validation without error.
+	 */
+	public function test_set_withUnknownProviderSubscription_passesValidation(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'any-token-value'
+		);
+
+		$command->set([], ['provider' => 'some-provider', 'mode' => 'subscription']);
+
+		$this->assertTrue($repository->hasCredential('some-provider'), 'Unknown provider credential must be stored');
+
+		$credential = $repository->getCredential('some-provider');
+		$this->assertSame(AuthMode::SUBSCRIPTION, $credential->getAuthMode());
+
+		$error_calls = $this->filterCalls('error');
+		$this->assertEmpty($error_calls, 'Unknown providers should pass validation without errors');
 	}
 
 	/**
