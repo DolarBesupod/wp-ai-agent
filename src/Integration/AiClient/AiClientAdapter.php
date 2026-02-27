@@ -462,12 +462,18 @@ final class AiClientAdapter implements AiClientAdapterInterface
 			[]
 		);
 
-		/** @var \WordPress\AiClient\Providers\Models\Contracts\ModelInterface $model_instance */
-		$model_instance = match ($this->provider_id) {
-			'anthropic' => new AnthropicTextGenerationModel($model_metadata, $provider_metadata),
-			'openai'    => new OpenAiTextGenerationModel($model_metadata, $provider_metadata),
-			'google'    => new GoogleTextGenerationModel($model_metadata, $provider_metadata),
-		};
+		// Use custom model for OpenAI subscription (ChatGPT backend requires SSE streaming).
+		if ($this->provider_id === 'openai' && $this->auth_mode === AuthMode::SUBSCRIPTION) {
+			$model_instance = new ChatGptCodexTextGenerationModel($model_metadata, $provider_metadata);
+		} else {
+			/** @var \WordPress\AiClient\Providers\Models\Contracts\ModelInterface $model_instance */
+			$model_instance = match ($this->provider_id) {
+				'anthropic' => new AnthropicTextGenerationModel($model_metadata, $provider_metadata),
+				'openai'    => new OpenAiTextGenerationModel($model_metadata, $provider_metadata),
+				'google'    => new GoogleTextGenerationModel($model_metadata, $provider_metadata),
+			};
+		}
+
 		$this->provider_registry->bindModelDependencies($model_instance);
 		return $model_instance;
 	}

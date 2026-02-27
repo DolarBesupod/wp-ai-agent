@@ -6,6 +6,7 @@ namespace WpAiAgent\Tests\Unit\Integration\AiClient;
 
 use WpAiAgent\Core\Credential\AuthMode;
 use WpAiAgent\Core\Exceptions\AiClientException;
+use WpAiAgent\Core\ValueObjects\Message;
 use WpAiAgent\Integration\AiClient\AiClientAdapter;
 use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
@@ -13,6 +14,8 @@ use WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
+use WordPress\AiClient\Providers\Http\DTO\Request;
+use WordPress\AiClient\Providers\Http\DTO\Response;
 use WordPress\AiClient\Providers\ProviderRegistry;
 use WordPress\AnthropicAiProvider\Authentication\AnthropicApiKeyRequestAuthentication;
 use WordPress\GoogleAiProvider\Authentication\GoogleApiKeyRequestAuthentication;
@@ -591,5 +594,89 @@ final class AiClientAdapterTest extends TestCase
 		}
 
 		$this->assertSame('anthropic', $adapter->getProviderId());
+	}
+
+	// ── Model routing tests (createModelInstance) ──
+
+	/**
+	 * Tests that OpenAI with subscription mode uses ChatGptCodexTextGenerationModel.
+	 *
+	 * ChatGptCodexTextGenerationModel adds `stream: true` to every request,
+	 * so the presence of that parameter in the captured request data proves
+	 * the correct model class was wired.
+	 */
+	public function test_chat_withOpenAiSubscription_usesChatGptCodexModel(): void
+	{
+		$captured_request = null;
+		$this->mock_transporter = $this->createMock(HttpTransporterInterface::class);
+		$this->mock_transporter->method('send')
+			->willReturnCallback(function (Request $request) use (&$captured_request) {
+				$captured_request = $request;
+				$sse_body = "event: response.completed\ndata: " . json_encode([
+					'id' => 'resp_test',
+					'status' => 'completed',
+					'output' => [
+						[
+							'type' => 'message',
+							'role' => 'assistant',
+							'content' => [
+								['type' => 'output_text', 'text' => 'Hello'],
+							],
+						],
+					],
+					'usage' => ['input_tokens' => 10, 'output_tokens' => 5, 'total_tokens' => 15],
+				]) . "\n\n";
+				return new Response(200, ['Content-Type' => 'text/event-stream'], $sse_body);
+			});
+
+		$adapter = $this->createAdapter('codex-token', AuthMode::SUBSCRIPTION, 'o4-mini', 4096, 'openai');
+		$messages = [new Message(Message::ROLE_USER, 'Hello')];
+		$adapter->chat($messages, 'You are helpful.');
+
+		$this->assertNotNull($captured_request, 'Request should have been captured by the mock transporter.');
+		$data = $captured_request->getData();
+		$this->assertIsArray($data);
+		$this->assertArrayHasKey('stream', $data);
+		$this->assertTrue($data['stream'], 'ChatGptCodexTextGenerationModel must set stream to true.');
+	}
+
+	/**
+	 * Tests that OpenAI with API key mode uses the vendor OpenAiTextGenerationModel.
+	 *
+	 * The vendor model does NOT add `stream: true`, so verifying its absence
+	 * proves the standard model class was wired instead of ChatGptCodexTextGenerationModel.
+	 */
+	public function test_chat_withOpenAiApiKey_usesVendorModel(): void
+	{
+		$captured_request = null;
+		$this->mock_transporter = $this->createMock(HttpTransporterInterface::class);
+		$this->mock_transporter->method('send')
+			->willReturnCallback(function (Request $request) use (&$captured_request) {
+				$captured_request = $request;
+				$json_body = json_encode([
+					'id' => 'resp_test',
+					'status' => 'completed',
+					'output' => [
+						[
+							'type' => 'message',
+							'role' => 'assistant',
+							'content' => [
+								['type' => 'output_text', 'text' => 'Hello'],
+							],
+						],
+					],
+					'usage' => ['input_tokens' => 10, 'output_tokens' => 5, 'total_tokens' => 15],
+				]);
+				return new Response(200, ['Content-Type' => 'application/json'], $json_body);
+			});
+
+		$adapter = $this->createAdapter('sk-test-key', AuthMode::API_KEY, 'gpt-4o', 4096, 'openai');
+		$messages = [new Message(Message::ROLE_USER, 'Hello')];
+		$adapter->chat($messages, 'You are helpful.');
+
+		$this->assertNotNull($captured_request, 'Request should have been captured by the mock transporter.');
+		$data = $captured_request->getData();
+		$this->assertIsArray($data);
+		$this->assertArrayNotHasKey('stream', $data, 'Vendor OpenAiTextGenerationModel must not set stream.');
 	}
 }
