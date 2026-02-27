@@ -26,7 +26,7 @@ final class ProviderDetector
 	 *
 	 * @var array<int, string>
 	 */
-	public const KNOWN_PROVIDERS = ['anthropic', 'openai', 'google'];
+	public const KNOWN_PROVIDERS = ['anthropic', 'claudeCode', 'openai', 'google'];
 
 	/**
 	 * Ordered prefix-to-provider mapping, checked top-down.
@@ -58,7 +58,7 @@ final class ProviderDetector
 	 *
 	 * @param string $model The model name (e.g. 'gpt-4o', 'claude-sonnet-4-6').
 	 *
-	 * @return string The provider ID ('anthropic', 'openai', or 'google').
+	 * @return string The provider ID inferred from model prefix.
 	 */
 	public static function detectFromModel(string $model): string
 	{

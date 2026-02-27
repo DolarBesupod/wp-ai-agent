@@ -72,6 +72,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 */
 	private const PROVIDER_CLASSES = [
 		'anthropic' => AnthropicProvider::class,
+		'claudeCode' => ClaudeCodeProvider::class,
 		'openai' => OpenAiProvider::class,
 		'google' => GoogleProvider::class,
 	];
@@ -83,6 +84,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 */
 	private const PROVIDER_ENV_KEYS = [
 		'anthropic' => 'ANTHROPIC_API_KEY',
+		'claudeCode' => 'CLAUDE_CODE_SUBSCRIPTION_KEY',
 		'openai' => 'OPENAI_API_KEY',
 		'google' => 'GOOGLE_API_KEY',
 	];
@@ -465,6 +467,8 @@ final class AiClientAdapter implements AiClientAdapterInterface
 		// Use custom model for OpenAI subscription (ChatGPT backend requires SSE streaming).
 		if ($this->provider_id === 'openai' && $this->auth_mode === AuthMode::SUBSCRIPTION) {
 			$model_instance = new ChatGptCodexTextGenerationModel($model_metadata, $provider_metadata);
+		} elseif ($this->provider_id === 'claudeCode') {
+			$model_instance = new ClaudeCodeTextGenerationModel($model_metadata, $provider_metadata);
 		} else {
 			/** @var \WordPress\AiClient\Providers\Models\Contracts\ModelInterface $model_instance */
 			$model_instance = match ($this->provider_id) {
@@ -497,6 +501,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 		if ($auth_mode === AuthMode::SUBSCRIPTION) {
 			return match ($provider_id) {
 				'anthropic' => new AnthropicSubscriptionRequestAuthentication($api_key),
+				'claudeCode' => new ClaudeCodeSubscriptionRequestAuthentication($api_key),
 				'openai'    => new OpenAiSubscriptionRequestAuthentication($api_key),
 				default     => throw AiClientException::unsupportedProvider(
 					$provider_id . ' (subscription mode not supported)'

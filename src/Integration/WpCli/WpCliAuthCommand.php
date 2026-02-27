@@ -36,6 +36,11 @@ final class WpCliAuthCommand
 	private const OPENAI_CODEX_TOKEN_MIN_LENGTH = 10;
 
 	/**
+	 * Prefix used by OpenAI Codex JWT-like tokens.
+	 */
+	private const OPENAI_CODEX_TOKEN_PREFIX = 'eyJ';
+
+	/**
 	 * The WordPress options credential repository.
 	 *
 	 * @var WpOptionsCredentialRepository
@@ -156,22 +161,10 @@ final class WpCliAuthCommand
 			$secret = (string) $assoc_args['secret'];
 		} else {
 			if ($auth_mode === AuthMode::SUBSCRIPTION) {
-				if ($provider === 'openai') {
-					\WP_CLI::log('Subscription mode requires an OpenAI Codex CLI token.');
-					\WP_CLI::log('Run `codex login`, then paste the access token from ~/.codex/auth.json below.');
-				} else {
-					\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
-					\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
-				}
+				$this->logSubscriptionGuidance($provider);
 			}
 
-			if ($auth_mode === AuthMode::SUBSCRIPTION && $provider === 'openai') {
-				$prompt = 'Paste OpenAI Codex token: ';
-			} elseif ($auth_mode === AuthMode::SUBSCRIPTION) {
-				$prompt = 'Paste Anthropic setup-token: ';
-			} else {
-				$prompt = 'Enter API key: ';
-			}
+			$prompt = $this->resolveSecretPrompt($provider, $auth_mode);
 			$secret = ($this->prompt_callable)($prompt);
 		}
 
@@ -403,6 +396,37 @@ final class WpCliAuthCommand
 	{
 		$trimmed = trim($secret);
 
+		if ($provider === 'claudeCode') {
+			if (str_starts_with($trimmed, self::OPENAI_CODEX_TOKEN_PREFIX)) {
+				return 'Token appears to be an OpenAI Codex token. '
+					. 'Use --provider=openai --mode=subscription for Codex tokens.';
+			}
+
+			if (
+				str_starts_with($trimmed, 'sk-ant-')
+				&& !str_starts_with($trimmed, self::ANTHROPIC_SETUP_TOKEN_PREFIX)
+			) {
+				return 'Token appears to be an Anthropic API key. '
+					. 'Use --provider=anthropic --mode=api_key for API keys, '
+					. 'or run `claude setup-token` for claudeCode subscription.';
+			}
+
+			if (!str_starts_with($trimmed, self::ANTHROPIC_SETUP_TOKEN_PREFIX)) {
+				return sprintf(
+					'Invalid claudeCode setup-token format. Expected prefix "%s".'
+					. ' Run `claude setup-token` and paste the full token.',
+					self::ANTHROPIC_SETUP_TOKEN_PREFIX
+				);
+			}
+
+			if (strlen($trimmed) < self::ANTHROPIC_SETUP_TOKEN_MIN_LENGTH) {
+				return 'claudeCode setup-token looks too short. '
+					. 'Paste the full token produced by `claude setup-token`.';
+			}
+
+			return null;
+		}
+
 		if ($provider === 'anthropic') {
 			if (!str_starts_with($trimmed, self::ANTHROPIC_SETUP_TOKEN_PREFIX)) {
 				return sprintf(
@@ -428,5 +452,55 @@ final class WpCliAuthCommand
 		}
 
 		return null;
+	}
+
+	/**
+	 * Logs provider-specific guidance for subscription auth setup.
+	 *
+	 * @param string $provider Provider ID from --provider.
+	 *
+	 * @return void
+	 */
+	private function logSubscriptionGuidance(string $provider): void
+	{
+		if ($provider === 'openai') {
+			\WP_CLI::log('Subscription mode requires an OpenAI Codex CLI token.');
+			\WP_CLI::log('Run `codex login`, then paste the access token from ~/.codex/auth.json below.');
+			return;
+		}
+
+		if ($provider === 'claudeCode') {
+			\WP_CLI::log('Subscription mode for claudeCode requires an Anthropic setup-token.');
+			\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
+			return;
+		}
+
+		\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
+		\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
+	}
+
+	/**
+	 * Resolves the interactive prompt label for the provided auth input.
+	 *
+	 * @param string   $provider  Provider ID from --provider.
+	 * @param AuthMode $auth_mode Parsed authentication mode.
+	 *
+	 * @return string
+	 */
+	private function resolveSecretPrompt(string $provider, AuthMode $auth_mode): string
+	{
+		if ($auth_mode !== AuthMode::SUBSCRIPTION) {
+			return 'Enter API key: ';
+		}
+
+		if ($provider === 'openai') {
+			return 'Paste OpenAI Codex token: ';
+		}
+
+		if ($provider === 'claudeCode') {
+			return 'Paste claudeCode setup-token: ';
+		}
+
+		return 'Paste Anthropic setup-token: ';
 	}
 }

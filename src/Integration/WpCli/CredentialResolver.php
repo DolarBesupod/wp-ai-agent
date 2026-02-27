@@ -42,6 +42,7 @@ final class CredentialResolver
 	 */
 	private const PROVIDER_SUBSCRIPTION_CONSTANTS = [
 		'anthropic' => 'ANTHROPIC_SUBSCRIPTION_KEY',
+		'claudeCode' => 'CLAUDE_CODE_SUBSCRIPTION_KEY',
 		'openai'    => 'OPENAI_SUBSCRIPTION_KEY',
 	];
 
