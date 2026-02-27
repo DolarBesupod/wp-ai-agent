@@ -115,7 +115,9 @@ OpenAI's [Codex CLI](https://github.com/openai/codex) can authenticate with your
 
 ### Available Models
 
-When using a Codex CLI subscription token, only models available through the ChatGPT backend are supported. This typically includes models like `gpt-4o` and Codex-specific models. Check the Codex CLI documentation for the current list of supported models.
+When using a Codex CLI subscription token, only Codex-specific models are supported: `gpt-5.2-codex`, `gpt-5.3-codex`, and similar. Standard OpenAI models like `gpt-4o` do **not** work with subscription tokens — they require an OpenAI API key.
+
+The plugin automatically handles the streaming requirement (`stream: true`) and SSE response parsing for the ChatGPT backend.
 
 This is useful if you have a ChatGPT subscription (e.g., Plus or Pro) but no standalone OpenAI API key.
 
@@ -132,6 +134,8 @@ define( 'WP_AI_AGENT_MODEL', 'gemini-2.0-flash' );
 ```
 
 The provider is detected automatically from the model name — no separate provider setting is needed.
+
+**Note:** If using an OpenAI subscription token (Codex CLI), you must use a Codex-specific model (e.g., `gpt-5.2-codex`). Standard models like `gpt-4o` require an API key.
 
 ### Switching Models at Runtime
 
