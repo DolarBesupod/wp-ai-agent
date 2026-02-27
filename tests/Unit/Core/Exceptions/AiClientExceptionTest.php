@@ -110,4 +110,21 @@ final class AiClientExceptionTest extends TestCase
 
 		$this->assertTrue($caught);
 	}
+
+	public function test_emptyResponse_returnsCorrectException(): void
+	{
+		$exception = AiClientException::emptyResponse();
+
+		$this->assertStringContainsString('empty', $exception->getMessage());
+		$this->assertSame('empty_response', $exception->getContextValue('type'));
+	}
+
+	public function test_sseEventNotFound_returnsCorrectException(): void
+	{
+		$exception = AiClientException::sseEventNotFound('response.completed');
+
+		$this->assertStringContainsString('response.completed', $exception->getMessage());
+		$this->assertSame('sse_event_not_found', $exception->getContextValue('type'));
+		$this->assertSame('response.completed', $exception->getContextValue('event_type'));
+	}
 }

@@ -162,4 +162,40 @@ class AiClientException extends AgentException
 			['type' => 'quota_exceeded', 'limit_type' => $limit_type]
 		);
 	}
+
+	/**
+	 * Creates an exception for an empty AI response body.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @return self
+	 */
+	public static function emptyResponse(): self
+	{
+		return new self(
+			'AI response body is empty.',
+			0,
+			null,
+			['type' => 'empty_response']
+		);
+	}
+
+	/**
+	 * Creates an exception for a missing SSE event type in the response.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @param string $event_type The expected SSE event type that was not found.
+	 *
+	 * @return self
+	 */
+	public static function sseEventNotFound(string $event_type): self
+	{
+		return new self(
+			sprintf('Expected SSE event "%s" not found in response.', $event_type),
+			0,
+			null,
+			['type' => 'sse_event_not_found', 'event_type' => $event_type]
+		);
+	}
 }
