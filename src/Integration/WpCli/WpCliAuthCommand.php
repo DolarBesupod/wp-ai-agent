@@ -81,16 +81,13 @@ final class WpCliAuthCommand
 		$this->repository = $repository ?? new WpOptionsCredentialRepository();
 		$this->resolver = $resolver ?? new CredentialResolver($this->repository);
 		$this->prompt_callable = $prompt_callable ?? static function (string $message): string {
+			if (function_exists('readline')) {
+				$value = readline($message);
+				return trim($value === false ? '' : $value);
+			}
 			fwrite(STDERR, $message);
-			$is_tty = function_exists('posix_isatty') && posix_isatty(STDIN);
-			if ($is_tty) {
-				shell_exec('stty -echo');
-			}
 			$value = trim((string) fgets(STDIN));
-			if ($is_tty) {
-				shell_exec('stty echo');
-				fwrite(STDERR, PHP_EOL);
-			}
+			fwrite(STDERR, PHP_EOL);
 			return $value;
 		};
 	}
@@ -115,11 +112,15 @@ final class WpCliAuthCommand
 	 *   - subscription
 	 * ---
 	 *
+	 * [--secret=<secret>]
+	 * : The API key or token. If omitted, prompts interactively.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp agent auth set --provider=anthropic
 	 *     wp agent auth set --provider=anthropic --mode=api_key
 	 *     wp agent auth set --provider=anthropic --mode=subscription
+	 *     wp agent auth set --provider=openai --mode=subscription --secret=TOKEN
 	 *
 	 * @subcommand set
 	 *
@@ -149,24 +150,30 @@ final class WpCliAuthCommand
 			return;
 		}
 
-		if ($auth_mode === AuthMode::SUBSCRIPTION) {
-			if ($provider === 'openai') {
-				\WP_CLI::log('Subscription mode requires an OpenAI Codex CLI token.');
-				\WP_CLI::log('Run `codex login`, then paste the access token from ~/.codex/auth.json below.');
-			} else {
-				\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
-				\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
-			}
-		}
+		$has_secret_flag = isset($assoc_args['secret']) && is_string($assoc_args['secret']);
 
-		if ($auth_mode === AuthMode::SUBSCRIPTION && $provider === 'openai') {
-			$prompt = 'Paste OpenAI Codex token: ';
-		} elseif ($auth_mode === AuthMode::SUBSCRIPTION) {
-			$prompt = 'Paste Anthropic setup-token: ';
+		if ($has_secret_flag) {
+			$secret = (string) $assoc_args['secret'];
 		} else {
-			$prompt = 'Enter API key: ';
+			if ($auth_mode === AuthMode::SUBSCRIPTION) {
+				if ($provider === 'openai') {
+					\WP_CLI::log('Subscription mode requires an OpenAI Codex CLI token.');
+					\WP_CLI::log('Run `codex login`, then paste the access token from ~/.codex/auth.json below.');
+				} else {
+					\WP_CLI::log('Subscription mode requires an Anthropic setup-token.');
+					\WP_CLI::log('Run `claude setup-token`, then paste the full token below.');
+				}
+			}
+
+			if ($auth_mode === AuthMode::SUBSCRIPTION && $provider === 'openai') {
+				$prompt = 'Paste OpenAI Codex token: ';
+			} elseif ($auth_mode === AuthMode::SUBSCRIPTION) {
+				$prompt = 'Paste Anthropic setup-token: ';
+			} else {
+				$prompt = 'Enter API key: ';
+			}
+			$secret = ($this->prompt_callable)($prompt);
 		}
-		$secret = ($this->prompt_callable)($prompt);
 
 		if ('' === $secret) {
 			\WP_CLI::error('Secret must not be empty.');
