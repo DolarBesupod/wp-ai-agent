@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WpAiAgent\Integration\Ability;
 
 use WP_Ability;
+use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
 use WpAiAgent\Core\Tool\AbstractTool;
 use WpAiAgent\Core\ValueObjects\ToolResult;
 
@@ -53,6 +54,17 @@ class AbilityStrapTool extends AbstractTool
 	private $is_user_logged_in;
 
 	/**
+	 * Confirmation handler for checking auto-confirm (yolo) mode.
+	 *
+	 * When set, the tool checks isAutoConfirm() before requiring the
+	 * `confirmed` parameter on non-readonly abilities. When null, the
+	 * original behavior is preserved (always require explicit confirmation).
+	 *
+	 * @var ConfirmationHandlerInterface|null
+	 */
+	private ?ConfirmationHandlerInterface $confirmation_handler;
+
+	/**
 	 * Lazily-populated catalog of ability adapters indexed by original ability name.
 	 *
 	 * Null means discovery has not yet occurred. An empty array means discovery
@@ -77,17 +89,20 @@ class AbilityStrapTool extends AbstractTool
 	 *
 	 * @since n.e.x.t
 	 *
-	 * @param callable|null $abilities_provider  Optional callable that returns WP_Ability[].
-	 *                                           Defaults to 'wp_get_abilities'.
-	 * @param callable|null $is_user_logged_in   Optional callable that returns bool.
-	 *                                           Defaults to 'is_user_logged_in'.
+	 * @param callable|null                  $abilities_provider   Optional callable that returns WP_Ability[].
+	 *                                                             Defaults to 'wp_get_abilities'.
+	 * @param callable|null                  $is_user_logged_in    Optional callable that returns bool.
+	 *                                                             Defaults to 'is_user_logged_in'.
+	 * @param ConfirmationHandlerInterface|null $confirmation_handler Optional handler for auto-confirm checks.
 	 */
 	public function __construct(
 		?callable $abilities_provider = null,
 		?callable $is_user_logged_in = null,
+		?ConfirmationHandlerInterface $confirmation_handler = null,
 	) {
 		$this->abilities_provider = $abilities_provider ?? 'wp_get_abilities';
 		$this->is_user_logged_in = $is_user_logged_in ?? 'is_user_logged_in';
+		$this->confirmation_handler = $confirmation_handler;
 	}
 
 	/**
@@ -111,13 +126,20 @@ class AbilityStrapTool extends AbstractTool
 	 */
 	public function getDescription(): string
 	{
-		return 'Interact with WordPress abilities. '
+		$description = 'Interact with WordPress abilities. '
 			. 'Use action "list" to discover available abilities, '
 			. '"describe" with ability_name to get the full parameter schema, '
-			. 'and "execute" with ability_name and params to run an ability. '
-			. 'Safety protocol: non-readonly abilities require confirmed: true in params. '
-			. 'Describe what you plan to do, ask the user for confirmation, '
-			. 'then re-call with confirmed: true.';
+			. 'and "execute" with ability_name and params to run an ability.';
+
+		if ($this->isAutoConfirmEnabled()) {
+			$description .= ' Auto-confirm is active: all abilities execute without confirmation.';
+		} else {
+			$description .= ' Safety protocol: non-readonly abilities require confirmed: true in params. '
+				. 'Describe what you plan to do, ask the user for confirmation, '
+				. 'then re-call with confirmed: true.';
+		}
+
+		return $description;
 	}
 
 	/**
@@ -327,7 +349,7 @@ class AbilityStrapTool extends AbstractTool
 
 		$params = $this->getArrayArgument($arguments, 'params');
 
-		if ($adapter->requiresConfirmation()) {
+		if ($adapter->requiresConfirmation() && !$this->isAutoConfirmEnabled()) {
 			$confirmed = !empty($params['confirmed']);
 
 			if (!$confirmed) {
@@ -437,5 +459,21 @@ class AbilityStrapTool extends AbstractTool
 		}
 
 		return $annotations;
+	}
+
+	/**
+	 * Checks whether auto-confirm (yolo) mode is active.
+	 *
+	 * Returns true when a confirmation handler is injected and its
+	 * isAutoConfirm() method returns true, meaning all tool confirmations
+	 * should be bypassed.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @return bool
+	 */
+	private function isAutoConfirmEnabled(): bool
+	{
+		return $this->confirmation_handler !== null && $this->confirmation_handler->isAutoConfirm();
 	}
 }
