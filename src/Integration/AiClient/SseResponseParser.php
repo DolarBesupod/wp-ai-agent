@@ -51,7 +51,7 @@ final class SseResponseParser
 
 		$decoded = json_decode($matching_data, true);
 		if (!is_array($decoded)) {
-			throw AiClientException::initializationFailed(
+			throw AiClientException::streamingFailed(
 				sprintf(
 					'Invalid JSON in SSE event "%s" data: %s',
 					$event_type,
