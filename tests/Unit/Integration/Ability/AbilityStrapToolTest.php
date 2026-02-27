@@ -6,6 +6,7 @@ namespace WpAiAgent\Tests\Unit\Integration\Ability;
 
 use WP_Ability;
 use WP_Error;
+use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
 use WpAiAgent\Integration\Ability\AbilityStrapTool;
 use PHPUnit\Framework\TestCase;
 
@@ -69,6 +70,25 @@ final class AbilityStrapToolTest extends TestCase
 	}
 
 	/**
+	 * Creates an AbilityStrapTool with auto-confirm (yolo) mode enabled.
+	 *
+	 * @param array<int, WP_Ability> $abilities The abilities to provide.
+	 *
+	 * @return AbilityStrapTool
+	 */
+	private function createToolWithAutoConfirm(array $abilities = []): AbilityStrapTool
+	{
+		$confirmation = $this->createMock(ConfirmationHandlerInterface::class);
+		$confirmation->method('isAutoConfirm')->willReturn(true);
+
+		return new AbilityStrapTool(
+			fn () => $abilities,
+			null,
+			$confirmation,
+		);
+	}
+
+	/**
 	 * Tests that getName returns 'wordpress_abilities'.
 	 */
 	public function test_getName_returnsWordpressAbilities(): void
@@ -86,6 +106,28 @@ final class AbilityStrapToolTest extends TestCase
 		$tool = $this->createTool();
 
 		$this->assertFalse($tool->requiresConfirmation());
+	}
+
+	/**
+	 * Tests that getDescription includes the safety protocol when auto-confirm is off.
+	 */
+	public function test_getDescription_withoutAutoConfirm_includesSafetyProtocol(): void
+	{
+		$tool = $this->createTool();
+
+		$this->assertStringContainsString('confirmed: true', $tool->getDescription());
+		$this->assertStringContainsString('Safety protocol', $tool->getDescription());
+	}
+
+	/**
+	 * Tests that getDescription omits the safety protocol when auto-confirm is on.
+	 */
+	public function test_getDescription_withAutoConfirm_omitsSafetyProtocol(): void
+	{
+		$tool = $this->createToolWithAutoConfirm();
+
+		$this->assertStringContainsString('Auto-confirm is active', $tool->getDescription());
+		$this->assertStringNotContainsString('confirmed: true', $tool->getDescription());
 	}
 
 	/**
@@ -614,6 +656,123 @@ final class AbilityStrapToolTest extends TestCase
 
 		// confirmed should be stripped, leaving empty params which becomes null
 		$this->assertNull($captured_input->value);
+	}
+
+	// ---------------------------------------------------------------
+	// Auto-confirm (yolo) mode
+	// ---------------------------------------------------------------
+
+	/**
+	 * Tests that a mutative ability executes without confirmed param when auto-confirm is enabled.
+	 */
+	public function test_execute_withExecuteAction_mutativeAbility_withAutoConfirm_executesWithoutConfirmed(): void
+	{
+		$tool = $this->createToolWithAutoConfirm([
+			$this->createStubAbility(
+				'mcp/create-post',
+				'Create Post',
+				'Create a post',
+				['annotations' => ['readonly' => false]],
+				null,
+				['id' => 42, 'title' => 'Hello'],
+			),
+		]);
+
+		$result = $tool->execute([
+			'action' => 'execute',
+			'ability_name' => 'mcp/create-post',
+			'params' => ['title' => 'Hello'],
+		]);
+
+		$this->assertTrue($result->isSuccess());
+		$this->assertStringContainsString('42', $result->getOutput());
+	}
+
+	/**
+	 * Tests that a mutative ability still requires confirmation when auto-confirm is off.
+	 */
+	public function test_execute_withExecuteAction_mutativeAbility_withAutoConfirmOff_requiresConfirmation(): void
+	{
+		$confirmation = $this->createMock(ConfirmationHandlerInterface::class);
+		$confirmation->method('isAutoConfirm')->willReturn(false);
+
+		$tool = new AbilityStrapTool(
+			fn () => [
+				$this->createStubAbility(
+					'mcp/create-post',
+					'Create Post',
+					'Create a post',
+					['annotations' => ['readonly' => false]],
+				),
+			],
+			null,
+			$confirmation,
+		);
+
+		$result = $tool->execute([
+			'action' => 'execute',
+			'ability_name' => 'mcp/create-post',
+			'params' => ['title' => 'Hello'],
+		]);
+
+		$this->assertFalse($result->isSuccess());
+
+		$error_data = json_decode($result->getError(), true);
+		$this->assertSame('confirmation_required', $error_data['error_code']);
+	}
+
+	/**
+	 * Tests that auto-confirm strips the confirmed param just like manual confirmation.
+	 */
+	public function test_execute_withExecuteAction_withAutoConfirm_stripsConfirmedFromParams(): void
+	{
+		$captured_input = new \stdClass();
+		$captured_input->value = 'not_set';
+
+		$capturing_ability = new class ('mcp/create-post', $captured_input) extends WP_Ability {
+			private \stdClass $captured;
+
+			public function __construct(string $name, \stdClass $captured)
+			{
+				parent::__construct($name, [
+					'label' => 'Create Post',
+					'description' => 'Create a post',
+					'meta' => ['annotations' => ['readonly' => false]],
+				]);
+				$this->captured = $captured;
+			}
+
+			public function execute(mixed $input = null): mixed
+			{
+				$this->captured->value = $input;
+
+				return ['ok' => true];
+			}
+
+			public function check_permissions(mixed $input = null): bool|\WP_Error
+			{
+				return true;
+			}
+		};
+
+		$confirmation = $this->createMock(ConfirmationHandlerInterface::class);
+		$confirmation->method('isAutoConfirm')->willReturn(true);
+
+		$tool = new AbilityStrapTool(
+			fn () => [$capturing_ability],
+			null,
+			$confirmation,
+		);
+
+		$tool->execute([
+			'action' => 'execute',
+			'ability_name' => 'mcp/create-post',
+			'params' => ['title' => 'Hello', 'confirmed' => true],
+		]);
+
+		$this->assertIsArray($captured_input->value);
+		$this->assertArrayHasKey('title', $captured_input->value);
+		$this->assertArrayNotHasKey('confirmed', $captured_input->value);
 	}
 
 	// ---------------------------------------------------------------
