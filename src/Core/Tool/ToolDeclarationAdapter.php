@@ -33,7 +33,7 @@ final class ToolDeclarationAdapter
 		$parameters = $tool->getParametersSchema();
 
 		if ($parameters !== null && count($parameters) > 0) {
-			$declaration['parameters'] = $parameters;
+			$declaration['parameters'] = $this->normalizeSchema($parameters);
 		}
 
 		return $declaration;
@@ -68,14 +68,65 @@ final class ToolDeclarationAdapter
 	{
 		$parameters = $tool->getParametersSchema();
 
+		$schema = $parameters ?? [
+			'type' => 'object',
+			'properties' => new \stdClass(),
+		];
+
 		return [
 			'name' => $tool->getName(),
 			'description' => $tool->getDescription(),
-			'input_schema' => $parameters ?? [
-				'type' => 'object',
-				'properties' => new \stdClass(),
-			],
+			'input_schema' => $this->normalizeSchema($schema),
 		];
+	}
+
+	/**
+	 * Normalizes a JSON Schema to ensure API compatibility.
+	 *
+	 * MCP servers may return `"properties": []` (empty array) instead of
+	 * `"properties": {}` (empty object). The Claude API requires properties
+	 * to be a dictionary, so this method recursively normalizes array fields
+	 * that must be objects per the JSON Schema spec.
+	 *
+	 * @param array<string, mixed> $schema The schema to normalize.
+	 *
+	 * @return array<string, mixed> The normalized schema.
+	 */
+	private function normalizeSchema(array $schema): array
+	{
+		$object_fields = ['properties', 'patternProperties', 'definitions', '$defs'];
+
+		foreach ($object_fields as $field) {
+			if (!array_key_exists($field, $schema)) {
+				continue;
+			}
+
+			if (is_array($schema[$field]) && $schema[$field] === []) {
+				$schema[$field] = new \stdClass();
+			} elseif (is_array($schema[$field])) {
+				$schema[$field] = $this->normalizeSchemaProperties($schema[$field]);
+			}
+		}
+
+		return $schema;
+	}
+
+	/**
+	 * Recursively normalizes nested property definitions.
+	 *
+	 * @param array<string, mixed> $properties The properties to normalize.
+	 *
+	 * @return array<string, mixed> The normalized properties.
+	 */
+	private function normalizeSchemaProperties(array $properties): array
+	{
+		foreach ($properties as $key => $value) {
+			if (is_array($value)) {
+				$properties[$key] = $this->normalizeSchema($value);
+			}
+		}
+
+		return $properties;
 	}
 
 	/**

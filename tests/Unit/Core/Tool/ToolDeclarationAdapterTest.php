@@ -69,6 +69,22 @@ final class ToolDeclarationAdapterTest extends TestCase
 		$this->assertArrayNotHasKey('parameters', $declaration);
 	}
 
+	public function test_toDeclaration_normalizesEmptyArrayProperties(): void
+	{
+		$tool = $this->createMock(ToolInterface::class);
+		$tool->method('getName')->willReturn('mcp_tool');
+		$tool->method('getDescription')->willReturn('MCP tool');
+		$tool->method('getParametersSchema')->willReturn([
+			'type' => 'object',
+			'properties' => [],
+		]);
+
+		$declaration = $this->adapter->toDeclaration($tool);
+
+		$this->assertArrayHasKey('parameters', $declaration);
+		$this->assertInstanceOf(\stdClass::class, $declaration['parameters']['properties']);
+	}
+
 	public function test_toDeclarations_convertsMultipleTools(): void
 	{
 		$tool1 = $this->createMock(ToolInterface::class);
@@ -128,6 +144,60 @@ final class ToolDeclarationAdapterTest extends TestCase
 		$this->assertArrayHasKey('input_schema', $declaration);
 		$this->assertSame('object', $declaration['input_schema']['type']);
 		$this->assertInstanceOf(\stdClass::class, $declaration['input_schema']['properties']);
+	}
+
+	public function test_toClaudeFormat_normalizesEmptyArrayPropertiesToObject(): void
+	{
+		$tool = $this->createMock(ToolInterface::class);
+		$tool->method('getName')->willReturn('mcp_tool');
+		$tool->method('getDescription')->willReturn('MCP tool with empty array properties');
+		$tool->method('getParametersSchema')->willReturn([
+			'type' => 'object',
+			'properties' => [],
+		]);
+
+		$declaration = $this->adapter->toClaudeFormat($tool);
+
+		$this->assertInstanceOf(\stdClass::class, $declaration['input_schema']['properties']);
+	}
+
+	public function test_toClaudeFormat_normalizesNestedEmptyArrayProperties(): void
+	{
+		$tool = $this->createMock(ToolInterface::class);
+		$tool->method('getName')->willReturn('nested_tool');
+		$tool->method('getDescription')->willReturn('Tool with nested empty properties');
+		$tool->method('getParametersSchema')->willReturn([
+			'type' => 'object',
+			'properties' => [
+				'config' => [
+					'type' => 'object',
+					'properties' => [],
+				],
+			],
+		]);
+
+		$declaration = $this->adapter->toClaudeFormat($tool);
+
+		$nested = $declaration['input_schema']['properties']['config'];
+		$this->assertInstanceOf(\stdClass::class, $nested['properties']);
+	}
+
+	public function test_toClaudeFormat_preservesValidProperties(): void
+	{
+		$tool = $this->createMock(ToolInterface::class);
+		$tool->method('getName')->willReturn('valid_tool');
+		$tool->method('getDescription')->willReturn('Tool with valid properties');
+		$tool->method('getParametersSchema')->willReturn([
+			'type' => 'object',
+			'properties' => [
+				'name' => ['type' => 'string'],
+			],
+		]);
+
+		$declaration = $this->adapter->toClaudeFormat($tool);
+
+		$this->assertIsArray($declaration['input_schema']['properties']);
+		$this->assertArrayHasKey('name', $declaration['input_schema']['properties']);
 	}
 
 	public function test_toClaudeFormatMultiple_convertsAllTools(): void
