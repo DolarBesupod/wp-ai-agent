@@ -90,7 +90,7 @@ final class WpCliBootstrap
 		$mcp_client_manager = self::connectMcpServers($tool_registry);
 
 		// Step 8b — WordPress abilities (WP 6.9+, silently skipped otherwise).
-		self::discoverAbilities($tool_registry);
+		self::discoverAbilities($tool_registry, $confirmation);
 
 		// Step 9 — Credential resolution and AI adapter.
 		$credential_repository = new WpOptionsCredentialRepository();
@@ -256,13 +256,16 @@ final class WpCliBootstrap
 	 * @param \WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry Tool registry to register abilities into.
 	 */
 	private static function discoverAbilities(
-		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
+		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry,
+		\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface $confirmation_handler
 	): void {
 		if (!function_exists('wp_get_abilities')) {
 			return;
 		}
 
-		$tool_registry->register(new AbilityStrapTool());
+		$tool_registry->register(new AbilityStrapTool(
+			confirmation_handler: $confirmation_handler
+		));
 		\WP_CLI::debug('[Abilities] STRAP facade registered');
 
 		$tool_registry->register(new UserContextTool());
