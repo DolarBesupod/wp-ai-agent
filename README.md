@@ -59,60 +59,28 @@ wp agent init
 
 ## Configuration
 
-All settings are stored as PHP constants in `wp-config.php`. Use `wp agent init` to write them interactively, or set them manually:
+See the [Setup Guide](docs/setup.md) for the full configuration reference, including all providers, settings, MCP servers, and custom commands.
+
+Quick start — add one of these to `wp-config.php`:
 
 ```php
-define('ANTHROPIC_API_KEY',         'your-api-key-here');
-define('WP_AI_AGENT_MODEL',         'claude-sonnet-4-6');
-define('WP_AI_AGENT_MAX_TOKENS',    8192);
-define('WP_AI_AGENT_TEMPERATURE',   1.0);
-define('WP_AI_AGENT_MAX_ITERATIONS', 10);
-define('WP_AI_AGENT_DEBUG',         false);
-define('WP_AI_AGENT_STREAMING',     true);
-define('WP_AI_AGENT_BYPASSED_TOOLS', '');  // comma-separated tool names
+// Anthropic
+define( 'ANTHROPIC_API_KEY', 'sk-ant-your-api-key-here' );
+
+// OpenAI
+define( 'OPENAI_API_KEY', 'sk-your-openai-key-here' );
+define( 'WP_AI_AGENT_MODEL', 'gpt-5.2-2025-12-11' );
+
+// Google
+define( 'GOOGLE_API_KEY', 'your-google-api-key' );
+define( 'WP_AI_AGENT_MODEL', 'gemini-2.5-flash' );
 ```
 
-Manage settings via WP-CLI:
+Or run the interactive setup wizard:
 
 ```bash
-wp agent config list
-wp agent config get model
-wp agent config set model claude-opus-4-6
+wp agent init
 ```
-
-### Authentication
-
-Credentials can come from a PHP constant, environment variable, or the database. See [Authentication](docs/authentication.md) for the full priority chain.
-
-```bash
-wp agent auth set --provider=anthropic                  # store API key (prompts interactively)
-wp agent auth set --provider=anthropic --mode=subscription  # subscription mode
-wp agent auth set --provider=openai                     # OpenAI credentials
-wp agent auth status                                    # view all credentials and their sources
-wp agent auth get --provider=anthropic                  # show masked credential
-wp agent auth delete --provider=anthropic               # remove stored credential
-```
-
-### MCP Server Configuration
-
-Configure external MCP servers in `~/.wp-ai-agent/mcp.json`:
-
-```json
-{
-    "mcpServers": {
-        "my-server": {
-            "url": "http://localhost/wp-json/mcp/v1/full",
-            "bearer_token": "${MY_TOKEN}",
-            "timeout": 30,
-            "enabled": true
-        }
-    }
-}
-```
-
-Stdio servers use `"command"`, `"args"`, and `"env"` keys instead of `"url"`.
-
-Tools from connected MCP servers are discovered automatically and registered as `mcp_{server}_{tool}`.
 
 ## Usage
 
