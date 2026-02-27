@@ -102,14 +102,22 @@ If you have the key in `wp-config.php` **and** in the database, the constant alw
 
 ## Using Codex CLI Tokens
 
-OpenAI's [Codex CLI](https://github.com/openai/codex) can authenticate with your OpenAI account via OAuth. The resulting access token works as a subscription key for the WP AI Agent:
+OpenAI's [Codex CLI](https://github.com/openai/codex) can authenticate with your ChatGPT account via OAuth. The resulting access token works as a subscription key for the WP AI Agent.
 
-1. Install Codex CLI and run `codex login` to authenticate with OpenAI.
+**Important:** Codex CLI tokens authenticate against the ChatGPT backend API (`chatgpt.com/backend-api/codex/`), not the standard OpenAI platform API (`api.openai.com/v1`). These are separate systems — a ChatGPT subscription does not include OpenAI API credits, and vice versa. The plugin handles the endpoint routing automatically when subscription mode is active.
+
+### Setup
+
+1. Install Codex CLI and run `codex login` to authenticate with your ChatGPT account.
 2. Codex caches an access token in `~/.codex/auth.json`.
 3. Copy the `access_token` value from that file and use it as `OPENAI_SUBSCRIPTION_KEY` — either as a PHP constant in `wp-config.php`, an environment variable, or via `wp agent auth set --provider=openai --mode=subscription`.
 4. Tokens expire. When your token stops working, re-run `codex login` to obtain a fresh one and update the stored value.
 
-This is useful if you have an OpenAI subscription (e.g., ChatGPT Plus or Pro) but no standalone API key.
+### Available Models
+
+When using a Codex CLI subscription token, only models available through the ChatGPT backend are supported. This typically includes models like `gpt-4o` and Codex-specific models. Check the Codex CLI documentation for the current list of supported models.
+
+This is useful if you have a ChatGPT subscription (e.g., Plus or Pro) but no standalone OpenAI API key.
 
 ## Choosing a Model
 
