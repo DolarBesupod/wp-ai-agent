@@ -10,6 +10,7 @@ use WpAiAgent\Core\ValueObjects\Message;
 use WpAiAgent\Integration\AiClient\AiClientAdapter;
 use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
+use WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
 use WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
@@ -49,6 +50,7 @@ final class AiClientAdapterTest extends TestCase
 		parent::setUp();
 		$this->original_env_keys = [
 			'ANTHROPIC_API_KEY' => getenv('ANTHROPIC_API_KEY'),
+			'CLAUDE_CODE_SUBSCRIPTION_KEY' => getenv('CLAUDE_CODE_SUBSCRIPTION_KEY'),
 			'OPENAI_API_KEY' => getenv('OPENAI_API_KEY'),
 			'GOOGLE_API_KEY' => getenv('GOOGLE_API_KEY'),
 		];
@@ -557,6 +559,24 @@ final class AiClientAdapterTest extends TestCase
 	}
 
 	/**
+	 * Tests that claudeCode subscription mode returns ClaudeCode auth.
+	 */
+	public function test_constructor_withClaudeCodeSubscription_returnsClaudeCodeSubscriptionAuth(): void
+	{
+		$adapter = $this->createAdapter(
+			'sk-ant-oat01-' . str_repeat('a', 90),
+			AuthMode::SUBSCRIPTION,
+			'claude-opus-4-1',
+			4096,
+			'claudeCode'
+		);
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('claudeCode');
+
+		$this->assertInstanceOf(ClaudeCodeSubscriptionRequestAuthentication::class, $authentication);
+	}
+
+	/**
 	 * Tests that subscription mode with unsupported provider throws exception.
 	 */
 	public function test_constructor_withUnsupportedProviderSubscription_throwsException(): void
@@ -578,6 +598,23 @@ final class AiClientAdapterTest extends TestCase
 
 		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('openai');
 		$this->assertInstanceOf(OpenAiSubscriptionRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that switchProvider to claudeCode with subscription mode works.
+	 */
+	public function test_switchProvider_toClaudeCodeSubscription_setsCorrectAuth(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider(
+			'claudeCode',
+			'sk-ant-oat01-' . str_repeat('c', 90),
+			AuthMode::SUBSCRIPTION
+		);
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('claudeCode');
+		$this->assertInstanceOf(ClaudeCodeSubscriptionRequestAuthentication::class, $authentication);
 	}
 
 	/**
@@ -678,5 +715,69 @@ final class AiClientAdapterTest extends TestCase
 		$data = $captured_request->getData();
 		$this->assertIsArray($data);
 		$this->assertArrayNotHasKey('stream', $data, 'Vendor OpenAiTextGenerationModel must not set stream.');
+	}
+
+	/**
+	 * Tests that claudeCode subscription requests use Anthropic messages contract
+	 * with Claude Code-specific auth headers.
+	 */
+	public function test_chat_withClaudeCodeSubscription_usesClaudeCodeHeadersAndMessagesBody(): void
+	{
+		$captured_request = null;
+		$this->mock_transporter = $this->createMock(HttpTransporterInterface::class);
+		$this->mock_transporter->method('send')
+			->willReturnCallback(function (Request $request) use (&$captured_request) {
+				$captured_request = $request;
+
+				$body = json_encode([
+					'id' => 'msg_test',
+					'role' => 'assistant',
+					'content' => [
+						['type' => 'text', 'text' => 'Hello from Claude Code'],
+					],
+					'stop_reason' => 'end_turn',
+					'usage' => ['input_tokens' => 11, 'output_tokens' => 7],
+				]);
+
+				return new Response(200, ['Content-Type' => 'application/json'], $body);
+			});
+
+		$adapter = $this->createAdapter(
+			'sk-ant-oat01-' . str_repeat('d', 90),
+			AuthMode::SUBSCRIPTION,
+			'claude-opus-4-1',
+			4096,
+			'claudeCode'
+		);
+		$messages = [new Message(Message::ROLE_USER, 'Hello')];
+		$adapter->chat($messages, 'You are helpful.');
+
+		$this->assertNotNull($captured_request, 'Request should have been captured by the mock transporter.');
+		$this->assertSame('https://api.anthropic.com/v1/messages', $captured_request->getUri());
+
+		$this->assertSame(
+			['Bearer ' . 'sk-ant-oat01-' . str_repeat('d', 90)],
+			$captured_request->getHeader('Authorization')
+		);
+		$this->assertSame(['2023-06-01'], $captured_request->getHeader('anthropic-version'));
+		$this->assertSame(['application/json'], $captured_request->getHeader('accept'));
+		$this->assertSame(['true'], $captured_request->getHeader('anthropic-dangerous-direct-browser-access'));
+		$this->assertStringContainsString(
+			'claude-cli/2.1.2',
+			(string) $captured_request->getHeaderAsString('user-agent')
+		);
+		$this->assertSame(['cli'], $captured_request->getHeader('x-app'));
+		$this->assertStringContainsString(
+			'claude-code-20250219',
+			(string) $captured_request->getHeaderAsString('anthropic-beta')
+		);
+		$this->assertFalse($captured_request->hasHeader('x-api-key'));
+
+		$data = $captured_request->getData();
+		$this->assertIsArray($data);
+		$this->assertSame('claude-opus-4-1', $data['model']);
+		$this->assertSame(4096, $data['max_tokens']);
+		$this->assertIsArray($data['messages']);
+		$this->assertSame('user', $data['messages'][0]['role']);
 	}
 }

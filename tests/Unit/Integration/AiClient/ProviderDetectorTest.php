@@ -15,6 +15,14 @@ use PHPUnit\Framework\TestCase;
 final class ProviderDetectorTest extends TestCase
 {
 	/**
+	 * Tests that synthetic claude-code prefixed names still resolve to anthropic.
+	 */
+	public function test_detectFromModel_withSyntheticClaudeCodePrefix_returnsAnthropic(): void
+	{
+		$this->assertSame('anthropic', ProviderDetector::detectFromModel('claude-code/claude-sonnet-4-5'));
+	}
+
+	/**
 	 * Tests that claude- prefix is detected as anthropic.
 	 */
 	public function test_detectFromModel_withClaudePrefix_returnsAnthropic(): void
@@ -143,6 +151,14 @@ final class ProviderDetectorTest extends TestCase
 	}
 
 	/**
+	 * Tests that isKnownProvider returns true for claudeCode.
+	 */
+	public function test_isKnownProvider_withClaudeCode_returnsTrue(): void
+	{
+		$this->assertTrue(ProviderDetector::isKnownProvider('claudeCode'));
+	}
+
+	/**
 	 * Tests that isKnownProvider returns true for openai.
 	 */
 	public function test_isKnownProvider_withOpenai_returnsTrue(): void
@@ -183,10 +199,10 @@ final class ProviderDetectorTest extends TestCase
 	}
 
 	/**
-	 * Tests that KNOWN_PROVIDERS constant contains all three providers.
+	 * Tests that KNOWN_PROVIDERS constant contains all supported providers.
 	 */
 	public function test_knownProviders_containsAllProviders(): void
 	{
-		$this->assertSame(['anthropic', 'openai', 'google'], ProviderDetector::KNOWN_PROVIDERS);
+		$this->assertSame(['anthropic', 'claudeCode', 'openai', 'google'], ProviderDetector::KNOWN_PROVIDERS);
 	}
 }

@@ -146,6 +146,38 @@ final class CredentialResolverTest extends TestCase
 	}
 
 	/**
+	 * Tests that resolve('claudeCode') supports subscription credentials
+	 * from dedicated constants.
+	 */
+	public function test_resolve_withClaudeCodeSubscriptionConstant_returnsSubscriptionMode(): void
+	{
+		$this->constants['CLAUDE_CODE_SUBSCRIPTION_KEY'] = 'sk-ant-oat01-const-token-value';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('claudeCode');
+
+		$this->assertSame('sk-ant-oat01-const-token-value', $result->getSecret());
+		$this->assertSame(AuthMode::SUBSCRIPTION, $result->getAuthMode());
+		$this->assertSame('constant', $result->getSource());
+	}
+
+	/**
+	 * Tests that resolve('claudeCode') supports subscription credentials
+	 * from dedicated environment variables.
+	 */
+	public function test_resolve_withClaudeCodeSubscriptionEnv_returnsSubscriptionMode(): void
+	{
+		$this->env_vars['CLAUDE_CODE_SUBSCRIPTION_KEY'] = 'sk-ant-oat01-env-token-value';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('claudeCode');
+
+		$this->assertSame('sk-ant-oat01-env-token-value', $result->getSecret());
+		$this->assertSame(AuthMode::SUBSCRIPTION, $result->getAuthMode());
+		$this->assertSame('env', $result->getSource());
+	}
+
+	/**
 	 * Tests that resolve() throws ConfigurationException when no credential
 	 * is found from any source.
 	 */
@@ -334,7 +366,7 @@ final class CredentialResolverTest extends TestCase
 
 		$status = $resolver->getStatus();
 
-		$this->assertCount(3, $status);
+		$this->assertCount(4, $status);
 
 		// Anthropic resolved from subscription constant.
 		$anthropic = $this->findStatusEntry($status, 'anthropic');
@@ -356,6 +388,13 @@ final class CredentialResolverTest extends TestCase
 		$this->assertSame('api_key', $google['auth_mode']);
 		$this->assertSame('env', $google['source']);
 		$this->assertTrue($google['available']);
+
+		// claudeCode is known and should be present even if not configured.
+		$claude_code = $this->findStatusEntry($status, 'claudeCode');
+		$this->assertNotNull($claude_code);
+		$this->assertSame('', $claude_code['auth_mode']);
+		$this->assertSame('none', $claude_code['source']);
+		$this->assertFalse($claude_code['available']);
 	}
 
 	/**
@@ -370,14 +409,18 @@ final class CredentialResolverTest extends TestCase
 
 		$status = $resolver->getStatus();
 
-		// 3 known providers (anthropic, openai, google) + 1 DB-only.
-		$this->assertCount(4, $status);
+		// 4 known providers (anthropic, claudeCode, openai, google) + 1 DB-only.
+		$this->assertCount(5, $status);
 
 		$custom = $this->findStatusEntry($status, 'custom-llm');
 		$this->assertNotNull($custom);
 		$this->assertSame('api_key', $custom['auth_mode']);
 		$this->assertSame('db', $custom['source']);
 		$this->assertTrue($custom['available']);
+
+		$claude_code = $this->findStatusEntry($status, 'claudeCode');
+		$this->assertNotNull($claude_code);
+		$this->assertFalse($claude_code['available']);
 
 		// Known providers without credentials should show as unavailable.
 		$openai = $this->findStatusEntry($status, 'openai');

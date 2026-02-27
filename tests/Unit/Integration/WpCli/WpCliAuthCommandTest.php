@@ -141,6 +141,76 @@ final class WpCliAuthCommandTest extends TestCase
 	}
 
 	/**
+	 * Tests that claudeCode subscription mode stores a valid setup-token.
+	 */
+	public function test_set_withClaudeCodeSubscriptionMode_storesSetupToken(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'sk-ant-oat01-' . str_repeat('b', 90)
+		);
+
+		$command->set([], ['provider' => 'claudeCode', 'mode' => 'subscription']);
+
+		$this->assertTrue($repository->hasCredential('claudeCode'), 'claudeCode credential must be stored');
+
+		$credential = $repository->getCredential('claudeCode');
+		$this->assertSame(AuthMode::SUBSCRIPTION, $credential->getAuthMode());
+
+		$log_calls = $this->filterCalls('log');
+		$log_messages = array_map(static fn(array $c): string => $c[1], $log_calls);
+		$output = implode("\n", $log_messages);
+
+		$this->assertStringContainsString('claudeCode', $output);
+		$this->assertStringContainsString('claude setup-token', $output);
+	}
+
+	/**
+	 * Tests that invalid claudeCode setup-token format is rejected.
+	 */
+	public function test_set_withInvalidClaudeCodeSubscriptionToken_callsWpCliError(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'not-a-setup-token'
+		);
+
+		$command->set([], ['provider' => 'claudeCode', 'mode' => 'subscription']);
+
+		$error_calls = $this->filterCalls('error');
+		$this->assertNotEmpty($error_calls);
+		$this->assertStringContainsString('Invalid claudeCode setup-token format', $error_calls[0][1]);
+		$this->assertFalse($repository->hasCredential('claudeCode'));
+	}
+
+	/**
+	 * Tests that claudeCode subscription rejects Anthropic API keys with guidance.
+	 */
+	public function test_set_withClaudeCodeSubscriptionAndAnthropicApiKey_callsWpCliError(): void
+	{
+		$repository = new WpOptionsCredentialRepository();
+		$resolver = new CredentialResolver($repository, $this->noEnvGetter(), $this->noConstantChecker());
+		$command = new WpCliAuthCommand(
+			$repository,
+			$resolver,
+			static fn(string $message): string => 'sk-ant-api03-this-is-an-api-key-not-setup-token'
+		);
+
+		$command->set([], ['provider' => 'claudeCode', 'mode' => 'subscription']);
+
+		$error_calls = $this->filterCalls('error');
+		$this->assertNotEmpty($error_calls);
+		$this->assertStringContainsString('--provider=anthropic --mode=api_key', $error_calls[0][1]);
+		$this->assertFalse($repository->hasCredential('claudeCode'));
+	}
+
+	/**
 	 * Tests that OpenAI subscription rejects tokens that are too short.
 	 */
 	public function test_set_withShortOpenaiSubscriptionToken_callsWpCliError(): void
