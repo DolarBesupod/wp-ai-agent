@@ -196,7 +196,7 @@ final class ToolExecutor implements ToolExecutorInterface
 		$sanitized = [];
 
 		foreach ($arguments as $key => $value) {
-			$lower_key = strtolower($key);
+			$lower_key = strtolower((string) $key);
 			$is_sensitive = false;
 
 			foreach ($sensitive_keys as $sensitive) {
