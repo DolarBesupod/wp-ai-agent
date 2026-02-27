@@ -15,6 +15,7 @@ use WordPress\AiClient\Providers\Http\Contracts\WithHttpTransporterInterface;
 use WordPress\AiClient\Providers\Http\Contracts\WithRequestAuthenticationInterface;
 use WordPress\AiClient\Providers\Http\DTO\Request;
 use WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum;
+use WordPress\AiClient\Providers\Http\Exception\ClientException;
 use WordPress\AiClient\Providers\Http\Exception\ResponseException;
 use WordPress\AiClient\Providers\Http\Util\ResponseUtil;
 use WordPress\AiClient\Providers\Models\TextGeneration\Contracts\TextGenerationModelInterface;
@@ -101,15 +102,42 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 
 		// Send and process the request.
 		$response = $http_transporter->send($request);
-		ResponseUtil::throwIfNotSuccessful($response);
+
+		try {
+			ResponseUtil::throwIfNotSuccessful($response);
+		} catch (ClientException $e) {
+			// Include the raw response body in the error for better debugging,
+			// as the ChatGPT backend may return error details not extracted by
+			// the default error message extractor.
+			$response_body = $response->getBody();
+			if ($response_body !== null && $response_body !== '') {
+				throw AiClientException::streamingFailed(
+					sprintf(
+						'ChatGPT backend returned HTTP %d: %s',
+						$response->getStatusCode(),
+						$response_body
+					)
+				);
+			}
+			throw $e;
+		}
 
 		$body = $response->getBody();
 		if ($body === null || trim($body) === '') {
 			throw AiClientException::emptyResponse();
 		}
 
-		/** @var ResponseData $response_data */
-		$response_data = SseResponseParser::extractEventData($body, 'response.completed');
+		$event_data = SseResponseParser::extractEventData($body, 'response.completed');
+
+		// The response.completed SSE event wraps the actual response object
+		// under a "response" key: {"type":"response.completed","response":{...}}.
+		if (isset($event_data['response']) && is_array($event_data['response'])) {
+			/** @var ResponseData $response_data */
+			$response_data = $event_data['response'];
+		} else {
+			/** @var ResponseData $response_data */
+			$response_data = $event_data;
+		}
 
 		return $this->parseResponseDataToGenerativeAiResult($response_data);
 	}
@@ -139,33 +167,9 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 		$system_instruction = $config->getSystemInstruction();
 		$params['instructions'] = $system_instruction !== null ? $system_instruction : '';
 
-		$max_tokens = $config->getMaxTokens();
-		if ($max_tokens !== null) {
-			$params['max_output_tokens'] = $max_tokens;
-		}
-
-		$temperature = $config->getTemperature();
-		if ($temperature !== null) {
-			$params['temperature'] = $temperature;
-		}
-
-		$top_p = $config->getTopP();
-		if ($top_p !== null) {
-			$params['top_p'] = $top_p;
-		}
-
-		$output_mime_type = $config->getOutputMimeType();
-		$output_schema = $config->getOutputSchema();
-		if ($output_mime_type === 'application/json' && $output_schema) {
-			$params['text'] = [
-				'format' => [
-					'type' => 'json_schema',
-					'name' => 'response_schema',
-					'schema' => $output_schema,
-					'strict' => true,
-				],
-			];
-		}
+		// The ChatGPT Codex backend only accepts: model, input, instructions,
+		// stream, store, and tools. Parameters like max_output_tokens, temperature,
+		// top_p, and text (JSON schema) are not supported and return HTTP 400.
 
 		$function_declarations = $config->getFunctionDeclarations();
 		$web_search = $config->getWebSearch();
@@ -289,6 +293,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 		}
 
 		return [
+			'type' => 'message',
 			'role' => $this->getMessageRoleString($role),
 			'content' => $content,
 		];
