@@ -172,7 +172,7 @@ PROMPT;
 	 */
 	public function getMaxIterations(): int
 	{
-		return defined('WP_AI_AGENT_MAX_ITERATIONS') ? (int) constant('WP_AI_AGENT_MAX_ITERATIONS') : 10;
+		return defined('WP_AI_AGENT_MAX_ITERATIONS') ? (int) constant('WP_AI_AGENT_MAX_ITERATIONS') : 50;
 	}
 
 	/**

@@ -66,7 +66,7 @@ class WpCliApplication
 		],
 		'max_iterations' => [
 			'constant' => 'WP_AI_AGENT_MAX_ITERATIONS',
-			'default'  => 10,
+			'default'  => 50,
 			'type'     => 'int',
 		],
 		'bypassed_tools' => [
