@@ -441,8 +441,14 @@ final class AiClientAdapter implements AiClientAdapterInterface
 		AuthMode $auth_mode,
 		string $api_key
 	): RequestAuthenticationInterface {
-		if ($provider_id === 'anthropic' && $auth_mode === AuthMode::SUBSCRIPTION) {
-			return new AnthropicSubscriptionRequestAuthentication($api_key);
+		if ($auth_mode === AuthMode::SUBSCRIPTION) {
+			return match ($provider_id) {
+				'anthropic' => new AnthropicSubscriptionRequestAuthentication($api_key),
+				'openai'    => new OpenAiSubscriptionRequestAuthentication($api_key),
+				default     => throw AiClientException::unsupportedProvider(
+					$provider_id . ' (subscription mode not supported)'
+				),
+			};
 		}
 
 		return match ($provider_id) {

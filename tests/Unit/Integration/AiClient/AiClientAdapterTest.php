@@ -9,6 +9,7 @@ use WpAiAgent\Core\Exceptions\AiClientException;
 use WpAiAgent\Integration\AiClient\AiClientAdapter;
 use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
+use WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
@@ -538,6 +539,42 @@ final class AiClientAdapterTest extends TestCase
 
 		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('anthropic');
 		$this->assertInstanceOf(AnthropicSubscriptionRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that OpenAI with subscription mode returns OpenAiSubscriptionRequestAuthentication.
+	 */
+	public function test_constructor_withOpenaiSubscription_returnsOpenAiSubscriptionAuth(): void
+	{
+		$adapter = $this->createAdapter('codex-token', AuthMode::SUBSCRIPTION, 'gpt-4o', 4096, 'openai');
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('openai');
+
+		$this->assertInstanceOf(OpenAiSubscriptionRequestAuthentication::class, $authentication);
+	}
+
+	/**
+	 * Tests that subscription mode with unsupported provider throws exception.
+	 */
+	public function test_constructor_withUnsupportedProviderSubscription_throwsException(): void
+	{
+		$this->expectException(AiClientException::class);
+		$this->expectExceptionMessage('subscription mode not supported');
+
+		$this->createAdapter('google-token', AuthMode::SUBSCRIPTION, 'gemini-2.0-flash', 4096, 'google');
+	}
+
+	/**
+	 * Tests that switchProvider to OpenAI with subscription mode works.
+	 */
+	public function test_switchProvider_toOpenaiSubscription_setsCorrectAuth(): void
+	{
+		$adapter = $this->createAdapter();
+
+		$adapter->switchProvider('openai', 'codex-token', AuthMode::SUBSCRIPTION);
+
+		$authentication = $adapter->getProviderRegistry()->getProviderRequestAuthentication('openai');
+		$this->assertInstanceOf(OpenAiSubscriptionRequestAuthentication::class, $authentication);
 	}
 
 	/**

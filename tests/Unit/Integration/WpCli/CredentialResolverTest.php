@@ -245,6 +245,56 @@ final class CredentialResolverTest extends TestCase
 		$resolver->resolve('openai');
 	}
 
+	/**
+	 * Tests that resolve('openai') returns subscription mode when
+	 * OPENAI_SUBSCRIPTION_KEY is defined as a PHP constant.
+	 */
+	public function test_resolve_withOpenAiSubscriptionConstant_returnsSubscriptionMode(): void
+	{
+		$this->constants['OPENAI_SUBSCRIPTION_KEY'] = 'eyJhbGciOi-sub-const';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('openai');
+
+		$this->assertInstanceOf(ResolvedCredential::class, $result);
+		$this->assertSame('eyJhbGciOi-sub-const', $result->getSecret());
+		$this->assertSame(AuthMode::SUBSCRIPTION, $result->getAuthMode());
+		$this->assertSame('constant', $result->getSource());
+	}
+
+	/**
+	 * Tests that resolve('openai') returns subscription mode when
+	 * OPENAI_SUBSCRIPTION_KEY is set as an environment variable.
+	 */
+	public function test_resolve_withOpenAiSubscriptionEnv_returnsSubscriptionMode(): void
+	{
+		$this->env_vars['OPENAI_SUBSCRIPTION_KEY'] = 'eyJhbGciOi-sub-env';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('openai');
+
+		$this->assertSame('eyJhbGciOi-sub-env', $result->getSecret());
+		$this->assertSame(AuthMode::SUBSCRIPTION, $result->getAuthMode());
+		$this->assertSame('env', $result->getSource());
+	}
+
+	/**
+	 * Tests that resolve('openai') prefers the API key over the subscription
+	 * key when both are defined.
+	 */
+	public function test_resolve_withOpenAiApiKeyAndSubscription_prefersApiKey(): void
+	{
+		$this->constants['OPENAI_API_KEY'] = 'sk-openai-api';
+		$this->constants['OPENAI_SUBSCRIPTION_KEY'] = 'eyJhbGciOi-sub';
+
+		$resolver = $this->createResolver();
+		$result = $resolver->resolve('openai');
+
+		$this->assertSame('sk-openai-api', $result->getSecret());
+		$this->assertSame(AuthMode::API_KEY, $result->getAuthMode());
+		$this->assertSame('constant', $result->getSource());
+	}
+
 	// -----------------------------------------------------------------------
 	// resolve() — Google provider
 	// -----------------------------------------------------------------------
