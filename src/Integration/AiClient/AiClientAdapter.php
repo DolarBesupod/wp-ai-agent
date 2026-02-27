@@ -28,7 +28,12 @@ use WordPress\AnthropicAiProvider\Authentication\AnthropicApiKeyRequestAuthentic
 use WordPress\AnthropicAiProvider\Provider\AnthropicProvider;
 use WordPress\GoogleAiProvider\Authentication\GoogleApiKeyRequestAuthentication;
 use WordPress\GoogleAiProvider\Provider\GoogleProvider;
+use WordPress\AnthropicAiProvider\Models\AnthropicTextGenerationModel;
+use WordPress\GoogleAiProvider\Models\GoogleTextGenerationModel;
+use WordPress\OpenAiAiProvider\Models\OpenAiTextGenerationModel;
 use WordPress\OpenAiAiProvider\Provider\OpenAiProvider;
+use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
+use WordPress\AiClient\Providers\Models\Enums\CapabilityEnum;
 use WordPress\AiClient\Tools\DTO\FunctionCall;
 use WordPress\AiClient\Tools\DTO\FunctionDeclaration;
 use WordPress\AiClient\Tools\DTO\FunctionResponse;
@@ -200,9 +205,9 @@ final class AiClientAdapter implements AiClientAdapterInterface
 			$ai_messages = $this->convertMessages($messages);
 			$function_declarations = $this->convertToolsToDeclarations($tools);
 
+			$model_instance = $this->createModelInstance();
 			$builder = new PromptBuilder($this->provider_registry, $ai_messages);
-			$builder->usingProvider($this->provider_id);
-			$builder->usingModelPreference($this->model);
+			$builder->usingModel($model_instance);
 			$builder->usingSystemInstruction($system);
 			$builder->usingMaxTokens($this->max_tokens);
 			$builder->usingTemperature($this->temperature);
@@ -423,6 +428,48 @@ final class AiClientAdapter implements AiClientAdapterInterface
 				$exception
 			);
 		}
+	}
+
+	/**
+	 * Creates a model instance for the current provider and model ID.
+	 *
+	 * Constructs the model directly with synthetic metadata instead of
+	 * fetching metadata from the provider's API. This avoids API calls
+	 * that require scopes (e.g. api.model.read) which subscription
+	 * tokens may not have.
+	 *
+	 * @since n.e.x.t
+	 *
+	 * @return \WordPress\AiClient\Providers\Models\Contracts\ModelInterface The model instance.
+	 *
+	 * @throws AiClientException If the provider is not supported.
+	 */
+	private function createModelInstance(): \WordPress\AiClient\Providers\Models\Contracts\ModelInterface
+	{
+		if (!isset(self::PROVIDER_CLASSES[$this->provider_id])) {
+			throw AiClientException::unsupportedProvider($this->provider_id);
+		}
+
+		$provider_class = self::PROVIDER_CLASSES[$this->provider_id];
+		$provider_metadata = $provider_class::metadata();
+
+		// Build metadata locally to avoid API calls (e.g. OpenAI's /models
+		// endpoint) which may fail with scoped subscription tokens.
+		$model_metadata = new ModelMetadata(
+			$this->model,
+			$this->model,
+			[CapabilityEnum::textGeneration()],
+			[]
+		);
+
+		/** @var \WordPress\AiClient\Providers\Models\Contracts\ModelInterface $model_instance */
+		$model_instance = match ($this->provider_id) {
+			'anthropic' => new AnthropicTextGenerationModel($model_metadata, $provider_metadata),
+			'openai'    => new OpenAiTextGenerationModel($model_metadata, $provider_metadata),
+			'google'    => new GoogleTextGenerationModel($model_metadata, $provider_metadata),
+		};
+		$this->provider_registry->bindModelDependencies($model_instance);
+		return $model_instance;
 	}
 
 	/**
