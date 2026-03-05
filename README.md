@@ -2,7 +2,7 @@
 
 > **This is a research project, not polished for production use.** It serves as a testing ground for three WordPress ecosystem packages being developed in parallel: the [PHP AI Client](https://github.com/WordPress/php-ai-client) (provider-agnostic LLM SDK), the [PHP MCP Client](https://github.com/Automattic/php-mcp-client), and the WordPress Abilities API. The agent ties all three together into a real, end-to-end use case that exercises them under realistic conditions.
 
-A WordPress plugin that exposes an AI agent through WP-CLI. You talk to it via `wp agent chat` (interactive REPL) or `wp agent ask` (one-shot). Under the hood it runs a ReAct loop (Think → Act → Observe) — the LLM reasons about your request, picks a tool, executes it, observes the result, and repeats until the task is done. Tools range from file system operations (read, write, glob, grep, bash) to WordPress Abilities (any action a plugin registers) and external MCP servers.
+A WordPress plugin that exposes an AI agent through WP-CLI. You talk to it via `wp agent chat` (interactive REPL) or `wp agent ask` (one-shot). Under the hood it runs a ReAct loop (Thought → Action → Observation) — the LLM reasons about your request, picks a tool, executes it, observes the result, and repeats until the task is done. Tools range from file system operations (read, write, glob, grep, bash) to WordPress Abilities (any action a plugin registers) and external MCP servers.
 
 The AI communication is handled entirely by the WordPress 7.0 core-bundled [PHP AI Client](https://github.com/WordPress/php-ai-client), which abstracts away provider differences — the same agent works with Anthropic, OpenAI, or Google by switching a config value.
 
@@ -19,7 +19,7 @@ The AI communication is handled entirely by the WordPress 7.0 core-bundled [PHP 
 ## Features
 
 - **WP-CLI Native**: `wp agent chat`, `wp agent ask`, `wp agent init`, `wp agent config`, `wp agent auth`, `wp agent skills`
-- **ReAct Loop**: Think → Act → Observe reasoning pattern for tool usage
+- **ReAct Loop**: Thought → Action → Observation reasoning pattern for tool usage
 - **WordPress Abilities**: Bridges the WordPress Abilities API — the agent can discover and execute any registered ability (core or plugin-provided) through a single STRAP facade tool
 - **User Context Management**: Switch WordPress user context so abilities run with the correct permissions
 - **Tool Execution**: Built-in tools with confirmation prompts; auto-confirm (yolo) mode for trusted environments

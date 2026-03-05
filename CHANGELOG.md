@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- AI agent with ReAct loop (Think, Act, Observe).
+- AI agent with ReAct loop (Thought, Action, Observation).
 - WP-CLI commands: `wp agent chat` (interactive) and `wp agent ask` (one-shot).
 - Built-in tools: bash, glob, grep, read_file, write_file, think.
 - MCP client support (stdio and HTTP transports).
