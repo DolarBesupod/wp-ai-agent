@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Integration\Mcp;
 
-use GalatanOvidiu\PhpMcpClient\Core\Client\ClientCapabilities;
-use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
-use GalatanOvidiu\PhpMcpClient\Core\Contracts\TransportInterface;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\ConnectionException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\McpException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\TransportException;
-use GalatanOvidiu\PhpMcpClient\Integration\Transport\Http\HttpTransport;
-use GalatanOvidiu\PhpMcpClient\Integration\Transport\StdioTransport;
+use Automattic\PhpMcpClient\Client\ClientCapabilities;
+use Automattic\PhpMcpClient\Client\McpClient;
+use Automattic\PhpMcpClient\Contracts\TransportInterface;
+use Automattic\PhpMcpClient\Exception\ConnectionException;
+use Automattic\PhpMcpClient\Exception\McpException;
+use Automattic\PhpMcpClient\Exception\TimeoutException;
+use Automattic\PhpMcpClient\Exception\TransportException;
+use Automattic\PhpMcpClient\Transport\Http\HttpTransport;
+use Automattic\PhpMcpClient\Transport\StdioTransport;
 use WpAiAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -342,6 +342,9 @@ class McpClientManager
 			$this->capabilities,
 			self::CLIENT_NAME,
 			self::CLIENT_VERSION,
+			null,
+			null,
+			null,
 			$this->logger
 		);
 	}

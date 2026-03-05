@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=8.4",
-		"galatanovidiu/php-mcp-client": "dev-trunk",
+		"automattic/php-mcp-client": "v0.1.0",
 		"guzzlehttp/guzzle": "^7.10",
 		"psr/log": "^1.0|^2.0|^3.0",
 		"symfony/yaml": "^8.0"
@@ -33,7 +33,7 @@
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "https://github.com/galatanovidiu/php-mcp-client"
+			"url": "https://github.com/Automattic/php-mcp-client"
 		},
 		{
 			"type": "vcs",

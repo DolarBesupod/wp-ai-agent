@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Tests\Unit\Integration\Mcp;
 
-use GalatanOvidiu\PhpMcpClient\Core\Client\ClientCapabilities;
-use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
-use GalatanOvidiu\PhpMcpClient\Core\Client\ServerCapabilities;
-use GalatanOvidiu\PhpMcpClient\Core\Client\ServerInfo;
-use GalatanOvidiu\PhpMcpClient\Core\Contracts\TransportInterface;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\ConnectionException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\TransportException;
-use GalatanOvidiu\PhpMcpClient\Integration\Transport\StdioTransport;
+use Automattic\PhpMcpClient\Client\ClientCapabilities;
+use Automattic\PhpMcpClient\Client\McpClient;
+use Automattic\PhpMcpClient\Client\ServerCapabilities;
+use Automattic\PhpMcpClient\Client\ServerInfo;
+use Automattic\PhpMcpClient\Contracts\TransportInterface;
+use Automattic\PhpMcpClient\Exception\ConnectionException;
+use Automattic\PhpMcpClient\Exception\TimeoutException;
+use Automattic\PhpMcpClient\Exception\TransportException;
+use Automattic\PhpMcpClient\Transport\StdioTransport;
 use WpAiAgent\Core\Exceptions\McpConnectionException;
 use WpAiAgent\Integration\Mcp\McpClientManager;
 use WpAiAgent\Integration\Mcp\McpServerConfiguration;

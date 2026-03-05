@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Integration\Mcp;
 
-use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
+use Automattic\PhpMcpClient\Client\McpClient;
 use WpAiAgent\Core\Contracts\ToolInterface;
 use WpAiAgent\Core\ValueObjects\ToolResult;
 use Throwable;

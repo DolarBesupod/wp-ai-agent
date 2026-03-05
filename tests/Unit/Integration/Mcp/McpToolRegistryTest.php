@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Tests\Unit\Integration\Mcp;
 
-use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
+use Automattic\PhpMcpClient\Client\McpClient;
 use WpAiAgent\Core\Contracts\ToolInterface;
 use WpAiAgent\Core\Contracts\ToolRegistryInterface;
 use WpAiAgent\Core\Exceptions\DuplicateToolException;

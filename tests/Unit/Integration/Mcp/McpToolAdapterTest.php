@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace WpAiAgent\Tests\Unit\Integration\Mcp;
 
-use GalatanOvidiu\PhpMcpClient\Core\Client\McpClient;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\JsonRpcException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\McpException;
-use GalatanOvidiu\PhpMcpClient\Core\Exception\TimeoutException;
+use Automattic\PhpMcpClient\Client\McpClient;
+use Automattic\PhpMcpClient\Exception\JsonRpcException;
+use Automattic\PhpMcpClient\Exception\McpException;
+use Automattic\PhpMcpClient\Exception\TimeoutException;
 use WpAiAgent\Core\Contracts\ToolInterface;
 use WpAiAgent\Core\Exceptions\ToolExecutionException;
 use WpAiAgent\Integration\Mcp\McpToolAdapter;
