@@ -29,6 +29,7 @@ Thumbs.db
 agent.yaml
 /.php-cli-agent/
 /.wp-ai-agent/
+.wp-env.override.json
 
 # Logs
 *.log
