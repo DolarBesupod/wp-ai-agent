@@ -1,0 +1,17 @@
+# Exclude development files from release archives (git archive, Composer --prefer-dist)
+
+/.editorconfig export-ignore
+/.gitattributes export-ignore
+/.github/ export-ignore
+/.gitignore export-ignore
+/.hyper/ export-ignore
+/.wp-env.json export-ignore
+/.wp-env-scripts/ export-ignore
+/CLAUDE.local.md export-ignore
+/CLAUDE.md export-ignore
+/coverage/ export-ignore
+/docs/ export-ignore
+/phpcs.xml export-ignore
+/phpstan.neon export-ignore
+/phpunit.xml export-ignore
+/tests/ export-ignore
