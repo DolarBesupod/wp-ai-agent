@@ -57,6 +57,7 @@ jobs:
           cp README.md build/wp-ai-agent/
           cp CHANGELOG.md build/wp-ai-agent/
           cp composer.json build/wp-ai-agent/
+          cp composer.lock build/wp-ai-agent/
           cd build && zip -r ../wp-ai-agent.zip wp-ai-agent/
 
       - name: Upload zip to release
