@@ -12,7 +12,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wp-ai-agent
  *
- * @package WpAiAgent
+ * @package Automattic\WpAiAgent
  */
 
 declare(strict_types=1);
@@ -57,8 +57,8 @@ if (! class_exists('WordPress\AiClient\Builders\PromptBuilder')) {
 
 // Register WP-CLI commands.
 if (defined('WP_CLI') && WP_CLI) {
-	\WP_CLI::add_command('agent', \WpAiAgent\Integration\WpCli\WpCliCommand::class);
-	\WP_CLI::add_command('agent config', \WpAiAgent\Integration\WpCli\WpCliConfigCommand::class);
-	\WP_CLI::add_command('agent skills', \WpAiAgent\Integration\WpCli\WpCliSkillCommand::class);
-	\WP_CLI::add_command('agent auth', \WpAiAgent\Integration\WpCli\WpCliAuthCommand::class);
+	\WP_CLI::add_command('agent', \Automattic\WpAiAgent\Integration\WpCli\WpCliCommand::class);
+	\WP_CLI::add_command('agent config', \Automattic\WpAiAgent\Integration\WpCli\WpCliConfigCommand::class);
+	\WP_CLI::add_command('agent skills', \Automattic\WpAiAgent\Integration\WpCli\WpCliSkillCommand::class);
+	\WP_CLI::add_command('agent auth', \Automattic\WpAiAgent\Integration\WpCli\WpCliAuthCommand::class);
 }

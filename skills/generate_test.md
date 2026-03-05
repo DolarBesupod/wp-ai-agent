@@ -13,7 +13,7 @@ Generate a PHPUnit test for the class in this file:
 @$file_path
 
 Requirements:
-- **Test class name:** `{ClassName}Test` in a namespace that mirrors the source, replacing the root namespace segment with `Tests\Unit` (e.g. `WpAiAgent\Core\Agent\Agent` → `Tests\Unit\Core\Agent\AgentTest`)
+- **Test class name:** `{ClassName}Test` in a namespace that mirrors the source, replacing the root namespace segment with `Tests\Unit` (e.g. `Automattic\WpAiAgent\Core\Agent\Agent` → `Tests\Unit\Core\Agent\AgentTest`)
 - **File location:** mirror the source path under `tests/Unit/` (e.g. `src/Core/Agent/Agent.php` → `tests/Unit/Core/Agent/AgentTest.php`)
 - **Dependencies:** mock all constructor parameters using `$this->createMock(InterfaceName::class)`
 - **Structure:** Arrange → Act → Assert with descriptive variable names
