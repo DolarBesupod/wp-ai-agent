@@ -2,7 +2,7 @@
 	"name": "galatanovidiu/wp-ai-agent",
 	"description": "A CLI-based AI agent using MCP and Anthropic Claude",
 	"type": "project",
-	"license": "MIT",
+	"license": "GPL-2.0-or-later",
 	"require": {
 		"php": ">=8.4",
 		"automattic/php-mcp-client": "v0.1.0",
