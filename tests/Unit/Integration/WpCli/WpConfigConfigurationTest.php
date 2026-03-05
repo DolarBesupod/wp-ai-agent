@@ -340,7 +340,7 @@ final class WpConfigConfigurationTest extends TestCase
 	{
 		$config = new WpConfigConfiguration();
 
-		$this->assertSame(10, $config->getMaxIterations());
+		$this->assertSame(50, $config->getMaxIterations());
 	}
 
 	// -----------------------------------------------------------------------
