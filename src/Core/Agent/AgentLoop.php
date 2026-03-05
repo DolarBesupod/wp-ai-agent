@@ -30,7 +30,7 @@ use Throwable;
  * 4. OBSERVE: Add tool results to context as messages
  * 5. Loop back to THINK (respecting max_turns limit)
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class AgentLoop implements AgentLoopInterface
 {
@@ -56,11 +56,11 @@ final class AgentLoop implements AgentLoopInterface
 	/**
 	 * Creates a new AgentLoop instance.
 	 *
-	 * @param AiAdapterInterface     $ai_adapter     The AI adapter for model calls.
-	 * @param ToolExecutorInterface  $tool_executor  The tool executor for running tools.
-	 * @param ToolRegistryInterface  $tool_registry  The tool registry for declarations.
+	 * @param AiAdapterInterface $ai_adapter The AI adapter for model calls.
+	 * @param ToolExecutorInterface $tool_executor The tool executor for running tools.
+	 * @param ToolRegistryInterface $tool_registry The tool registry for declarations.
 	 * @param OutputHandlerInterface $output_handler The output handler for user feedback.
-	 * @param LoggerInterface|null   $logger         Optional logger.
+	 * @param LoggerInterface|null $logger Optional logger.
 	 */
 	public function __construct(
 		AiAdapterInterface $ai_adapter,
@@ -285,8 +285,9 @@ final class AgentLoop implements AgentLoopInterface
 	/**
 	 * ACT phase: Execute tool calls.
 	 *
-	 * @param AgentContext                                                       $context    The current context.
-	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls The tool calls to execute.
+	 * @param AgentContext $context The current context.
+	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls
+	 *     The tool calls to execute.
 	 *
 	 * @return AgentContext Updated context with tool results.
 	 */

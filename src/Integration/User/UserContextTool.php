@@ -18,14 +18,14 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * multi-action pattern as AbilityStrapTool. All WordPress function calls
  * are injected as callables for testability.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class UserContextTool extends AbstractTool
 {
 	/**
 	 * Valid action values for the tool.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @var array<int, string>
 	 */
@@ -34,7 +34,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Hard cap for the number of users returned by the list action.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @var int
 	 */
@@ -43,7 +43,8 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Callable that lists WordPress users.
 	 *
-	 * Signature: (string $role, string $search) => array<int, array{id: int, login: string, display_name: string, email: string, roles: string[]}>
+	 * Signature:
+	 *     (string $role, string $search) => array<int, array{...}>
 	 *
 	 * @var callable
 	 */
@@ -52,7 +53,8 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Callable that resolves and sets a WordPress user.
 	 *
-	 * Signature: (string $identifier) => array{id: int, login: string, display_name: string, email: string, roles: string[]}|false
+	 * Signature:
+	 *     (string $identifier) => array{...}|false
 	 *
 	 * @var callable
 	 */
@@ -61,7 +63,8 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Callable that returns the current WordPress user context.
 	 *
-	 * Signature: () => array{id: int, login: string, display_name: string, email: string, roles: string[], logged_in: bool}
+	 * Signature:
+	 *     () => array{...}
 	 *
 	 * @var callable
 	 */
@@ -70,11 +73,11 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Creates a new UserContextTool.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @param callable|null $list_users_fn       Optional callable for listing users. Defaults to get_users() wrapper.
-	 * @param callable|null $set_user_fn         Optional callable for setting the active user. Defaults to wp_set_current_user() wrapper.
-	 * @param callable|null $get_current_user_fn Optional callable for getting the current user. Defaults to wp_get_current_user() wrapper.
+	 * @param callable|null $list_users_fn Optional callable for listing users.
+	 * @param callable|null $set_user_fn Optional callable for setting the active user.
+	 * @param callable|null $get_current_user_fn Optional callable for getting current user.
 	 */
 	public function __construct(
 		?callable $list_users_fn = null,
@@ -89,7 +92,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Returns the unique tool name.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string
 	 */
@@ -101,7 +104,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Returns the tool description explaining the list/set/current action pattern.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string
 	 */
@@ -117,7 +120,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Returns the JSON Schema for the tool's parameters.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -153,7 +156,7 @@ class UserContextTool extends AbstractTool
 	 *
 	 * User context changes are session-local and non-destructive.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return bool Always false.
 	 */
@@ -165,7 +168,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Executes the tool by routing to the appropriate action handler.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The tool arguments.
 	 *
@@ -198,7 +201,7 @@ class UserContextTool extends AbstractTool
 	 * Defaults to administrators. When a search term is provided, searches
 	 * across all roles. Results are capped at 25 with a has_more flag.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The tool arguments.
 	 *
@@ -237,7 +240,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Handles the set action by resolving and activating a WordPress user.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The tool arguments.
 	 *
@@ -280,7 +283,7 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Handles the current action by returning the active user context.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return ToolResult A success result with the current user data as JSON.
 	 */
@@ -311,9 +314,11 @@ class UserContextTool extends AbstractTool
 	 * Wraps get_users() with role/search filtering and maps WP_User objects
 	 * to plain arrays. Always fetches MAX_RESULTS + 1 to detect overflow.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @return \Closure(string, string): array<int, array{id: int, login: string, display_name: string, email: string, roles: string[]}>
+	 * @return \Closure(string, string): array<int, array{
+	 *     id: int, login: string, display_name: string, email: string, roles: string[]
+	 * }>
 	 */
 	private static function defaultListUsersFn(): \Closure
 	{
@@ -353,9 +358,11 @@ class UserContextTool extends AbstractTool
 	 * Resolution order: numeric -> get_user_by('id'), contains @ -> get_user_by('email'),
 	 * otherwise -> get_user_by('login'). Calls wp_set_current_user() on success.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @return \Closure(string): (array{id: int, login: string, display_name: string, email: string, roles: string[]}|false)
+	 * @return \Closure(string): (array{
+	 *     id: int, login: string, display_name: string, email: string, roles: string[]
+	 * }|false)
 	 */
 	private static function defaultSetUserFn(): \Closure
 	{
@@ -387,9 +394,11 @@ class UserContextTool extends AbstractTool
 	/**
 	 * Returns the default callable for getting the current WordPress user.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @return \Closure(): array{id: int, login: string, display_name: string, email: string, roles: string[], logged_in: bool}
+	 * @return \Closure(): array{
+	 *     id: int, login: string, display_name: string, email: string, roles: string[], logged_in: bool
+	 * }
 	 */
 	private static function defaultGetCurrentUserFn(): \Closure
 	{

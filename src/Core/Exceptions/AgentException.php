@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
  * Provides structured error data through a context array, allowing exceptions
  * to carry additional information about the error circumstances.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class AgentException extends \RuntimeException
 {
@@ -24,8 +24,8 @@ class AgentException extends \RuntimeException
 	/**
 	 * Creates a new AgentException.
 	 *
-	 * @param string               $message  The exception message.
-	 * @param int                  $code     The exception code.
+	 * @param string $message The exception message.
+	 * @param int $code The exception code.
 	 * @param \Throwable|null      $previous Optional previous exception.
 	 * @param array<string, mixed> $context  Optional structured context data.
 	 */

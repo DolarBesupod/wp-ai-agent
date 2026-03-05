@@ -11,7 +11,7 @@ namespace Automattic\WpAiAgent\Core\Command;
  * template processing), whether it should be injected into the conversation,
  * any direct output to display, and error information.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class CommandExecutionResult
 {
@@ -53,8 +53,8 @@ final class CommandExecutionResult
 	/**
 	 * Creates a new CommandExecutionResult instance.
 	 *
-	 * @param bool        $success                  Whether execution was successful.
-	 * @param string      $expanded_content         The expanded content.
+	 * @param bool $success Whether execution was successful.
+	 * @param string $expanded_content The expanded content.
 	 * @param bool        $inject_into_conversation Whether to inject into conversation.
 	 * @param string|null $direct_output            Direct output to display.
 	 * @param string|null $error                    Error message if failed.
@@ -76,13 +76,13 @@ final class CommandExecutionResult
 	/**
 	 * Creates a successful execution result.
 	 *
-	 * @param string      $expanded_content         The fully expanded command content.
+	 * @param string $expanded_content The fully expanded command content.
 	 * @param bool        $inject_into_conversation Whether to inject into conversation (default: true).
 	 * @param string|null $direct_output            Optional direct output to display.
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function success(
 		string $expanded_content,
@@ -105,7 +105,7 @@ final class CommandExecutionResult
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function failure(string $error): self
 	{
@@ -128,7 +128,7 @@ final class CommandExecutionResult
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function directOutput(string $output): self
 	{
@@ -146,7 +146,7 @@ final class CommandExecutionResult
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getExpandedContent(): string
 	{
@@ -158,7 +158,7 @@ final class CommandExecutionResult
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function shouldInjectIntoConversation(): bool
 	{
@@ -170,7 +170,7 @@ final class CommandExecutionResult
 	 *
 	 * @return string|null The direct output, or null if none.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getDirectOutput(): ?string
 	{
@@ -182,7 +182,7 @@ final class CommandExecutionResult
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isSuccess(): bool
 	{
@@ -194,7 +194,7 @@ final class CommandExecutionResult
 	 *
 	 * @return string|null The error message, or null if successful.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getError(): ?string
 	{
@@ -206,7 +206,7 @@ final class CommandExecutionResult
 	 *
 	 * @return bool True if direct output is set.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function hasDirectOutput(): bool
 	{

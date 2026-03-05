@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * Concrete tool implementations should extend this class and implement
  * the abstract methods.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 abstract class AbstractTool implements ToolInterface
 {
@@ -82,8 +82,8 @@ abstract class AbstractTool implements ToolInterface
 	 * Gets an argument value with a default fallback.
 	 *
 	 * @param array<string, mixed> $arguments The arguments array.
-	 * @param string               $name      The argument name.
-	 * @param mixed                $default   The default value if not present.
+	 * @param string $name The argument name.
+	 * @param mixed $default The default value if not present.
 	 *
 	 * @return mixed
 	 */
@@ -96,8 +96,8 @@ abstract class AbstractTool implements ToolInterface
 	 * Gets a string argument value.
 	 *
 	 * @param array<string, mixed> $arguments The arguments array.
-	 * @param string               $name      The argument name.
-	 * @param string               $default   The default value.
+	 * @param string $name The argument name.
+	 * @param string $default The default value.
 	 *
 	 * @return string
 	 */
@@ -112,8 +112,8 @@ abstract class AbstractTool implements ToolInterface
 	 * Gets an integer argument value.
 	 *
 	 * @param array<string, mixed> $arguments The arguments array.
-	 * @param string               $name      The argument name.
-	 * @param int                  $default   The default value.
+	 * @param string $name The argument name.
+	 * @param int $default The default value.
 	 *
 	 * @return int
 	 */
@@ -128,8 +128,8 @@ abstract class AbstractTool implements ToolInterface
 	 * Gets a boolean argument value.
 	 *
 	 * @param array<string, mixed> $arguments The arguments array.
-	 * @param string               $name      The argument name.
-	 * @param bool                 $default   The default value.
+	 * @param string $name The argument name.
+	 * @param bool $default The default value.
 	 *
 	 * @return bool
 	 */
@@ -144,8 +144,8 @@ abstract class AbstractTool implements ToolInterface
 	 * Gets an array argument value.
 	 *
 	 * @param array<string, mixed> $arguments The arguments array.
-	 * @param string               $name      The argument name.
-	 * @param array<mixed>         $default   The default value.
+	 * @param string $name The argument name.
+	 * @param array<mixed> $default The default value.
 	 *
 	 * @return array<mixed>
 	 */

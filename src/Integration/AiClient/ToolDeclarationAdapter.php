@@ -14,7 +14,7 @@ use WordPress\AiClient\Tools\DTO\FunctionDeclaration;
  * FunctionDeclaration class. It maps tool name, description, and parameter
  * schema to the format expected by the AI client library.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolDeclarationAdapter
 {

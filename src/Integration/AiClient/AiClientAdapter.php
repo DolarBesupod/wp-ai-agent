@@ -47,7 +47,7 @@ use WordPress\AiClient\Tools\DTO\FunctionResponse;
  * or Google) and handles message conversion, tool declarations, and
  * response parsing.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class AiClientAdapter implements AiClientAdapterInterface
 {
@@ -162,15 +162,15 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Creates a new AiClientAdapter instance.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @param string|null                   $api_key          Optional API key. If not provided,
+	 * @param string|null $api_key Optional API key. If not provided,
 	 *                                                        will be read from the provider's environment variable.
-	 * @param AuthMode                      $auth_mode        Authentication mode (api_key or subscription).
-	 * @param string                        $model            The model to use.
-	 * @param int                           $max_tokens       Maximum tokens for responses.
+	 * @param AuthMode $auth_mode Authentication mode (api_key or subscription).
+	 * @param string $model The model to use.
+	 * @param int $max_tokens Maximum tokens for responses.
 	 * @param HttpTransporterInterface|null $http_transporter Optional HTTP transporter.
-	 * @param string                        $provider_id      The provider ID (e.g., 'anthropic', 'openai', 'google').
+	 * @param string $provider_id The provider ID (e.g., 'anthropic', 'openai', 'google').
 	 *
 	 * @throws AiClientException If initialization fails.
 	 */
@@ -272,7 +272,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Gets the streaming handler instance.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return StreamingHandler
 	 */
@@ -288,7 +288,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Sets a custom streaming handler.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param StreamingHandler $handler The streaming handler to use.
 	 */
@@ -393,7 +393,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Initializes the provider registry with the configured provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param HttpTransporterInterface|null $http_transporter Optional HTTP transporter.
 	 *
@@ -440,7 +440,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	 * that require scopes (e.g. api.model.read) which subscription
 	 * tokens may not have.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return \WordPress\AiClient\Providers\Models\Contracts\ModelInterface The model instance.
 	 *
@@ -485,11 +485,11 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Creates the appropriate authentication object for a given provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string   $provider_id The provider identifier.
 	 * @param AuthMode $auth_mode   The authentication mode.
-	 * @param string   $api_key     The API key.
+	 * @param string $api_key The API key.
 	 *
 	 * @return RequestAuthenticationInterface The authentication instance.
 	 */
@@ -534,7 +534,7 @@ final class AiClientAdapter implements AiClientAdapterInterface
 	/**
 	 * Gets the API key from environment variables for the current provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string|null The API key, or null if not set.
 	 */

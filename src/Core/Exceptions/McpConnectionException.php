@@ -7,15 +7,15 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when MCP (Model Context Protocol) connection operations fail.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class McpConnectionException extends AgentException
 {
 	/**
 	 * Creates an exception for connection failures.
 	 *
-	 * @param string          $server   The MCP server identifier or URL.
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $server The MCP server identifier or URL.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -51,8 +51,8 @@ class McpConnectionException extends AgentException
 	/**
 	 * Creates an exception for protocol errors.
 	 *
-	 * @param string          $server   The MCP server identifier or URL.
-	 * @param string          $reason   The protocol error description.
+	 * @param string $server The MCP server identifier or URL.
+	 * @param string $reason The protocol error description.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -104,9 +104,9 @@ class McpConnectionException extends AgentException
 	/**
 	 * Creates an exception for tool invocation failures.
 	 *
-	 * @param string          $server    The MCP server identifier or URL.
+	 * @param string $server The MCP server identifier or URL.
 	 * @param string          $tool_name The tool that failed.
-	 * @param string          $reason    The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous  Optional previous exception.
 	 *
 	 * @return self

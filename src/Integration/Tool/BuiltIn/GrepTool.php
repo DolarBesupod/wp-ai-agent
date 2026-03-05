@@ -16,7 +16,7 @@ use FilesystemIterator;
  * Searches for matching patterns in files and returns results
  * in file:line format for easy navigation.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class GrepTool extends AbstractTool
 {

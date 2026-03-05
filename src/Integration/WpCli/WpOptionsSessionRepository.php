@@ -22,7 +22,7 @@ use Automattic\WpAiAgent\Integration\Session\JsonSessionSerializer;
  * - Index:       wp_ai_agent_sessions
  * - Per session: wp_ai_agent_session_{session_id}
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class WpOptionsSessionRepository implements SessionRepositoryInterface
 {
@@ -48,7 +48,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 *
 	 * @param JsonSessionSerializer|null $serializer Optional custom serializer instance.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(?JsonSessionSerializer $serializer = null)
 	{
@@ -67,7 +67,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 *
 	 * @throws SessionPersistenceException If serialization fails.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function save(SessionInterface $session): void
 	{
@@ -101,7 +101,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 * @throws SessionNotFoundException     If the option does not exist.
 	 * @throws SessionPersistenceException  If the stored value is invalid JSON.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(SessionId $session_id): SessionInterface
 	{
@@ -129,7 +129,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 *
 	 * @return bool True if the session exists, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function exists(SessionId $session_id): bool
 	{
@@ -145,7 +145,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 *
 	 * @return bool True if the session existed and was deleted, false if it did not exist.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function delete(SessionId $session_id): bool
 	{
@@ -178,7 +178,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 *
 	 * @return array<int, SessionId> The session identifiers.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function listAll(): array
 	{
@@ -213,7 +213,7 @@ class WpOptionsSessionRepository implements SessionRepositoryInterface
 	 *
 	 * @return array<int, array{id: SessionId, metadata: SessionMetadataInterface}>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function listWithMetadata(): array
 	{

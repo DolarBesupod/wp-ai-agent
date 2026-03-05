@@ -73,9 +73,9 @@ final class ConsoleLoggerTest extends TestCase
 	 * Creates a logger with test streams.
 	 *
 	 * @param string $min_level     Minimum log level.
-	 * @param bool   $use_colors    Whether to use colors.
-	 * @param bool   $show_times    Whether to show timestamps.
-	 * @param bool   $use_stderr    Whether to use stderr for errors.
+	 * @param bool $use_colors Whether to use colors.
+	 * @param bool $show_times Whether to show timestamps.
+	 * @param bool $use_stderr Whether to use stderr for errors.
 	 *
 	 * @return ConsoleLogger
 	 */

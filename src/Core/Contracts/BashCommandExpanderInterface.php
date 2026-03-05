@@ -20,7 +20,7 @@ use RuntimeException;
  * own commands/skills. The commands come from files the user has explicitly
  * created or installed.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface BashCommandExpanderInterface
 {

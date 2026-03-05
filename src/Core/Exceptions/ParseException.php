@@ -7,14 +7,14 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when parsing fails.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ParseException extends AgentException
 {
 	/**
 	 * Creates an exception for invalid frontmatter YAML.
 	 *
-	 * @param string          $message  The error message from the YAML parser.
+	 * @param string $message The error message from the YAML parser.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -45,7 +45,7 @@ class ParseException extends AgentException
 	/**
 	 * Creates an exception for a file that cannot be read.
 	 *
-	 * @param string          $path     The file path.
+	 * @param string $path The file path.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self

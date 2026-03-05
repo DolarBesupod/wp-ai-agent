@@ -451,9 +451,9 @@ final class CommandRegistryTest extends TestCase
 	/**
 	 * Creates a command instance for testing.
 	 *
-	 * @param string      $name        The command name.
+	 * @param string $name The command name.
 	 * @param string      $description The command description.
-	 * @param string      $body        The command body.
+	 * @param string $body The command body.
 	 * @param string|null $namespace   The command namespace.
 	 * @param string|null $filepath    The source file path.
 	 *

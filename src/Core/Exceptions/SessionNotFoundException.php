@@ -9,7 +9,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 /**
  * Exception thrown when a session is not found.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class SessionNotFoundException extends AgentException
 {
@@ -19,7 +19,7 @@ class SessionNotFoundException extends AgentException
 	 * Creates a new SessionNotFoundException.
 	 *
 	 * @param SessionId       $session_id The session ID that was not found.
-	 * @param string          $message    Optional custom message.
+	 * @param string $message Optional custom message.
 	 * @param \Throwable|null $previous   Optional previous exception.
 	 */
 	public function __construct(

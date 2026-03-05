@@ -37,7 +37,7 @@ use WordPress\OpenAiAiProvider\Provider\OpenAiProvider;
  * response-parsing logic as the vendor OpenAiTextGenerationModel but adds
  * streaming parameters and SSE parsing via SseResponseParser.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  *
  * @phpstan-type OutputContentData array{
  *     type: string,
@@ -77,7 +77,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	 * Sends a streaming request to the OpenAI Responses API and parses the
 	 * SSE body for the `response.completed` event.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function generateTextResult(array $prompt): GenerativeAiResult
 	{
@@ -148,7 +148,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	 * The `instructions` parameter is always included (defaulting to an empty string)
 	 * because the ChatGPT backend requires it.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, Message> $prompt The prompt messages.
 	 *
@@ -200,7 +200,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Prepares the input parameter for the API request.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, Message> $messages The messages to prepare.
 	 *
@@ -227,7 +227,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	 * sent as top-level input items rather than nested in message content. As such,
 	 * they must be the only part in a message.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, Message> $messages The messages to validate.
 	 *
@@ -263,7 +263,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Converts a Message object to a Responses API input item.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param Message $message The message to convert.
 	 *
@@ -302,7 +302,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Returns the OpenAI API specific role string for the given message role.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param MessageRoleEnum $role The message role.
 	 *
@@ -319,7 +319,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Returns the OpenAI API specific data for a message part.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param MessagePart     $part The message part to get the data for.
 	 * @param MessageRoleEnum $role The role of the message containing the part.
@@ -418,10 +418,10 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Prepares the tools parameter for the API request.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param list<FunctionDeclaration>|null $function_declarations The function declarations, or null if none.
-	 * @param WebSearch|null                 $web_search            The web search config, or null if none.
+	 * @param WebSearch|null $web_search The web search config, or null if none.
 	 *
 	 * @return list<array<string, mixed>> The prepared tools parameter.
 	 */
@@ -452,7 +452,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Parses the decoded response data into a GenerativeAiResult.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $response_data The decoded response data from the SSE event.
 	 *
@@ -520,10 +520,10 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Parses a single output item from the API response into a Candidate object.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $output_item     The output item data from the API response.
-	 * @param int                  $index           The index of the output item in the output array.
+	 * @param int $index The index of the output item in the output array.
 	 * @param string               $response_status The overall response status.
 	 *
 	 * @return Candidate|null The parsed candidate, or null if the output item should be skipped.
@@ -546,10 +546,10 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Parses a message output item into a Candidate object.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $output_item     The output item data.
-	 * @param int                  $index           The index of the output item.
+	 * @param int $index The index of the output item.
 	 * @param string               $response_status The overall response status.
 	 *
 	 * @return Candidate The parsed candidate.
@@ -595,10 +595,10 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Parses a function_call output item into a Candidate object.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $output_item The output item data.
-	 * @param int                  $index       The index of the output item.
+	 * @param int $index The index of the output item.
 	 *
 	 * @return Candidate The parsed candidate.
 	 */
@@ -640,7 +640,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Parses an output content item into a MessagePart.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $content_item The content item data.
 	 *
@@ -690,7 +690,7 @@ final class ChatGptCodexTextGenerationModel extends AbstractApiBasedModel implem
 	/**
 	 * Parses the response status to a finish reason.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $status             The response status.
 	 * @param bool   $has_function_calls Whether the response contains function calls.

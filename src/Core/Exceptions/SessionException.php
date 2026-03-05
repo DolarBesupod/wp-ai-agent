@@ -10,14 +10,14 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
  * This serves as a base for more specific session exceptions like
  * SessionNotFoundException and SessionPersistenceException.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class SessionException extends AgentException
 {
 	/**
 	 * Creates an exception for session state errors.
 	 *
-	 * @param string          $reason   The reason for the error.
+	 * @param string $reason The reason for the error.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -52,7 +52,7 @@ class SessionException extends AgentException
 	/**
 	 * Creates an exception for session initialization failures.
 	 *
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -71,7 +71,7 @@ class SessionException extends AgentException
 	 * Creates an exception for session corruption.
 	 *
 	 * @param string          $session_id The corrupted session identifier.
-	 * @param string          $reason     The reason for corruption.
+	 * @param string $reason The reason for corruption.
 	 * @param \Throwable|null $previous   Optional previous exception.
 	 *
 	 * @return self

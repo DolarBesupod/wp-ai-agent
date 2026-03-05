@@ -13,7 +13,7 @@ use Psr\Log\LogLevel;
  * Writes log messages to a file with structured formatting,
  * log level filtering, and automatic file rotation based on size.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class FileLogger extends AbstractLogger
 {
@@ -104,7 +104,7 @@ final class FileLogger extends AbstractLogger
 	 * @param string $file_path     Path to the log file.
 	 * @param string $min_level     Minimum log level (default: debug).
 	 * @param int    $max_file_size Maximum file size in bytes (default: 10 MB).
-	 * @param int    $max_files     Maximum number of rotated files (default: 5).
+	 * @param int $max_files Maximum number of rotated files (default: 5).
 	 * @param string $date_format   Date format for log entries.
 	 *
 	 * @throws \RuntimeException If the log directory cannot be created.
@@ -128,7 +128,7 @@ final class FileLogger extends AbstractLogger
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param mixed        $level   The log level.
+	 * @param mixed $level The log level.
 	 * @param string       $message The log message.
 	 * @param array<mixed> $context The log context.
 	 *
@@ -203,7 +203,7 @@ final class FileLogger extends AbstractLogger
 	/**
 	 * Formats a log message.
 	 *
-	 * @param string       $level   The log level.
+	 * @param string $level The log level.
 	 * @param string       $message The log message.
 	 * @param array<mixed> $context The log context.
 	 *

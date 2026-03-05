@@ -13,7 +13,7 @@ use Psr\Log\LogLevel;
  * Writes log messages to STDOUT/STDERR with ANSI color support,
  * optional timestamps, and log level filtering.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ConsoleLogger extends AbstractLogger
 {
@@ -115,11 +115,11 @@ final class ConsoleLogger extends AbstractLogger
 	/**
 	 * Creates a new ConsoleLogger instance.
 	 *
-	 * @param string        $min_level       Minimum log level (default: debug).
-	 * @param bool          $use_colors      Whether to use ANSI colors (default: auto-detect).
+	 * @param string $min_level Minimum log level (default: debug).
+	 * @param bool $use_colors Whether to use ANSI colors (default: auto-detect).
 	 * @param bool          $show_timestamps Whether to show timestamps (default: false).
-	 * @param bool          $use_stderr      Use STDERR for error levels (default: true).
-	 * @param string        $date_format     Date format for timestamps.
+	 * @param bool $use_stderr Use STDERR for error levels (default: true).
+	 * @param string $date_format Date format for timestamps.
 	 * @param resource|null $output_stream   Custom output stream.
 	 * @param resource|null $error_stream    Custom error stream.
 	 */
@@ -144,7 +144,7 @@ final class ConsoleLogger extends AbstractLogger
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param mixed        $level   The log level.
+	 * @param mixed $level The log level.
 	 * @param string       $message The log message.
 	 * @param array<mixed> $context The log context.
 	 *
@@ -227,7 +227,7 @@ final class ConsoleLogger extends AbstractLogger
 	/**
 	 * Formats a log message.
 	 *
-	 * @param string       $level   The log level.
+	 * @param string $level The log level.
 	 * @param string       $message The log message.
 	 * @param array<mixed> $context The log context.
 	 *

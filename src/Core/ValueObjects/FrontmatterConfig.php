@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\ValueObjects;
  * This class wraps the raw frontmatter array and provides type-safe
  * accessors for common frontmatter fields used in skill definitions.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class FrontmatterConfig
 {

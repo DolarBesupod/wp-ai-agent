@@ -20,14 +20,14 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * Non-readonly abilities require an explicit `confirmed: true` parameter to
  * execute. This prevents accidental data mutation without user consent.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class AbilityStrapTool extends AbstractTool
 {
 	/**
 	 * Valid action values for the tool.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @var array<int, string>
 	 */
@@ -87,11 +87,11 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Creates a new AbilityStrapTool.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @param callable|null                  $abilities_provider   Optional callable that returns WP_Ability[].
+	 * @param callable|null $abilities_provider Optional callable that returns WP_Ability[].
 	 *                                                             Defaults to 'wp_get_abilities'.
-	 * @param callable|null                  $is_user_logged_in    Optional callable that returns bool.
+	 * @param callable|null $is_user_logged_in Optional callable that returns bool.
 	 *                                                             Defaults to 'is_user_logged_in'.
 	 * @param ConfirmationHandlerInterface|null $confirmation_handler Optional handler for auto-confirm checks.
 	 */
@@ -108,7 +108,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Returns the unique tool name.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string
 	 */
@@ -120,7 +120,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Returns the tool description including the STRAP usage pattern and safety protocol.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string
 	 */
@@ -146,7 +146,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Returns the JSON Schema for the tool's parameters.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -179,7 +179,7 @@ class AbilityStrapTool extends AbstractTool
 	 * The facade itself does not require confirmation. Confirmation is handled
 	 * per-ability inside the execute action based on readonly annotations.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return bool Always false.
 	 */
@@ -191,7 +191,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Executes the tool by routing to the appropriate action handler.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The tool arguments.
 	 *
@@ -221,7 +221,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Handles the list action by returning a summary of all available abilities.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return ToolResult A success result with the abilities summary as JSON.
 	 */
@@ -251,9 +251,11 @@ class AbilityStrapTool extends AbstractTool
 		$response = [
 			'abilities' => $abilities,
 			'count' => count($abilities),
-			'usage_hint' => "IMPORTANT: Always use action 'describe' with ability_name to get the full parameter schema "
-				. "BEFORE executing. Do not guess parameters from key_params alone -- describe returns "
-				. "the complete schema with types, required fields, and validation rules.",
+			'usage_hint' => "IMPORTANT: Always use action 'describe' with "
+				. "ability_name to get the full parameter schema BEFORE "
+				. "executing. Do not guess parameters from key_params "
+				. "alone -- describe returns the complete schema with "
+				. "types, required fields, and validation rules.",
 		];
 
 		$encoded = wp_json_encode($response);
@@ -264,7 +266,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Handles the describe action by returning the full schema for a specific ability.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The tool arguments.
 	 *
@@ -315,7 +317,7 @@ class AbilityStrapTool extends AbstractTool
 	 * parameter to be truthy before proceeding. Strips `confirmed` from params
 	 * before delegating to the adapter.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The tool arguments.
 	 *
@@ -381,7 +383,7 @@ class AbilityStrapTool extends AbstractTool
 	 * Called on the first invocation of any action. If the abilities provider
 	 * is not callable (e.g. WordPress < 6.9), the catalog is set to an empty array.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
@@ -418,7 +420,7 @@ class AbilityStrapTool extends AbstractTool
 	/**
 	 * Extracts top-level parameter names from a JSON Schema.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed>|null $schema The JSON Schema from the ability.
 	 *
@@ -439,7 +441,7 @@ class AbilityStrapTool extends AbstractTool
 	 * Returns the annotations array if present and non-empty, null otherwise.
 	 * When null is returned, the caller should omit the annotations key entirely.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $ability_name The original ability name used as catalog key.
 	 *
@@ -470,7 +472,7 @@ class AbilityStrapTool extends AbstractTool
 	 * isAutoConfirm() method returns true, meaning all tool confirmations
 	 * should be bypassed.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return bool
 	 */

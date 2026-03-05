@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
  * Stores contextual information about a session including timestamps,
  * working directory, and custom key-value pairs for extensibility.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SessionMetadata implements SessionMetadataInterface
 {

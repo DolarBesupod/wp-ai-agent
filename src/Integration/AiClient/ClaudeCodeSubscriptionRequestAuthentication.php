@@ -14,7 +14,7 @@ use WordPress\AiClient\Providers\Http\DTO\Request;
  * messages endpoint with additional identity/beta headers expected by the
  * Claude Code transport contract.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ClaudeCodeSubscriptionRequestAuthentication extends ApiKeyRequestAuthentication
 {

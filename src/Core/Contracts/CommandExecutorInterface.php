@@ -15,7 +15,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
  * arguments, performing any necessary expansions (argument substitution,
  * file references, bash commands), and returning the result.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface CommandExecutorInterface
 {
@@ -26,7 +26,7 @@ interface CommandExecutorInterface
 	 * placeholders, expanding file references, and executing inline
 	 * bash commands as needed.
 	 *
-	 * @param Command      $command   The command to execute.
+	 * @param Command $command The command to execute.
 	 * @param ArgumentList $arguments The arguments passed to the command.
 	 *
 	 * @return CommandExecutionResult The execution result.

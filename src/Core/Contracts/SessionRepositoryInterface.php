@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
  * The session repository handles saving and loading sessions to/from storage.
  * Implementations may use files, databases, or other storage mechanisms.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface SessionRepositoryInterface
 {

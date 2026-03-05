@@ -19,7 +19,7 @@ use Automattic\WpAiAgent\Core\Skill\SkillConfig;
  * - Index:     wp_ai_agent_skills
  * - Per skill: wp_ai_agent_skill_{name}
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpOptionsSkillRepository implements SkillRepositoryInterface
 {
@@ -44,7 +44,7 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function save(Skill $skill): void
 	{
@@ -79,7 +79,7 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 	 *
 	 * @throws SkillNotFoundException If the skill does not exist.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(string $name): Skill
 	{
@@ -106,7 +106,7 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 	 *
 	 * @return bool True if the skill existed and was deleted, false if it did not exist.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function delete(string $name): bool
 	{
@@ -133,7 +133,7 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 	 *
 	 * @return string[] An array of skill names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function listNames(): array
 	{
@@ -159,7 +159,7 @@ final class WpOptionsSkillRepository implements SkillRepositoryInterface
 	 *
 	 * @return bool True if the skill exists.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function exists(string $name): bool
 	{

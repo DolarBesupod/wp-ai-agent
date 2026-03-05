@@ -1,6 +1,6 @@
 # WP AI Agent
 
-> **This is a research project, not polished for production use.** It serves as a testing ground for three WordPress ecosystem packages being developed in parallel: the [PHP AI Client](https://github.com/WordPress/php-ai-client) (provider-agnostic LLM SDK), the [PHP MCP Client](https://github.com/galatanovidiu/php-mcp-client) (which will move into [WordPress/mcp-adapter](https://github.com/WordPress/mcp-adapter)), and the WordPress Abilities API. The agent ties all three together into a real, end-to-end use case that exercises them under realistic conditions.
+> **This is a research project, not polished for production use.** It serves as a testing ground for three WordPress ecosystem packages being developed in parallel: the [PHP AI Client](https://github.com/WordPress/php-ai-client) (provider-agnostic LLM SDK), the [PHP MCP Client](https://github.com/Automattic/php-mcp-client), and the WordPress Abilities API. The agent ties all three together into a real, end-to-end use case that exercises them under realistic conditions.
 
 A WordPress plugin that exposes an AI agent through WP-CLI. You talk to it via `wp agent chat` (interactive REPL) or `wp agent ask` (one-shot). Under the hood it runs a ReAct loop (Think → Act → Observe) — the LLM reasons about your request, picks a tool, executes it, observes the result, and repeats until the task is done. Tools range from file system operations (read, write, glob, grep, bash) to WordPress Abilities (any action a plugin registers) and external MCP servers.
 
@@ -14,7 +14,7 @@ The AI communication is handled entirely by the WordPress 7.0 core-bundled [PHP 
 |---------|------|
 | [wordpress/php-ai-client](https://github.com/WordPress/php-ai-client) | Provider-agnostic PHP AI SDK bundled in WordPress 7.0. Powers all LLM communication (Anthropic, OpenAI, Google). |
 | [wordpress/php-mcp-schema](https://github.com/WordPress/php-mcp-schema) | PHP DTOs and types mirroring the official MCP TypeScript schema. Used for type-safe MCP message handling. |
-| [galatanovidiu/php-mcp-client](https://github.com/galatanovidiu/php-mcp-client) | MCP client implementation supporting stdio and HTTP transports. Connects the agent to external MCP servers. |
+| [automattic/php-mcp-client](https://github.com/Automattic/php-mcp-client) | MCP client implementation supporting stdio and HTTP transports. Connects the agent to external MCP servers. |
 
 ## Features
 
@@ -30,7 +30,7 @@ The AI communication is handled entirely by the WordPress 7.0 core-bundled [PHP 
 
 ## Requirements
 
-- PHP 8.4+
+- PHP 8.1+
 - WordPress 7.0+ (currently in beta — requires the core-bundled AI client)
 - WP-CLI 2.0+
 - API credentials for at least one AI provider (Anthropic, OpenAI, or Google)
@@ -194,7 +194,7 @@ WordPress and WP-CLI implementations:
 - **AiClient**: Wraps `WordPress\AiClient` for provider-agnostic LLM communication
 - **Ability**: STRAP facade (`AbilityStrapTool`) bridging WordPress Abilities to the tool system
 - **User**: User context management (`UserContextTool`) for ability permissions
-- **MCP**: Client manager and tool adapter via `galatanovidiu/php-mcp-client`
+- **MCP**: Client manager and tool adapter via `automattic/php-mcp-client`
 - **Skill**: Custom skill loader, registry, and tool adapter
 - **WpCli**: CLI commands (`chat`, `ask`, `init`, `config`, `auth`, `skills`), bootstrap, and handlers
 - **Configuration**: Reads `WP_AI_AGENT_*` constants from `wp-config.php`
@@ -255,4 +255,4 @@ wp-ai-agent/
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+GPL-2.0-or-later — see [LICENSE](LICENSE) for details.

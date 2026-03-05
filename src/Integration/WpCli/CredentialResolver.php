@@ -20,7 +20,7 @@ use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
  * 4. Database credential via CredentialRepositoryInterface
  * 5. Throws ConfigurationException if none found
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class CredentialResolver
 {
@@ -73,13 +73,13 @@ final class CredentialResolver
 	 * Creates a new CredentialResolver instance.
 	 *
 	 * @param CredentialRepositoryInterface $repository       The credential repository.
-	 * @param callable|null                $env_getter        Optional env getter for testing. Defaults to getenv().
-	 * @param callable|null                $constant_checker  Optional constant checker for testing.
+	 * @param callable|null $env_getter Optional env getter for testing. Defaults to getenv().
+	 * @param callable|null $constant_checker Optional constant checker for testing.
 	 *                                                        Receives a constant name and returns its value
 	 *                                                        (string) or false if not defined. Defaults to
 	 *                                                        checking via defined()/constant().
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		CredentialRepositoryInterface $repository,
@@ -110,7 +110,7 @@ final class CredentialResolver
 	 *
 	 * @throws ConfigurationException If no credential is found from any source.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function resolve(string $provider): ResolvedCredential
 	{
@@ -187,7 +187,7 @@ final class CredentialResolver
 	 *
 	 * @return array<int, array{provider: string, auth_mode: string, source: string, available: bool}>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getStatus(): array
 	{

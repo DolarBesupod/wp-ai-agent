@@ -17,7 +17,7 @@ use Automattic\WpAiAgent\Core\Skill\SkillConfig;
  * It extracts the skill name from the filename and configuration from the
  * YAML frontmatter.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SkillLoader implements SkillLoaderInterface
 {
@@ -33,7 +33,7 @@ final class SkillLoader implements SkillLoaderInterface
 	 *
 	 * @param MarkdownParserInterface $markdown_parser The markdown parser.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(MarkdownParserInterface $markdown_parser)
 	{
@@ -53,7 +53,7 @@ final class SkillLoader implements SkillLoaderInterface
 	 * @throws ParseException    If the file cannot be parsed.
 	 * @throws \RuntimeException If the file cannot be read.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(string $filepath): Skill
 	{
@@ -87,7 +87,7 @@ final class SkillLoader implements SkillLoaderInterface
 	 *
 	 * @throws ParseException If the content cannot be parsed.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function loadFromMarkdown(string $name, string $markdown): Skill
 	{
@@ -111,7 +111,7 @@ final class SkillLoader implements SkillLoaderInterface
 	 * Extracts the description from frontmatter, falling back to a default.
 	 *
 	 * @param array<string, mixed> $frontmatter The frontmatter data.
-	 * @param string               $name        The skill name used for the fallback default.
+	 * @param string $name The skill name used for the fallback default.
 	 *
 	 * @return string The description.
 	 */

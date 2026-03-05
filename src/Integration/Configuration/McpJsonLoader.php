@@ -16,7 +16,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * Environment variables using ${VAR_NAME} syntax are expanded.
  * Returns empty array if the file does not exist.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class McpJsonLoader
 {
@@ -42,7 +42,7 @@ final class McpJsonLoader
 	 *
 	 * @param EnvConfigurationLoader|null $env_loader Optional environment loader for testing.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(?EnvConfigurationLoader $env_loader = null)
 	{
@@ -58,7 +58,7 @@ final class McpJsonLoader
 	 *
 	 * @throws ConfigurationException If the JSON file is invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(?string $working_dir = null): array
 	{
@@ -88,7 +88,7 @@ final class McpJsonLoader
 	 *
 	 * @return string The full path to the mcp.json file.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMcpPath(string $working_dir): string
 	{
@@ -106,7 +106,7 @@ final class McpJsonLoader
 	 *
 	 * @return bool True if the file exists, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function fileExists(?string $working_dir = null): bool
 	{
@@ -127,7 +127,7 @@ final class McpJsonLoader
 	 *
 	 * @throws ConfigurationException If the file cannot be parsed or is invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function loadJsonFile(string $path): array
 	{
@@ -169,7 +169,7 @@ final class McpJsonLoader
 	 *
 	 * @return array<McpServerConfiguration> Array of server configurations.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function parseServers(array $config): array
 	{

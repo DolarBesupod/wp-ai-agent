@@ -19,7 +19,7 @@ use WordPress\AiClient\Providers\Http\DTO\Request;
  * 2. Adds the `Authorization: Bearer` header with the OAuth access token.
  * 3. Adds the `ChatGPT-Account-ID` header extracted from the JWT payload.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class OpenAiSubscriptionRequestAuthentication extends ApiKeyRequestAuthentication
 {
@@ -51,7 +51,7 @@ final class OpenAiSubscriptionRequestAuthentication extends ApiKeyRequestAuthent
 	 * subscription token as a Bearer header, and adds the ChatGPT
 	 * account ID header extracted from the JWT payload.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function authenticateRequest(Request $request): Request
 	{
@@ -84,7 +84,7 @@ final class OpenAiSubscriptionRequestAuthentication extends ApiKeyRequestAuthent
 	 * The Codex CLI OAuth access token is a JWT whose payload contains:
 	 * `{"https://api.openai.com/auth": {"chatgpt_account_id": "..."}}`
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string|null The account ID, or null if extraction fails.
 	 */

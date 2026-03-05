@@ -19,7 +19,7 @@ use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
  * - Index:          wp_ai_agent_credentials
  * - Per credential: wp_ai_agent_credential_{provider}
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpOptionsCredentialRepository implements CredentialRepositoryInterface
 {
@@ -42,7 +42,7 @@ final class WpOptionsCredentialRepository implements CredentialRepositoryInterfa
 	 *
 	 * @throws CredentialNotFoundException If no credential exists for the provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getCredential(string $provider): Credential
 	{
@@ -73,16 +73,16 @@ final class WpOptionsCredentialRepository implements CredentialRepositoryInterfa
 	 * both `created_at` and `updated_at` are set to the current time. On
 	 * overwrite, only `updated_at` is refreshed while `created_at` is preserved.
 	 *
-	 * @param string               $provider  The provider name.
+	 * @param string $provider The provider name.
 	 * @param AuthMode             $auth_mode The authentication mode.
-	 * @param string               $secret    The secret value.
+	 * @param string $secret The secret value.
 	 * @param array<string, mixed> $meta      Optional metadata.
 	 *
 	 * @return void
 	 *
 	 * @throws \InvalidArgumentException If the secret or provider is empty.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function setCredential(string $provider, AuthMode $auth_mode, string $secret, array $meta = []): void
 	{
@@ -140,7 +140,7 @@ final class WpOptionsCredentialRepository implements CredentialRepositoryInterfa
 	 *
 	 * @return bool True if the credential existed and was deleted, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function deleteCredential(string $provider): bool
 	{
@@ -167,7 +167,7 @@ final class WpOptionsCredentialRepository implements CredentialRepositoryInterfa
 	 *
 	 * @return bool True if a credential is stored for the provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function hasCredential(string $provider): bool
 	{
@@ -181,7 +181,7 @@ final class WpOptionsCredentialRepository implements CredentialRepositoryInterfa
 	 *
 	 * @return array<int, string> An array of provider names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function listProviders(): array
 	{

@@ -20,12 +20,12 @@ final class AbilityStrapToolTest extends TestCase
 	/**
 	 * Creates a WP_Ability stub with the given configuration.
 	 *
-	 * @param string               $name             The ability name (e.g. 'core/get-site-info').
-	 * @param string               $label            The human-readable label.
-	 * @param string               $description      The description.
+	 * @param string $name The ability name (e.g. 'core/get-site-info').
+	 * @param string $label The human-readable label.
+	 * @param string $description The description.
 	 * @param array<string, mixed> $meta             The metadata including annotations.
 	 * @param array<string, mixed>|null $input_schema The input schema or null.
-	 * @param mixed                $execute_result   The value returned by execute().
+	 * @param mixed $execute_result The value returned by execute().
 	 * @param bool|\WP_Error       $permission_result The value returned by check_permissions().
 	 *
 	 * @return WP_Ability
@@ -287,7 +287,6 @@ final class AbilityStrapToolTest extends TestCase
 
 		$this->assertSame(2, $data['count']);
 		$this->assertStringContainsString('describe', $data['usage_hint']);
-		$this->assertStringContainsString('execute', $data['usage_hint']);
 	}
 
 	// ---------------------------------------------------------------

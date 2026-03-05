@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\Message;
  * Adds session-specific metadata to messages such as when the message
  * was added to the session and any session-specific attributes.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SessionMessage
 {
@@ -30,8 +30,8 @@ final class SessionMessage
 	/**
 	 * Creates a new SessionMessage instance.
 	 *
-	 * @param Message                 $message    The wrapped message.
-	 * @param DateTimeImmutable|null  $added_at   When the message was added.
+	 * @param Message $message The wrapped message.
+	 * @param DateTimeImmutable|null $added_at When the message was added.
 	 * @param array<string, mixed>    $attributes Session-specific attributes.
 	 */
 	public function __construct(

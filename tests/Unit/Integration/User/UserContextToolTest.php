@@ -45,10 +45,10 @@ final class UserContextToolTest extends TestCase
 	/**
 	 * Creates a sample user array for testing.
 	 *
-	 * @param int      $id           The user ID.
-	 * @param string   $login        The user login.
+	 * @param int $id The user ID.
+	 * @param string $login The user login.
 	 * @param string   $display_name The display name.
-	 * @param string   $email        The user email.
+	 * @param string $email The user email.
 	 * @param string[] $roles        The user roles.
 	 *
 	 * @return array{id: int, login: string, display_name: string, email: string, roles: string[]}

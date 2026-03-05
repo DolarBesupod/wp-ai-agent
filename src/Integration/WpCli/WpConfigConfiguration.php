@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * constants or environment variables. No WordPress functions are called.
  * Use `wp agent config set` (T1.3) to write constants to wp-config.php.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpConfigConfiguration implements ConfigurationInterface
 {
@@ -53,7 +53,7 @@ final class WpConfigConfiguration implements ConfigurationInterface
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getApiKey(): string
 	{
@@ -71,7 +71,7 @@ final class WpConfigConfiguration implements ConfigurationInterface
 	 *
 	 * @return string The model identifier (e.g., "claude-sonnet-4-6").
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getModel(): string
 	{
@@ -83,7 +83,7 @@ final class WpConfigConfiguration implements ConfigurationInterface
 	 *
 	 * @return int
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMaxTokens(): int
 	{
@@ -95,7 +95,7 @@ final class WpConfigConfiguration implements ConfigurationInterface
 	 *
 	 * @return float A value between 0.0 and 1.0.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getTemperature(): float
 	{
@@ -115,11 +115,12 @@ You can inspect and manage plugins, themes, users, options, posts, and the datab
 - Always prefer non-destructive reads before making any changes.
 - Use `wp help` or `wp <command> --help` to discover available commands and their options.
 - When running WP-CLI commands, use the site's current working directory.
-- Before making a change (activating a plugin, updating an option, etc.), briefly explain what you are about to do and why.
+- Before making a change, briefly explain what you are about to do and why.
 - Be concise. Format output as markdown tables when listing items.
 
 ## Site info
-You do not have site details pre-loaded. Use the `wp_site_overview` skill or run `wp` commands to discover the current installation when needed.
+You do not have site details pre-loaded. Use the `wp_site_overview` skill or
+run `wp` commands to discover the current installation when needed.
 PROMPT;
 
 	/**
@@ -130,7 +131,7 @@ PROMPT;
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSystemPrompt(): string
 	{
@@ -144,7 +145,7 @@ PROMPT;
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isDebugEnabled(): bool
 	{
@@ -156,7 +157,7 @@ PROMPT;
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isStreamingEnabled(): bool
 	{
@@ -168,7 +169,7 @@ PROMPT;
 	 *
 	 * @return int
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMaxIterations(): int
 	{
@@ -183,7 +184,7 @@ PROMPT;
 	 *
 	 * @return array<int, string> List of tool names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getBypassedTools(): array
 	{
@@ -204,7 +205,7 @@ PROMPT;
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAutoConfirm(): bool
 	{
@@ -220,7 +221,7 @@ PROMPT;
 	 *
 	 * @return string Always returns an empty string.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSessionStoragePath(): string
 	{
@@ -238,7 +239,7 @@ PROMPT;
 	 *
 	 * @return mixed
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function get(string $key, mixed $default = null): mixed
 	{
@@ -267,7 +268,7 @@ PROMPT;
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function has(string $key): bool
 	{
@@ -279,7 +280,7 @@ PROMPT;
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function toArray(): array
 	{
@@ -308,7 +309,7 @@ PROMPT;
 	 *
 	 * @throws ConfigurationException Always thrown; this class is read-only.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function set(string $key, mixed $value): void
 	{
@@ -324,7 +325,7 @@ PROMPT;
 	 *
 	 * @throws ConfigurationException Always thrown; this class is read-only.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function merge(array $config): void
 	{
@@ -340,7 +341,7 @@ PROMPT;
 	 *
 	 * @throws ConfigurationException Always thrown; this class is read-only.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function loadFromFile(string $path): void
 	{

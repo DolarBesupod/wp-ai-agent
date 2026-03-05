@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * Supports ${ENV_VAR} syntax for environment variable resolution and
  * ~ (tilde) expansion for home directory paths.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class EnvConfigurationLoader
 {
@@ -38,7 +38,7 @@ final class EnvConfigurationLoader
 	/**
 	 * Creates a new environment configuration loader.
 	 *
-	 * @param bool          $strict_mode  Whether to throw on missing environment variables.
+	 * @param bool $strict_mode Whether to throw on missing environment variables.
 	 * @param callable|null $env_provider Custom environment variable provider (for testing).
 	 */
 	public function __construct(bool $strict_mode = true, ?callable $env_provider = null)

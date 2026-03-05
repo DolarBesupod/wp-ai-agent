@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\ValueObjects;
  * Contains the parsed YAML frontmatter (as an associative array) and
  * the remaining body content (as a string).
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ParsedMarkdown
 {
@@ -32,7 +32,7 @@ final class ParsedMarkdown
 	 * Creates a new ParsedMarkdown instance.
 	 *
 	 * @param array<string, mixed> $frontmatter The parsed YAML frontmatter data.
-	 * @param string               $body        The body content after the frontmatter.
+	 * @param string $body The body content after the frontmatter.
 	 */
 	public function __construct(array $frontmatter, string $body)
 	{

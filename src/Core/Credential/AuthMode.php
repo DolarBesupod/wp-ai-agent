@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\Credential;
 /**
  * Backed string enum representing supported authentication modes.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 enum AuthMode: string
 {
@@ -25,7 +25,7 @@ enum AuthMode: string
 	 *
 	 * @throws \ValueError If the value does not match any case.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function fromString(string $value): self
 	{

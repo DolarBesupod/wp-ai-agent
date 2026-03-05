@@ -16,7 +16,7 @@ use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
  * - `wp agent auth delete --provider=<provider>`                — removes a credential.
  * - `wp agent auth status`                                      — shows table of all credentials.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpCliAuthCommand
 {
@@ -71,12 +71,12 @@ final class WpCliAuthCommand
 	 * concrete implementations are created automatically.
 	 *
 	 * @param WpOptionsCredentialRepository|null $repository      The credential repository.
-	 * @param CredentialResolver|null            $resolver        The credential resolver.
+	 * @param CredentialResolver|null $resolver The credential resolver.
 	 * @param callable|null                      $prompt_callable Callable for prompting secret input.
 	 *                                                            Signature: fn(string $message): string.
 	 *                                                            Defaults to STDIN with hidden echo.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		?WpOptionsCredentialRepository $repository = null,
@@ -129,7 +129,7 @@ final class WpCliAuthCommand
 	 *
 	 * @subcommand set
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments (--provider, --mode).
@@ -206,7 +206,7 @@ final class WpCliAuthCommand
 	 *
 	 * @subcommand get
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments (--provider).
@@ -257,7 +257,7 @@ final class WpCliAuthCommand
 	 *
 	 * @subcommand delete
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments (--provider).
@@ -294,7 +294,7 @@ final class WpCliAuthCommand
 	 *
 	 * @subcommand status
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -345,7 +345,7 @@ final class WpCliAuthCommand
 	 *
 	 * @return string|null The provider name, or null on failure.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function extractProvider(array $assoc_args): ?string
 	{
@@ -371,7 +371,7 @@ final class WpCliAuthCommand
 	 *
 	 * @return string The masked secret.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function maskSecret(string $secret): string
 	{
@@ -390,7 +390,7 @@ final class WpCliAuthCommand
 	 *
 	 * @return string|null Error message if invalid, null if valid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function validateSubscriptionSecret(string $secret, string $provider): ?string
 	{
@@ -482,7 +482,7 @@ final class WpCliAuthCommand
 	/**
 	 * Resolves the interactive prompt label for the provided auth input.
 	 *
-	 * @param string   $provider  Provider ID from --provider.
+	 * @param string $provider Provider ID from --provider.
 	 * @param AuthMode $auth_mode Parsed authentication mode.
 	 *
 	 * @return string

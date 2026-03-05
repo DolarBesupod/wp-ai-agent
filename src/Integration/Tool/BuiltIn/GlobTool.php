@@ -16,7 +16,7 @@ use FilesystemIterator;
  * Supports glob patterns including ** for recursive directory matching.
  * Returns a list of matching file paths sorted by modification time.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class GlobTool extends AbstractTool
 {

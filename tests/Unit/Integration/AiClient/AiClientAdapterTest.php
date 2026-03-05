@@ -75,10 +75,10 @@ final class AiClientAdapterTest extends TestCase
 	/**
 	 * Creates an adapter with the mock transporter for testing.
 	 *
-	 * @param string   $api_key     The API key.
+	 * @param string $api_key The API key.
 	 * @param AuthMode $auth_mode   Authentication mode.
-	 * @param string   $model       The model to use.
-	 * @param int      $max_tokens  Maximum tokens.
+	 * @param string $model The model to use.
+	 * @param int $max_tokens Maximum tokens.
 	 * @param string   $provider_id The provider identifier.
 	 *
 	 * @return AiClientAdapter

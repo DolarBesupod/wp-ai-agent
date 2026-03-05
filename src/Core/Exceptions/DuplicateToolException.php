@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when registering a tool with a duplicate name.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class DuplicateToolException extends AgentException
 {

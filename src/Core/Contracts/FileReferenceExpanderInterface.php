@@ -16,7 +16,7 @@ use RuntimeException;
  *
  * When expanded, the @path references are replaced with the actual file contents.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface FileReferenceExpanderInterface
 {

@@ -11,7 +11,7 @@ use InvalidArgumentException;
  *
  * Tool names must be lowercase with underscores, e.g., "read_file", "execute_bash".
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolName
 {
@@ -35,7 +35,8 @@ final class ToolName
 		if (!preg_match('/^[a-z][a-z0-9_]*$/', $trimmed)) {
 			throw new InvalidArgumentException(
 				sprintf(
-					'Tool name "%s" is invalid. Names must start with a lowercase letter and contain only lowercase letters, numbers, and underscores.',
+					'Tool name "%s" is invalid. Names must start with a lowercase letter'
+					. ' and contain only lowercase letters, numbers, and underscores.',
 					$value
 				)
 			);

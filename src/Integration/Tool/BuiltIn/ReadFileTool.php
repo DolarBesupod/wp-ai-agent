@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * Detects binary files and prevents reading them as text.
  * Returns line numbers with content for easy reference.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ReadFileTool extends AbstractTool
 {
@@ -130,8 +130,8 @@ class ReadFileTool extends AbstractTool
 	 * Reads the file content with offset and limit.
 	 *
 	 * @param string $file_path The file path.
-	 * @param int    $offset    Starting line number (1-based).
-	 * @param int    $limit     Number of lines to read.
+	 * @param int $offset Starting line number (1-based).
+	 * @param int $limit Number of lines to read.
 	 *
 	 * @return ToolResult
 	 */
@@ -171,8 +171,8 @@ class ReadFileTool extends AbstractTool
 	 *
 	 * @param string $real_path    The resolved file path.
 	 * @param string $display_path The original path for display.
-	 * @param int    $offset       Starting line number (1-based).
-	 * @param int    $limit        Number of lines to read.
+	 * @param int $offset Starting line number (1-based).
+	 * @param int $limit Number of lines to read.
 	 *
 	 * @return ToolResult
 	 */

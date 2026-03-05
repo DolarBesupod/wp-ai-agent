@@ -246,8 +246,8 @@ class ConcreteTestTool extends AbstractTool
 	 * Exposes protected getArgument method for testing.
 	 *
 	 * @param array<string, mixed> $arguments The arguments.
-	 * @param string               $name      Argument name.
-	 * @param mixed                $default   Default value.
+	 * @param string $name Argument name.
+	 * @param mixed $default Default value.
 	 *
 	 * @return mixed
 	 */
@@ -260,8 +260,8 @@ class ConcreteTestTool extends AbstractTool
 	 * Exposes protected getStringArgument method for testing.
 	 *
 	 * @param array<string, mixed> $arguments The arguments.
-	 * @param string               $name      Argument name.
-	 * @param string               $default   Default value.
+	 * @param string $name Argument name.
+	 * @param string $default Default value.
 	 *
 	 * @return string
 	 */
@@ -274,8 +274,8 @@ class ConcreteTestTool extends AbstractTool
 	 * Exposes protected getIntArgument method for testing.
 	 *
 	 * @param array<string, mixed> $arguments The arguments.
-	 * @param string               $name      Argument name.
-	 * @param int                  $default   Default value.
+	 * @param string $name Argument name.
+	 * @param int $default Default value.
 	 *
 	 * @return int
 	 */
@@ -288,8 +288,8 @@ class ConcreteTestTool extends AbstractTool
 	 * Exposes protected getBoolArgument method for testing.
 	 *
 	 * @param array<string, mixed> $arguments The arguments.
-	 * @param string               $name      Argument name.
-	 * @param bool                 $default   Default value.
+	 * @param string $name Argument name.
+	 * @param bool $default Default value.
 	 *
 	 * @return bool
 	 */
@@ -302,8 +302,8 @@ class ConcreteTestTool extends AbstractTool
 	 * Exposes protected getArrayArgument method for testing.
 	 *
 	 * @param array<string, mixed> $arguments The arguments.
-	 * @param string               $name      Argument name.
-	 * @param array<mixed>         $default   Default value.
+	 * @param string $name Argument name.
+	 * @param array<mixed> $default Default value.
 	 *
 	 * @return array<mixed>
 	 */

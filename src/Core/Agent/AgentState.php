@@ -16,7 +16,7 @@ namespace Automattic\WpAiAgent\Core\Agent;
  * - MAX_TURNS_REACHED: Loop stopped due to iteration limit
  * - ERROR: An error occurred during execution
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 enum AgentState: string
 {

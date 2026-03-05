@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
  * prompt. Supports bypass lists for tools that should execute without prompting,
  * and an auto-confirm mode for non-interactive or automated scenarios.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 {
@@ -35,9 +35,9 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 * Creates a new WpCliConfirmationHandler.
 	 *
 	 * @param array<int, string> $initial_bypasses Tool names that bypass confirmation.
-	 * @param bool               $auto_confirm     Whether to auto-confirm all executions.
+	 * @param bool $auto_confirm Whether to auto-confirm all executions.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(array $initial_bypasses = [], bool $auto_confirm = false)
 	{
@@ -57,7 +57,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return bool True if the execution is approved, false if denied.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function confirm(string $tool_name, array $arguments): bool
 	{
@@ -91,7 +91,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return string The confirmation message (without trailing "?").
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function buildConfirmationMessage(string $tool_name, array $arguments): string
 	{
@@ -118,7 +118,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return bool True if confirmation should be bypassed.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function shouldBypass(string $tool_name): bool
 	{
@@ -135,7 +135,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function addBypass(string $tool_name): void
 	{
@@ -151,7 +151,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function removeBypass(string $tool_name): void
 	{
@@ -165,7 +165,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return array<int, string>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getBypasses(): array
 	{
@@ -177,7 +177,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function clearBypasses(): void
 	{
@@ -194,7 +194,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function setAutoConfirm(bool $auto_confirm): void
 	{
@@ -206,7 +206,7 @@ class WpCliConfirmationHandler implements ConfirmationHandlerInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isAutoConfirm(): bool
 	{

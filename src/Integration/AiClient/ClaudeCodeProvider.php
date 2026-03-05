@@ -16,7 +16,7 @@ use WordPress\AnthropicAiProvider\Provider\AnthropicProvider;
  * standard `anthropic` provider while reusing Anthropic model metadata and
  * transport behavior.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ClaudeCodeProvider extends AnthropicProvider
 {

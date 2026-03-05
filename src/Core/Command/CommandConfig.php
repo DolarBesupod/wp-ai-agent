@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\Command;
  * This class wraps the raw frontmatter array and provides type-safe
  * accessors for common fields used in command definitions.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class CommandConfig
 {
@@ -38,7 +38,7 @@ final class CommandConfig
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function fromFrontmatter(array $frontmatter): self
 	{
@@ -50,7 +50,7 @@ final class CommandConfig
 	 *
 	 * @return string|null The description value, or null if not set or invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getDescription(): ?string
 	{
@@ -67,7 +67,7 @@ final class CommandConfig
 	 *
 	 * @return string|null The argument hint, or null if not set or invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getArgumentHint(): ?string
 	{
@@ -81,7 +81,7 @@ final class CommandConfig
 	 *
 	 * @return array<int, string>|null List of allowed tool names, or null if not set.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAllowedTools(): ?array
 	{
@@ -99,7 +99,7 @@ final class CommandConfig
 	 *
 	 * @return string|null The model identifier, or null if not set or invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getModel(): ?string
 	{
@@ -116,7 +116,7 @@ final class CommandConfig
 	 *
 	 * @return mixed The value for the key, or the default if not found.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function get(string $key, mixed $default = null): mixed
 	{
@@ -130,7 +130,7 @@ final class CommandConfig
 	 *
 	 * @return bool True if the key exists.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function has(string $key): bool
 	{
@@ -142,7 +142,7 @@ final class CommandConfig
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function toArray(): array
 	{
@@ -154,7 +154,7 @@ final class CommandConfig
 	 *
 	 * @return bool True if no configuration data is present.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isEmpty(): bool
 	{

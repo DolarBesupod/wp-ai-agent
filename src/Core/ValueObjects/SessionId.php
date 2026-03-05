@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\ValueObjects;
 /**
  * Value object representing a session identifier.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SessionId
 {

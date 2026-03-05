@@ -14,7 +14,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  *
  * The loop continues until the model produces a final response without tool calls.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface AgentLoopInterface
 {

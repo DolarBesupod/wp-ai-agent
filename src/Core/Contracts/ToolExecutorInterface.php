@@ -15,7 +15,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * - Executing the tool with provided arguments
  * - Handling execution errors gracefully
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface ToolExecutorInterface
 {

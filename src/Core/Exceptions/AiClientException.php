@@ -10,14 +10,14 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
  * This exception handles errors from the AI client layer,
  * complementing AiAdapterException for adapter-specific issues.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class AiClientException extends AgentException
 {
 	/**
 	 * Creates an exception for client initialization failures.
 	 *
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -67,7 +67,7 @@ class AiClientException extends AgentException
 	/**
 	 * Creates an exception for streaming errors.
 	 *
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -85,7 +85,7 @@ class AiClientException extends AgentException
 	/**
 	 * Creates an exception for message formatting errors.
 	 *
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -104,7 +104,7 @@ class AiClientException extends AgentException
 	 * Creates an exception for tool conversion errors.
 	 *
 	 * @param string          $tool_name The tool that failed conversion.
-	 * @param string          $reason    The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous  Optional previous exception.
 	 *
 	 * @return self
@@ -125,7 +125,7 @@ class AiClientException extends AgentException
 	/**
 	 * Creates an exception for unsupported provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $provider_id The unsupported provider identifier.
 	 *
@@ -166,7 +166,7 @@ class AiClientException extends AgentException
 	/**
 	 * Creates an exception for an empty AI response body.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return self
 	 */
@@ -183,7 +183,7 @@ class AiClientException extends AgentException
 	/**
 	 * Creates an exception for a missing SSE event type in the response.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $event_type The expected SSE event type that was not found.
 	 *

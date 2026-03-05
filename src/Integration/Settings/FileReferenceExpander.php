@@ -16,7 +16,7 @@ use RuntimeException;
  * - @~/path/from/home.md - Relative to user home directory
  * - @/absolute/path.md - Absolute path
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class FileReferenceExpander implements FileReferenceExpanderInterface
 {
@@ -46,7 +46,7 @@ final class FileReferenceExpander implements FileReferenceExpanderInterface
 	 *
 	 * @param string|null $user_home The user home directory path. If null, uses HOME environment variable.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(?string $user_home = null)
 	{
@@ -67,7 +67,7 @@ final class FileReferenceExpander implements FileReferenceExpanderInterface
 	 * @throws RuntimeException If a referenced file is not found or if a
 	 *                          circular reference is detected.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function expand(string $content, string $base_path): string
 	{
@@ -77,8 +77,8 @@ final class FileReferenceExpander implements FileReferenceExpanderInterface
 	/**
 	 * Expands file references while tracking visited files to detect circular references.
 	 *
-	 * @param string        $content      The content containing @file references.
-	 * @param string        $base_path    The base path for resolving relative references.
+	 * @param string $content The content containing @file references.
+	 * @param string $base_path The base path for resolving relative references.
 	 * @param array<string> $visited_files Array of already visited file paths (normalized).
 	 *
 	 * @return string The content with file references replaced by file contents.

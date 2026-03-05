@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\Session\Session;
  * Handles the transformation of Session objects to JSON strings and back,
  * providing proper error handling for malformed data.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class JsonSessionSerializer
 {

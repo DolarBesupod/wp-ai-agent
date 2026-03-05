@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  * The frontmatter is expected to be enclosed between `---` delimiters
  * at the start of the content.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class MarkdownParser implements MarkdownParserInterface
 {

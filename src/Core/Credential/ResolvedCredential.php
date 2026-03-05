@@ -10,18 +10,18 @@ namespace Automattic\WpAiAgent\Core\Credential;
  * Contains the resolved secret, its authentication mode, and the source
  * from which it was resolved (constant, environment variable, or database).
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ResolvedCredential
 {
 	/**
 	 * Creates a new ResolvedCredential instance.
 	 *
-	 * @param string   $secret    The resolved secret value.
+	 * @param string $secret The resolved secret value.
 	 * @param AuthMode $auth_mode The authentication mode.
-	 * @param string   $source    The resolution source: 'constant', 'env', or 'db'.
+	 * @param string $source The resolution source: 'constant', 'env', or 'db'.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		private readonly string $secret,
@@ -35,7 +35,7 @@ final class ResolvedCredential
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSecret(): string
 	{
@@ -47,7 +47,7 @@ final class ResolvedCredential
 	 *
 	 * @return AuthMode
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAuthMode(): AuthMode
 	{
@@ -61,7 +61,7 @@ final class ResolvedCredential
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSource(): string
 	{

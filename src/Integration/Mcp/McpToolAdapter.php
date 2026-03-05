@@ -16,7 +16,7 @@ use Throwable;
  * tool calls via McpClient::callTool(). Tool names are prefixed with
  * mcp_{serverName}_ to avoid collisions with built-in tools.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class McpToolAdapter implements ToolInterface
 {
@@ -72,12 +72,12 @@ class McpToolAdapter implements ToolInterface
 	/**
 	 * Creates a new McpToolAdapter.
 	 *
-	 * @param McpClient           $client       The MCP client for tool execution.
-	 * @param string              $tool_name    The original MCP tool name.
-	 * @param string              $description  The tool description.
+	 * @param McpClient $client The MCP client for tool execution.
+	 * @param string $tool_name The original MCP tool name.
+	 * @param string $description The tool description.
 	 * @param array<string,mixed> $input_schema The JSON schema for tool input.
-	 * @param string              $server_name  The MCP server name (for prefixing).
-	 * @param float               $timeout      Optional timeout in seconds.
+	 * @param string $server_name The MCP server name (for prefixing).
+	 * @param float $timeout Optional timeout in seconds.
 	 */
 	public function __construct(
 		McpClient $client,

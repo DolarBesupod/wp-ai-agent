@@ -7,14 +7,14 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when AI adapter operations fail.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class AiAdapterException extends AgentException
 {
 	/**
 	 * Creates an exception for API request failures.
 	 *
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -31,7 +31,7 @@ class AiAdapterException extends AgentException
 	/**
 	 * Creates an exception for response parsing failures.
 	 *
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self

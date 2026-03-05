@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * This class implements the ConfigurationInterface and provides access to
  * configuration values resolved from multiple sources.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ResolvedConfiguration implements ConfigurationInterface
 {
@@ -29,7 +29,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @param array<string, mixed> $config The configuration data.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(array $config)
 	{
@@ -44,7 +44,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return mixed
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function get(string $key, mixed $default = null): mixed
 	{
@@ -59,7 +59,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function set(string $key, mixed $value): void
 	{
@@ -73,7 +73,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function has(string $key): bool
 	{
@@ -85,7 +85,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return string The model identifier (e.g., "claude-sonnet-4-20250514").
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getModel(): string
 	{
@@ -100,7 +100,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @throws ConfigurationException If API key is not set.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getApiKey(): string
 	{
@@ -118,7 +118,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return int
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMaxTokens(): int
 	{
@@ -131,7 +131,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return float A value between 0.0 and 1.0.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getTemperature(): float
 	{
@@ -144,7 +144,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSessionStoragePath(): string
 	{
@@ -157,7 +157,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSystemPrompt(): string
 	{
@@ -173,7 +173,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return int
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMaxIterations(): int
 	{
@@ -186,7 +186,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isDebugEnabled(): bool
 	{
@@ -198,7 +198,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isStreamingEnabled(): bool
 	{
@@ -212,7 +212,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return array<int, string> List of tool names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getBypassedTools(): array
 	{
@@ -232,7 +232,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAutoConfirm(): bool
 	{
@@ -244,7 +244,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function toArray(): array
 	{
@@ -260,7 +260,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @throws ConfigurationException If the file cannot be loaded.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function loadFromFile(string $path): void
 	{
@@ -276,7 +276,7 @@ final class ResolvedConfiguration implements ConfigurationInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function merge(array $config): void
 	{

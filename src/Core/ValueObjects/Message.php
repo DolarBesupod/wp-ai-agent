@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\ValueObjects;
 /**
  * Value object representing a message in a conversation.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class Message
 {
@@ -43,11 +43,12 @@ final class Message
 	/**
 	 * Creates a new Message instance.
 	 *
-	 * @param string                                                                        $role         The message role.
-	 * @param string                                                                        $content      The message content.
-	 * @param string|null                                                                   $tool_call_id Optional tool call ID.
-	 * @param string|null                                                                   $tool_name    Optional tool name.
-	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls   Optional tool calls.
+	 * @param string $role The message role.
+	 * @param string $content The message content.
+	 * @param string|null $tool_call_id Optional tool call ID.
+	 * @param string|null $tool_name Optional tool name.
+	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls
+	 *     Optional tool calls.
 	 */
 	public function __construct(
 		string $role,
@@ -85,8 +86,9 @@ final class Message
 	/**
 	 * Creates an assistant message.
 	 *
-	 * @param string                                                                        $content    The message content.
-	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls Optional tool calls.
+	 * @param string $content The message content.
+	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls
+	 *     Optional tool calls.
 	 *
 	 * @return self
 	 */

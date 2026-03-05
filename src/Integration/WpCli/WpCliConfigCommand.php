@@ -12,7 +12,7 @@ namespace Automattic\WpAiAgent\Integration\WpCli;
  * - `wp agent config get <key>` — print a single configuration value.
  * - `wp agent config set <key> <value>` — write a constant to wp-config.php.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class WpCliConfigCommand
 {
@@ -46,7 +46,7 @@ class WpCliConfigCommand
 	 *
 	 * @subcommand list
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -94,7 +94,7 @@ class WpCliConfigCommand
 	 *
 	 * @subcommand get
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments; $args[0] is the key.
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -138,7 +138,7 @@ class WpCliConfigCommand
 	 *
 	 * @subcommand set
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments; $args[0] is the key, $args[1] the value.
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -180,7 +180,7 @@ class WpCliConfigCommand
 	 *
 	 * @return string The constant's string value, or '(not set)'.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function readConstant(string $constant): string
 	{
@@ -207,7 +207,7 @@ class WpCliConfigCommand
 	 *
 	 * @return string The masked key, or `(not set)`.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function maskApiKey(string $value): string
 	{

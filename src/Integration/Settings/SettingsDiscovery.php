@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
  * .wp-ai-agent directories. Files discovered in the project directory override
  * files with the same name from the user directory.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SettingsDiscovery implements SettingsDiscoveryInterface
 {
@@ -42,7 +42,7 @@ final class SettingsDiscovery implements SettingsDiscoveryInterface
 	 * @param string      $project_root The project root directory path.
 	 * @param string|null $user_home    The user home directory path. If null, uses HOME environment variable.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(string $project_root, ?string $user_home = null)
 	{
@@ -62,7 +62,7 @@ final class SettingsDiscovery implements SettingsDiscoveryInterface
 	 *
 	 * @return array<string, string> Map of file name (without extension) to absolute file path.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function discover(string $type, string $extension = 'md'): array
 	{
@@ -90,7 +90,7 @@ final class SettingsDiscovery implements SettingsDiscoveryInterface
 	 *
 	 * @return string|null The absolute path to the project .wp-ai-agent directory, or null.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getProjectSettingsPath(): ?string
 	{
@@ -107,7 +107,7 @@ final class SettingsDiscovery implements SettingsDiscoveryInterface
 	 *
 	 * @return string The absolute path to the user .wp-ai-agent directory.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getUserSettingsPath(): string
 	{

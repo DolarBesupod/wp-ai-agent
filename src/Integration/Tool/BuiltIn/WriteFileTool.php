@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * Overwrites existing files with a warning in the output.
  * Validates that paths are not system-critical before writing.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class WriteFileTool extends AbstractTool
 {

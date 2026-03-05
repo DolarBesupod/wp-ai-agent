@@ -18,7 +18,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  *
  * This class is immutable - all modifications return a new instance.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class AgentContext
 {
@@ -47,15 +47,16 @@ final class AgentContext
 	/**
 	 * Creates a new AgentContext instance.
 	 *
-	 * @param SessionInterface                                                              $session              The conversation session.
-	 * @param AiAdapterInterface                                                            $ai_adapter           The AI adapter for API calls.
-	 * @param AgentState                                                                    $state                The current agent state.
-	 * @param int                                                                           $current_turn         The current turn number.
-	 * @param int                                                                           $max_turns            Maximum allowed turns.
-	 * @param string|null                                                                   $error_message        Optional error message.
-	 * @param \Throwable|null                                                               $error_exception      Optional exception.
-	 * @param array<int, array{tool_call_id: string, tool_name: string, result: ToolResult}> $pending_tool_results Pending tool results.
-	 * @param bool                                                                          $user_cancelled       Whether user cancelled.
+	 * @param SessionInterface $session The conversation session.
+	 * @param AiAdapterInterface $ai_adapter The AI adapter for API calls.
+	 * @param AgentState $state The current agent state.
+	 * @param int $current_turn The current turn number.
+	 * @param int $max_turns Maximum allowed turns.
+	 * @param string|null $error_message Optional error message.
+	 * @param \Throwable|null $error_exception Optional exception.
+	 * @param array<int, array{tool_call_id: string, tool_name: string, result: ToolResult}> $pending_tool_results
+	 *     Pending tool results.
+	 * @param bool $user_cancelled Whether user cancelled.
 	 */
 	public function __construct(
 		SessionInterface $session,
@@ -82,9 +83,9 @@ final class AgentContext
 	/**
 	 * Creates a new context for starting a loop execution.
 	 *
-	 * @param SessionInterface   $session    The conversation session.
+	 * @param SessionInterface $session The conversation session.
 	 * @param AiAdapterInterface $ai_adapter The AI adapter.
-	 * @param int                $max_turns  Maximum allowed turns.
+	 * @param int $max_turns Maximum allowed turns.
 	 *
 	 * @return self
 	 */
@@ -247,7 +248,7 @@ final class AgentContext
 	/**
 	 * Creates a new context with error information.
 	 *
-	 * @param string          $message   The error message.
+	 * @param string $message The error message.
 	 * @param \Throwable|null $exception Optional exception.
 	 *
 	 * @return self

@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * world. Each tool encapsulates a specific capability (file operations, shell
  * commands, web requests, etc.) and provides metadata for the AI model.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface ToolInterface
 {

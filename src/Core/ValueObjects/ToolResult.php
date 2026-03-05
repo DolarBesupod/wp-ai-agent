@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\ValueObjects;
 /**
  * Value object representing the result of a tool execution.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolResult
 {
@@ -32,8 +32,8 @@ final class ToolResult
 	 * Creates a new ToolResult instance.
 	 *
 	 * @param bool                 $success Whether the execution was successful.
-	 * @param string               $output  The output text from the tool.
-	 * @param string|null          $error   Optional error message.
+	 * @param string $output The output text from the tool.
+	 * @param string|null $error Optional error message.
 	 * @param array<string, mixed> $data    Optional structured data.
 	 */
 	public function __construct(

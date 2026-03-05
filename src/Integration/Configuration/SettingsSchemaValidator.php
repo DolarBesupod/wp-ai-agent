@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * Performs type checking and value constraints validation for the settings.json
  * configuration file.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SettingsSchemaValidator
 {
@@ -33,7 +33,7 @@ final class SettingsSchemaValidator
 	/**
 	 * Creates a new schema validator.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct()
 	{
@@ -48,7 +48,7 @@ final class SettingsSchemaValidator
 	 *
 	 * @throws ConfigurationException If validation fails.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function validate(array $config): void
 	{
@@ -60,7 +60,7 @@ final class SettingsSchemaValidator
 	 *
 	 * @return array<string, mixed> The schema definition.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSchema(): array
 	{
@@ -72,7 +72,7 @@ final class SettingsSchemaValidator
 	 *
 	 * @return array<string, mixed> The default values.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getDefaults(): array
 	{
@@ -84,7 +84,7 @@ final class SettingsSchemaValidator
 	 *
 	 * @param array<string, mixed> $object     The object to validate.
 	 * @param array<string, mixed> $properties The properties schema.
-	 * @param string               $path       The current property path.
+	 * @param string $path The current property path.
 	 *
 	 * @throws ConfigurationException If validation fails.
 	 */
@@ -102,9 +102,9 @@ final class SettingsSchemaValidator
 	/**
 	 * Validates a single property value against its schema.
 	 *
-	 * @param mixed                $value        The value to validate.
+	 * @param mixed $value The value to validate.
 	 * @param array<string, mixed> $property_def The property schema definition.
-	 * @param string               $path         The property path.
+	 * @param string $path The property path.
 	 *
 	 * @throws ConfigurationException If validation fails.
 	 */
@@ -132,9 +132,9 @@ final class SettingsSchemaValidator
 	/**
 	 * Validates the type of a value.
 	 *
-	 * @param mixed                $value        The value to check.
-	 * @param string               $expected     The expected type.
-	 * @param string               $path         The property path.
+	 * @param mixed $value The value to check.
+	 * @param string $expected The expected type.
+	 * @param string $path The property path.
 	 * @param array<string, mixed> $property_def The property definition.
 	 *
 	 * @throws ConfigurationException If type does not match.
@@ -178,9 +178,9 @@ final class SettingsSchemaValidator
 	/**
 	 * Validates integer constraints (minimum, maximum).
 	 *
-	 * @param int                  $value        The integer value.
+	 * @param int $value The integer value.
 	 * @param array<string, mixed> $property_def The property definition.
-	 * @param string               $path         The property path.
+	 * @param string $path The property path.
 	 *
 	 * @throws ConfigurationException If constraints are violated.
 	 */
@@ -204,9 +204,9 @@ final class SettingsSchemaValidator
 	/**
 	 * Validates array items against their schema.
 	 *
-	 * @param array<mixed>         $array        The array to validate.
+	 * @param array<mixed> $array The array to validate.
 	 * @param array<string, mixed> $property_def The property definition.
-	 * @param string               $path         The property path.
+	 * @param string $path The property path.
 	 *
 	 * @throws ConfigurationException If any item is invalid.
 	 */

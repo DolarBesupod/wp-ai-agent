@@ -16,7 +16,7 @@ namespace Automattic\WpAiAgent\Integration\WpCli;
  * - `wp agent init` — write configuration constants to wp-config.php.
  * - `wp agent run`  — deprecated alias for `wp agent chat`.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class WpCliCommand
 {
@@ -65,7 +65,7 @@ class WpCliCommand
 	 *
 	 * @subcommand chat
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments.
@@ -112,7 +112,7 @@ class WpCliCommand
 	 *     wp agent ask "Run a health check" --no-save
 	 *     wp agent ask "List all plugins" --user=admin --yolo
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments; $args[0] is the message.
 	 * @param array<string, string|bool> $assoc_args Named arguments.
@@ -148,7 +148,7 @@ class WpCliCommand
 	 *
 	 * @subcommand init
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments.
@@ -180,7 +180,7 @@ class WpCliCommand
 	 *
 	 * @subcommand run
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments.

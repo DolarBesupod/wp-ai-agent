@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\Skill\Skill;
  * allowing implementations to use file-based, database, or in-memory
  * storage without affecting core skill logic.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface SkillRepositoryInterface
 {
@@ -26,7 +26,7 @@ interface SkillRepositoryInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function save(Skill $skill): void;
 
@@ -39,7 +39,7 @@ interface SkillRepositoryInterface
 	 *
 	 * @throws \RuntimeException If the skill cannot be found or loaded.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(string $name): Skill;
 
@@ -50,7 +50,7 @@ interface SkillRepositoryInterface
 	 *
 	 * @return bool True if the skill was deleted, false if it did not exist.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function delete(string $name): bool;
 
@@ -59,7 +59,7 @@ interface SkillRepositoryInterface
 	 *
 	 * @return string[] An array of skill names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function listNames(): array;
 
@@ -70,7 +70,7 @@ interface SkillRepositoryInterface
 	 *
 	 * @return bool True if the skill exists.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function exists(string $name): bool;
 }

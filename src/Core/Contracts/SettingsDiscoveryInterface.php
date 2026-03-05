@@ -16,7 +16,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  * - Project: {project_root}/.wp-ai-agent/{type}/
  * - User: ~/.wp-ai-agent/{type}/
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface SettingsDiscoveryInterface
 {

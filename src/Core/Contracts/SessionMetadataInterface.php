@@ -11,7 +11,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  * last update time, working directory, and other contextual information that
  * persists across session resumption.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface SessionMetadataInterface
 {

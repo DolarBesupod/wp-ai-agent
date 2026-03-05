@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  * The configuration interface provides access to all agent settings including
  * API credentials, model parameters, tool settings, and session storage paths.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface ConfigurationInterface
 {
@@ -123,7 +123,7 @@ interface ConfigurationInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAutoConfirm(): bool;
 

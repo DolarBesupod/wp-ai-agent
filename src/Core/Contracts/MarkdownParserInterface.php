@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
  * markdown content and returns a structured result containing both the
  * parsed frontmatter data and the remaining body content.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface MarkdownParserInterface
 {

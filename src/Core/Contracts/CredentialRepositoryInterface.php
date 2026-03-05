@@ -15,7 +15,7 @@ use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
  * allowing implementations to use WordPress options, database tables, or
  * in-memory storage without affecting core credential logic.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface CredentialRepositoryInterface
 {
@@ -28,7 +28,7 @@ interface CredentialRepositoryInterface
 	 *
 	 * @throws CredentialNotFoundException If no credential exists for the provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getCredential(string $provider): Credential;
 
@@ -39,14 +39,14 @@ interface CredentialRepositoryInterface
 	 * both `created_at` and `updated_at` are set to the current time. On
 	 * overwrite, only `updated_at` is refreshed.
 	 *
-	 * @param string               $provider  The provider name.
+	 * @param string $provider The provider name.
 	 * @param AuthMode             $auth_mode The authentication mode.
-	 * @param string               $secret    The secret value.
+	 * @param string $secret The secret value.
 	 * @param array<string, mixed> $meta      Optional metadata.
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function setCredential(string $provider, AuthMode $auth_mode, string $secret, array $meta = []): void;
 
@@ -57,7 +57,7 @@ interface CredentialRepositoryInterface
 	 *
 	 * @return bool True if the credential existed and was deleted, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function deleteCredential(string $provider): bool;
 
@@ -68,7 +68,7 @@ interface CredentialRepositoryInterface
 	 *
 	 * @return bool True if a credential is stored for the provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function hasCredential(string $provider): bool;
 
@@ -77,7 +77,7 @@ interface CredentialRepositoryInterface
 	 *
 	 * @return array<int, string> An array of provider names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function listProviders(): array;
 }

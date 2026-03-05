@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
  * This is used by the agent's confirmation handler when the user
  * rejects a tool execution or other confirmation-required action.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ConfirmationDeniedException extends AgentException
 {
@@ -27,8 +27,8 @@ class ConfirmationDeniedException extends AgentException
 	/**
 	 * Creates a new ConfirmationDeniedException.
 	 *
-	 * @param string               $action   The action that was denied.
-	 * @param string|null          $reason   Optional reason from the user.
+	 * @param string $action The action that was denied.
+	 * @param string|null $reason Optional reason from the user.
 	 * @param array<string, mixed> $context  Additional context about the denied action.
 	 * @param \Throwable|null      $previous Optional previous exception.
 	 */
@@ -79,7 +79,7 @@ class ConfirmationDeniedException extends AgentException
 	 *
 	 * @param string               $tool_name The tool that was denied.
 	 * @param array<string, mixed> $arguments The arguments that would have been passed.
-	 * @param string|null          $reason    Optional reason from the user.
+	 * @param string|null $reason Optional reason from the user.
 	 *
 	 * @return self
 	 */
@@ -102,7 +102,7 @@ class ConfirmationDeniedException extends AgentException
 	 * Creates an exception for denied file operation.
 	 *
 	 * @param string      $operation The operation type (read, write, delete).
-	 * @param string      $path      The file path.
+	 * @param string $path The file path.
 	 * @param string|null $reason    Optional reason from the user.
 	 *
 	 * @return self

@@ -22,14 +22,14 @@ use Throwable;
  * wrapped object, getName() normalizes the name, execute() wraps the external
  * call and converts errors to ToolResult.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class AbilityToolAdapter extends AbstractTool
 {
 	/**
 	 * Prefix applied to all ability-derived tool names.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @var string
 	 */
@@ -63,7 +63,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * the underlying WP_Ability so that repeated calls to getName() and
 	 * getDescription() are cheap.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param WP_Ability $ability The WordPress ability to wrap.
 	 */
@@ -87,7 +87,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * underscores. For example, `core/get-site-info` becomes
 	 * `ability_core_get_site_info`.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string
 	 */
@@ -99,7 +99,7 @@ class AbilityToolAdapter extends AbstractTool
 	/**
 	 * Returns the original WP_Ability name for debugging purposes.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string The original ability name (e.g. 'core/get-site-info').
 	 */
@@ -114,7 +114,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * When the ability has a non-empty label, the format is
 	 * `"{label}" — {description}`. Otherwise, only the description is returned.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string
 	 */
@@ -129,7 +129,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * Passes through the ability's input schema directly. Returns null when
 	 * the schema is empty (ability accepts no parameters).
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return array<string, mixed>|null The JSON Schema or null for no parameters.
 	 */
@@ -147,7 +147,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * All other abilities (destructive, unknown, or missing annotations)
 	 * require confirmation for safety.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return bool True unless annotations.readonly is explicitly true.
 	 */
@@ -169,7 +169,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * scalar values are cast to string. Any uncaught exception is caught
 	 * and returned as a failure.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<string, mixed> $arguments The arguments matching the parameters schema.
 	 *
@@ -214,7 +214,7 @@ class AbilityToolAdapter extends AbstractTool
 	 * Arrays are JSON-encoded, strings are returned as-is, null becomes
 	 * the literal string 'null', and other scalar values are cast to string.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param mixed $result The raw result from WP_Ability::execute().
 	 *

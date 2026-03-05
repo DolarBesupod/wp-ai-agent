@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
  * This class handles the transformation of ToolInterface instances into
  * the array format expected by AI adapters for function/tool declarations.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolDeclarationAdapter
 {

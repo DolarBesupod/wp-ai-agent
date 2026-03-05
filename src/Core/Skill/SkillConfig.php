@@ -19,7 +19,7 @@ namespace Automattic\WpAiAgent\Core\Skill;
  *     default?: mixed
  * }
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SkillConfig
 {
@@ -59,7 +59,7 @@ final class SkillConfig
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function fromFrontmatter(array $frontmatter): self
 	{
@@ -116,7 +116,7 @@ final class SkillConfig
 	 *
 	 * @return array<string, ParameterSchema>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getParameters(): array
 	{
@@ -128,7 +128,7 @@ final class SkillConfig
 	 *
 	 * @return bool True if the skill requires confirmation.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function requiresConfirmation(): bool
 	{
@@ -143,7 +143,7 @@ final class SkillConfig
 	 *
 	 * @return bool True if no non-default configuration data is present.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isEmpty(): bool
 	{

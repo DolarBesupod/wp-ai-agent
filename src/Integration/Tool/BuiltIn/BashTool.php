@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * Executes commands in a separate process with proper timeout handling.
  * Always requires user confirmation before execution for security.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class BashTool extends AbstractTool
 {
@@ -141,8 +141,8 @@ class BashTool extends AbstractTool
 	/**
 	 * Executes the command using proc_open.
 	 *
-	 * @param string      $command           The command to execute.
-	 * @param int         $timeout           Timeout in seconds.
+	 * @param string $command The command to execute.
+	 * @param int $timeout Timeout in seconds.
 	 * @param string|null $working_directory Working directory.
 	 *
 	 * @return ToolResult

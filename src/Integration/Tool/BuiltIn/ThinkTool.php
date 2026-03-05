@@ -15,7 +15,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * complex problems. The tool simply echoes back the input thought
  * without side effects.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ThinkTool extends AbstractTool
 {

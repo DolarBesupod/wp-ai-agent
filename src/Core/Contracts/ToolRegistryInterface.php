@@ -11,7 +11,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  * methods to register, retrieve, and list them. It also generates the tool
  * declarations needed for the AI model.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface ToolRegistryInterface
 {

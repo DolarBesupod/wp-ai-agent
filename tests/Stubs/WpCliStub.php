@@ -123,7 +123,7 @@ namespace WP_CLI\Utils {
 	 * format, rows, and columns were passed, without requiring a real WP-CLI
 	 * runtime.
 	 *
-	 * @param string               $format  Output format (e.g., 'table').
+	 * @param string $format Output format (e.g., 'table').
 	 * @param iterable<int, array<string, mixed>> $items   The rows to format.
 	 * @param array<int, string>   $fields  The columns to display.
 	 */

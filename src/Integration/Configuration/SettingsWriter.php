@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Integration\Configuration;
  * Handles atomic writes to the permissions section while preserving
  * existing structure and formatting.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SettingsWriter
 {
@@ -29,12 +29,12 @@ final class SettingsWriter
 	 *
 	 * Creates the settings file if it does not exist.
 	 *
-	 * @param string      $tool_name   The tool name to add.
+	 * @param string $tool_name The tool name to add.
 	 * @param string|null $working_dir The working directory for config lookup.
 	 *
 	 * @return bool True if the operation succeeded, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function addAllowedTool(string $tool_name, ?string $working_dir = null): bool
 	{
@@ -69,12 +69,12 @@ final class SettingsWriter
 	/**
 	 * Removes a tool from the permissions.allow list.
 	 *
-	 * @param string      $tool_name   The tool name to remove.
+	 * @param string $tool_name The tool name to remove.
 	 * @param string|null $working_dir The working directory for config lookup.
 	 *
 	 * @return bool True if the operation succeeded, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function removeAllowedTool(string $tool_name, ?string $working_dir = null): bool
 	{
@@ -113,7 +113,7 @@ final class SettingsWriter
 	 *
 	 * @return array<int, string> List of allowed tools.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAllowedTools(?string $working_dir = null): array
 	{
@@ -138,7 +138,7 @@ final class SettingsWriter
 	 *
 	 * @return bool True if the operation succeeded, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function clearAllowedTools(?string $working_dir = null): bool
 	{
@@ -170,7 +170,7 @@ final class SettingsWriter
 	 *
 	 * @return string The full path to the settings.json file.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSettingsPath(string $working_dir): string
 	{
@@ -188,7 +188,7 @@ final class SettingsWriter
 	 *
 	 * @return string The full path to the config folder.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getConfigFolderPath(string $working_dir): string
 	{

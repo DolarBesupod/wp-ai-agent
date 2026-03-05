@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when tool execution fails.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ToolExecutionException extends AgentException
 {
@@ -22,9 +22,9 @@ class ToolExecutionException extends AgentException
 	 * Creates a new ToolExecutionException.
 	 *
 	 * @param string               $tool_name The tool that failed.
-	 * @param string               $message   The error message.
+	 * @param string $message The error message.
 	 * @param array<string, mixed> $arguments The arguments passed to the tool.
-	 * @param \Throwable|null      $previous  Optional previous exception.
+	 * @param \Throwable|null $previous Optional previous exception.
 	 */
 	public function __construct(
 		string $tool_name,

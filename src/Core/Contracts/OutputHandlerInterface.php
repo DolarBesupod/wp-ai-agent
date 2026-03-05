@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * to work with different output targets (CLI, web, tests) without changes
  * to core logic.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface OutputHandlerInterface
 {

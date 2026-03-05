@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Integration\AiClient;
  * Used at boot time (WpCliBootstrap) and at runtime (/model command)
  * to auto-detect which provider to use based on the model name.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ProviderDetector
 {
@@ -54,7 +54,7 @@ final class ProviderDetector
 	 * Comparison is case-insensitive. Unknown models default to the
 	 * DEFAULT_PROVIDER constant (anthropic) for backward compatibility.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $model The model name (e.g. 'gpt-4o', 'claude-sonnet-4-6').
 	 *
@@ -76,7 +76,7 @@ final class ProviderDetector
 	/**
 	 * Checks whether the given provider ID is a known/supported provider.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $provider_id The provider ID to check.
 	 *

@@ -20,7 +20,7 @@ use Throwable;
  * handling user confirmation when required, and executing tools
  * with proper error handling.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolExecutor implements ToolExecutorInterface
 {
@@ -31,9 +31,9 @@ final class ToolExecutor implements ToolExecutorInterface
 	/**
 	 * Creates a new ToolExecutor instance.
 	 *
-	 * @param ToolRegistryInterface        $registry             The tool registry.
+	 * @param ToolRegistryInterface $registry The tool registry.
 	 * @param ConfirmationHandlerInterface $confirmation_handler The confirmation handler.
-	 * @param LoggerInterface|null         $logger               Optional logger.
+	 * @param LoggerInterface|null $logger Optional logger.
 	 */
 	public function __construct(
 		ToolRegistryInterface $registry,

@@ -17,7 +17,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ParseException;
  * from them. It extracts the command name from the filename, the namespace
  * from the directory structure, and configuration from the YAML frontmatter.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class CommandLoader implements CommandLoaderInterface
 {
@@ -33,7 +33,7 @@ final class CommandLoader implements CommandLoaderInterface
 	 *
 	 * @param MarkdownParserInterface $markdown_parser The markdown parser.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(MarkdownParserInterface $markdown_parser)
 	{
@@ -54,7 +54,7 @@ final class CommandLoader implements CommandLoaderInterface
 	 * @throws ParseException If the file cannot be parsed.
 	 * @throws \RuntimeException If the file cannot be read.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(string $filepath): Command
 	{
@@ -89,7 +89,7 @@ final class CommandLoader implements CommandLoaderInterface
 	 *
 	 * @throws ParseException If the content cannot be parsed.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function loadFromContent(string $name, string $content): Command
 	{

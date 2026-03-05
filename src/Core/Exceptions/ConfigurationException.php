@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when configuration is invalid or missing.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ConfigurationException extends AgentException
 {
@@ -41,8 +41,8 @@ class ConfigurationException extends AgentException
 	/**
 	 * Creates an exception for file loading failures.
 	 *
-	 * @param string          $path     The file path.
-	 * @param string          $reason   The reason for the failure.
+	 * @param string $path The file path.
+	 * @param string $reason The reason for the failure.
 	 * @param \Throwable|null $previous Optional previous exception.
 	 *
 	 * @return self
@@ -82,7 +82,7 @@ class ConfigurationException extends AgentException
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function jsonParseError(string $path, string $message): self
 	{
@@ -100,7 +100,7 @@ class ConfigurationException extends AgentException
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function schemaTypeError(string $property, string $expected_type, string $actual_type): self
 	{
@@ -123,7 +123,7 @@ class ConfigurationException extends AgentException
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function schemaMinimumError(string $property, int|float $minimum, int|float $actual): self
 	{

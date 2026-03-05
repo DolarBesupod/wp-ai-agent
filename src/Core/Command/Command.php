@@ -11,7 +11,7 @@ namespace Automattic\WpAiAgent\Core\Command;
  * It contains the command body (prompt content), configuration from
  * frontmatter, and metadata about where it was loaded from.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class Command
 {
@@ -60,14 +60,14 @@ final class Command
 	/**
 	 * Creates a new Command instance.
 	 *
-	 * @param string        $name        The command name.
+	 * @param string $name The command name.
 	 * @param string        $description A description of the command.
-	 * @param string        $body        The command body content.
+	 * @param string $body The command body content.
 	 * @param CommandConfig $config      The command configuration.
-	 * @param string|null   $filepath    The source file path (null for built-in).
-	 * @param string|null   $namespace   The command namespace.
+	 * @param string|null $filepath The source file path (null for built-in).
+	 * @param string|null $namespace The command namespace.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		string $name,
@@ -90,7 +90,7 @@ final class Command
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getName(): string
 	{
@@ -102,7 +102,7 @@ final class Command
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getDescription(): string
 	{
@@ -114,7 +114,7 @@ final class Command
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getBody(): string
 	{
@@ -126,7 +126,7 @@ final class Command
 	 *
 	 * @return CommandConfig
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getConfig(): CommandConfig
 	{
@@ -138,7 +138,7 @@ final class Command
 	 *
 	 * @return string|null The file path, or null for built-in commands.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getFilePath(): ?string
 	{
@@ -150,7 +150,7 @@ final class Command
 	 *
 	 * @return string|null The namespace, or null if not set.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getNamespace(): ?string
 	{
@@ -164,7 +164,7 @@ final class Command
 	 *
 	 * @return bool True if this is a built-in command.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isBuiltIn(): bool
 	{
@@ -181,7 +181,7 @@ final class Command
 	 *
 	 * @return self A new Command instance with the updated body.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function withBody(string $body): self
 	{

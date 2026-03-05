@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * Returns default configuration if the file does not exist.
  * Validates configuration against JSON schema.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class JsonConfigurationLoader
 {
@@ -46,9 +46,9 @@ final class JsonConfigurationLoader
 	 * Creates a new JSON configuration loader.
 	 *
 	 * @param EnvConfigurationLoader|null     $env_loader Optional environment loader for testing.
-	 * @param SettingsSchemaValidator|null    $validator  Optional schema validator for testing.
+	 * @param SettingsSchemaValidator|null $validator Optional schema validator for testing.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		?EnvConfigurationLoader $env_loader = null,
@@ -67,7 +67,7 @@ final class JsonConfigurationLoader
 	 *
 	 * @throws ConfigurationException If the JSON file is invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(?string $working_dir = null): array
 	{
@@ -100,7 +100,7 @@ final class JsonConfigurationLoader
 	 *
 	 * @return string The full path to the settings.json file.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSettingsPath(string $working_dir): string
 	{
@@ -118,7 +118,7 @@ final class JsonConfigurationLoader
 	 *
 	 * @return bool True if the file exists, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function fileExists(?string $working_dir = null): bool
 	{
@@ -139,7 +139,7 @@ final class JsonConfigurationLoader
 	 *
 	 * @throws ConfigurationException If the file cannot be parsed or is invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function loadJsonFile(string $path): array
 	{

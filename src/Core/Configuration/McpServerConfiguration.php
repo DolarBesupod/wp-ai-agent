@@ -17,7 +17,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * - stdio: Starts an MCP server as a subprocess
  * - http: Connects to an HTTP-based MCP endpoint
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class McpServerConfiguration
 {
@@ -104,16 +104,16 @@ final class McpServerConfiguration
 	/**
 	 * Creates a new MCP server configuration.
 	 *
-	 * @param string                     $name         The unique server name/identifier.
-	 * @param string                     $transport    The transport type (stdio or http).
-	 * @param string                     $command      The command to execute (stdio transport).
-	 * @param array<string>              $args         Command arguments (stdio transport).
+	 * @param string $name The unique server name/identifier.
+	 * @param string $transport The transport type (stdio or http).
+	 * @param string $command The command to execute (stdio transport).
+	 * @param array<string> $args Command arguments (stdio transport).
 	 * @param array<string, string>|null $env          Environment variables (stdio transport).
-	 * @param string                     $url          The HTTP endpoint URL (http transport).
+	 * @param string $url The HTTP endpoint URL (http transport).
 	 * @param array<string, string>      $headers      Custom headers (http transport).
 	 * @param string|null                $bearer_token Bearer token for auth (http transport).
-	 * @param float                      $timeout      Connection timeout in seconds.
-	 * @param bool                       $enabled      Whether the server is enabled.
+	 * @param float $timeout Connection timeout in seconds.
+	 * @param bool $enabled Whether the server is enabled.
 	 */
 	public function __construct(
 		string $name,
@@ -142,7 +142,7 @@ final class McpServerConfiguration
 	/**
 	 * Creates a configuration from an array.
 	 *
-	 * @param string               $name   The server name.
+	 * @param string $name The server name.
 	 * @param array<string, mixed> $config The configuration array.
 	 *
 	 * @return self

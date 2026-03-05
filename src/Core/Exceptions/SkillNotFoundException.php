@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when a requested skill is not found in the repository.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SkillNotFoundException extends \RuntimeException
 {
@@ -18,7 +18,7 @@ final class SkillNotFoundException extends \RuntimeException
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function forName(string $name): self
 	{

@@ -25,7 +25,7 @@ use Throwable;
  * MCP servers. It uses the StdioTransport from php-mcp-client to communicate
  * with MCP servers via subprocess stdin/stdout.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class McpClientManager
 {
@@ -74,7 +74,7 @@ class McpClientManager
 	/**
 	 * Creates a new McpClientManager.
 	 *
-	 * @param LoggerInterface|null    $logger       Optional logger instance.
+	 * @param LoggerInterface|null $logger Optional logger instance.
 	 * @param ClientCapabilities|null $capabilities Optional client capabilities.
 	 */
 	public function __construct(

@@ -11,7 +11,7 @@ namespace Automattic\WpAiAgent\Core\Skill;
  * or other commands. It contains the skill body (prompt content), configuration
  * from frontmatter, and metadata about where it was loaded from.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class Skill
 {
@@ -53,13 +53,13 @@ final class Skill
 	/**
 	 * Creates a new Skill instance.
 	 *
-	 * @param string      $name        The skill name.
+	 * @param string $name The skill name.
 	 * @param string      $description A description of the skill.
-	 * @param string      $body        The skill body content.
+	 * @param string $body The skill body content.
 	 * @param SkillConfig $config      The skill configuration.
 	 * @param string|null $filepath    The source file path (null for built-in).
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		string $name,
@@ -80,7 +80,7 @@ final class Skill
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getName(): string
 	{
@@ -92,7 +92,7 @@ final class Skill
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getDescription(): string
 	{
@@ -104,7 +104,7 @@ final class Skill
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getBody(): string
 	{
@@ -116,7 +116,7 @@ final class Skill
 	 *
 	 * @return SkillConfig
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getConfig(): SkillConfig
 	{
@@ -128,7 +128,7 @@ final class Skill
 	 *
 	 * @return string|null The file path, or null for built-in skills.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getFilePath(): ?string
 	{
@@ -145,7 +145,7 @@ final class Skill
 	 *
 	 * @return self A new Skill instance with the updated body.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function withBody(string $body): self
 	{

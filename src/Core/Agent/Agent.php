@@ -23,7 +23,7 @@ use Psr\Log\NullLogger;
  * It manages session lifecycle (create, resume, end) and delegates message
  * processing to the AgentLoop.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class Agent implements AgentInterface
 {
@@ -55,10 +55,10 @@ final class Agent implements AgentInterface
 	/**
 	 * Creates a new Agent instance.
 	 *
-	 * @param AgentLoopInterface         $agent_loop            The agent loop for processing.
+	 * @param AgentLoopInterface $agent_loop The agent loop for processing.
 	 * @param SessionRepositoryInterface $session_repository    The repository for session persistence.
 	 * @param string                     $default_system_prompt The default system prompt.
-	 * @param LoggerInterface|null       $logger                Optional logger.
+	 * @param LoggerInterface|null $logger Optional logger.
 	 */
 	public function __construct(
 		AgentLoopInterface $agent_loop,

@@ -13,7 +13,7 @@ use WordPress\AiClient\Providers\Http\DTO\Request;
  * Subscription credentials are sent as a Bearer token while preserving
  * Anthropic API version negotiation header.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class AnthropicSubscriptionRequestAuthentication extends ApiKeyRequestAuthentication
 {

@@ -19,7 +19,7 @@ use Throwable;
  * and registers them as McpToolAdapter instances in the main ToolRegistry.
  * Tool names are prefixed with mcp_{serverName}_ to avoid collisions.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class McpToolRegistry
 {
@@ -54,9 +54,9 @@ class McpToolRegistry
 	/**
 	 * Creates a new McpToolRegistry.
 	 *
-	 * @param McpClientManager      $client_manager  The MCP client manager.
+	 * @param McpClientManager $client_manager The MCP client manager.
 	 * @param ToolRegistryInterface $registry        The main tool registry.
-	 * @param LoggerInterface|null  $logger          Optional logger instance.
+	 * @param LoggerInterface|null $logger Optional logger instance.
 	 * @param float                 $default_timeout Default tool execution timeout in seconds.
 	 */
 	public function __construct(
@@ -182,7 +182,7 @@ class McpToolRegistry
 	/**
 	 * Registers a tool from its MCP definition.
 	 *
-	 * @param McpClient             $client      The MCP client.
+	 * @param McpClient $client The MCP client.
 	 * @param array<string, mixed>  $definition  The tool definition.
 	 * @param string                $server_name The server name.
 	 *
@@ -238,7 +238,7 @@ class McpToolRegistry
 	 * Extracts a string value from an array.
 	 *
 	 * @param array<string, mixed> $data The data array.
-	 * @param string               $key  The key to extract.
+	 * @param string $key The key to extract.
 	 *
 	 * @return string The extracted string or empty string.
 	 */
@@ -255,7 +255,7 @@ class McpToolRegistry
 	 * Extracts an array value from an array.
 	 *
 	 * @param array<string, mixed> $data The data array.
-	 * @param string               $key  The key to extract.
+	 * @param string $key The key to extract.
 	 *
 	 * @return array<string, mixed> The extracted array or empty array.
 	 */

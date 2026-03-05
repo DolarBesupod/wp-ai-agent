@@ -12,14 +12,14 @@ use Automattic\WpAiAgent\Core\Exceptions\AiClientException;
  * Extracts typed events and their JSON data from SSE-formatted text
  * returned by streaming API endpoints such as the ChatGPT backend.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SseResponseParser
 {
 	/**
 	 * Extracts and JSON-decodes the data from the last SSE event matching the given type.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $sse_body   The raw SSE response body.
 	 * @param string $event_type The event type to search for (e.g. "response.completed").
@@ -70,7 +70,7 @@ final class SseResponseParser
 	 * - "event": the event type (defaults to "message" if no event: line is present)
 	 * - "data": the concatenated data lines (joined with newline)
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string $sse_body The raw SSE response body.
 	 *

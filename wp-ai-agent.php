@@ -2,12 +2,12 @@
 
 /**
  * Plugin Name: WP AI Agent
- * Description: A CLI AI agent powered by Claude with MCP support. Exposes WP-CLI commands: wp agent run (interactive REPL) and wp agent ask (one-shot). Works standalone via `php agent` too.
+ * Description: A CLI AI agent with MCP support. WP-CLI commands: wp agent chat and wp agent ask.
  * Version: 0.1.0
  * Requires at least: 7.0
  * Requires PHP: 8.1
- * Author: Ovidiu Galatan
- * Author URI: https://developer.wordpress.org/
+ * Author: Automattic
+ * Author URI: https://automattic.com/
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wp-ai-agent

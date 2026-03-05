@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  * Represents a response from the AI model, including text content, tool calls,
  * and metadata about the response.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface AiResponseInterface
 {

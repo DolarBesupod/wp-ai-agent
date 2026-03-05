@@ -24,7 +24,7 @@ use RuntimeException;
  * Errors from expansions are handled gracefully by including inline error
  * messages rather than failing the entire execution.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class CommandExecutor implements CommandExecutorInterface
 {
@@ -52,11 +52,11 @@ final class CommandExecutor implements CommandExecutorInterface
 	/**
 	 * Creates a new CommandExecutor instance.
 	 *
-	 * @param ArgumentSubstitutorInterface   $argument_substitutor    The argument substitutor.
+	 * @param ArgumentSubstitutorInterface $argument_substitutor The argument substitutor.
 	 * @param FileReferenceExpanderInterface $file_reference_expander The file reference expander.
-	 * @param BashCommandExpanderInterface   $bash_command_expander   The bash command expander.
+	 * @param BashCommandExpanderInterface $bash_command_expander The bash command expander.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		ArgumentSubstitutorInterface $argument_substitutor,
@@ -79,12 +79,12 @@ final class CommandExecutor implements CommandExecutorInterface
 	 * Errors from file reference or bash command expansion are captured and
 	 * included inline as error messages, allowing the execution to continue.
 	 *
-	 * @param Command      $command   The command to execute.
+	 * @param Command $command The command to execute.
 	 * @param ArgumentList $arguments The arguments passed to the command.
 	 *
 	 * @return CommandExecutionResult The execution result with expanded content.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function execute(Command $command, ArgumentList $arguments): CommandExecutionResult
 	{

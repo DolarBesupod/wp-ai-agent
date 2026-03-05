@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
  * the message history, system prompt, and metadata needed for persistence
  * and context management.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface SessionInterface
 {

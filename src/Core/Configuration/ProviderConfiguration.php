@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * Holds all configuration needed to connect to an AI provider such as
  * Anthropic, OpenAI, or Google.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ProviderConfiguration
 {

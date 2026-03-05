@@ -18,7 +18,7 @@ use WordPress\AiClient\Tools\DTO\FunctionCall;
  * This class adapts the GenerativeAiResult from the WordPress AI Client library
  * to the AiResponseInterface expected by the agent's core layer.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class AiResponse implements AiResponseInterface
 {

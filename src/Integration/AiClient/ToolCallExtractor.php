@@ -16,7 +16,7 @@ use WordPress\AiClient\Tools\DTO\FunctionCall;
  * objects. It provides a clean interface for obtaining tool calls
  * from AI responses without depending on the full response wrapper.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolCallExtractor
 {

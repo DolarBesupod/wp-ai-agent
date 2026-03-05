@@ -16,7 +16,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * 2. .wp-ai-agent/settings.json + .wp-ai-agent/mcp.json
  * 3. Built-in defaults
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ConfigurationResolver
 {
@@ -52,10 +52,10 @@ final class ConfigurationResolver
 	 * Creates a new configuration resolver.
 	 *
 	 * @param JsonConfigurationLoader|null $json_loader  Optional JSON loader for testing.
-	 * @param McpJsonLoader|null           $mcp_loader   Optional MCP loader for testing.
+	 * @param McpJsonLoader|null $mcp_loader Optional MCP loader for testing.
 	 * @param callable|null                $env_provider Optional env provider for testing.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		?JsonConfigurationLoader $json_loader = null,
@@ -76,7 +76,7 @@ final class ConfigurationResolver
 	 *
 	 * @throws ConfigurationException If configuration is invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function resolve(?string $working_dir = null): ConfigurationInterface
 	{
@@ -112,7 +112,7 @@ final class ConfigurationResolver
 	 *
 	 * @return array<McpServerConfiguration> Array of MCP server configurations.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMcpServers(?string $working_dir = null): array
 	{
@@ -139,7 +139,7 @@ final class ConfigurationResolver
 	 *
 	 * @return array<string, string> Map of config key to source (env, json, default).
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getConfigurationSources(): array
 	{

@@ -17,7 +17,7 @@ use Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
  * - Callback mode: Chunks are passed to a provided callback function
  * - Output handler mode: Chunks are written via OutputHandlerInterface
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class StreamingHandler
 {
@@ -85,7 +85,7 @@ final class StreamingHandler
 	 * Splits the text into chunks and calls the callback with each chunk,
 	 * simulating streaming output from the AI.
 	 *
-	 * @param string              $text     The complete text to stream.
+	 * @param string $text The complete text to stream.
 	 * @param callable(string): void $callback The callback to receive each chunk.
 	 */
 	public function streamToCallback(string $text, callable $callback): void
@@ -110,7 +110,7 @@ final class StreamingHandler
 	 * Writes chunks to the output handler using writeStreamChunk(),
 	 * which is designed for real-time streaming display.
 	 *
-	 * @param string                 $text           The complete text to stream.
+	 * @param string $text The complete text to stream.
 	 * @param OutputHandlerInterface $output_handler The output handler for display.
 	 */
 	public function streamToOutput(string $text, OutputHandlerInterface $output_handler): void
@@ -241,7 +241,7 @@ final class StreamingHandler
 	 *
 	 * @param string $text     The full text.
 	 * @param int    $position Current position in the text.
-	 * @param int    $length   Total length of the text.
+	 * @param int $length Total length of the text.
 	 *
 	 * @return string The extracted chunk.
 	 */
@@ -272,7 +272,7 @@ final class StreamingHandler
 	 * Finds a natural break position (space, newline, punctuation) within range.
 	 *
 	 * @param string $text      The full text.
-	 * @param int    $start     Start position to search from.
+	 * @param int $start Start position to search from.
 	 * @param int    $max_range Maximum range to search within.
 	 *
 	 * @return int|null The break position, or null if not found.

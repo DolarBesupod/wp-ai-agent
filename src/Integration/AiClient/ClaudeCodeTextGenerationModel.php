@@ -17,7 +17,7 @@ use WordPress\AnthropicAiProvider\Models\AnthropicTextGenerationModel;
  * AnthropicApiKeyRequestAuthentication. For Claude Code subscription we need
  * to preserve the dedicated auth implementation and its custom headers.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ClaudeCodeTextGenerationModel extends AnthropicTextGenerationModel
 {

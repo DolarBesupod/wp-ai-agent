@@ -10,7 +10,7 @@ namespace Automattic\WpAiAgent\Core\ValueObjects;
  * Parses argument strings respecting quoted values, where both single and
  * double quotes can be used to group words into a single argument.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ArgumentList
 {
@@ -31,7 +31,7 @@ final class ArgumentList
 	/**
 	 * Creates a new ArgumentList instance.
 	 *
-	 * @param string             $raw       The original argument string.
+	 * @param string $raw The original argument string.
 	 * @param array<int, string> $arguments The parsed arguments array.
 	 */
 	private function __construct(string $raw, array $arguments)
@@ -50,7 +50,7 @@ final class ArgumentList
 	 *
 	 * @return self
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function fromString(string $arguments): self
 	{
@@ -66,7 +66,7 @@ final class ArgumentList
 	 *
 	 * @return string|null The argument value, or null if not found.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function get(int $position): ?string
 	{
@@ -84,7 +84,7 @@ final class ArgumentList
 	 *
 	 * @return array<int, string> The parsed arguments (0-indexed).
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAll(): array
 	{
@@ -96,7 +96,7 @@ final class ArgumentList
 	 *
 	 * @return string The original input string.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getRaw(): string
 	{
@@ -108,7 +108,7 @@ final class ArgumentList
 	 *
 	 * @return int The count of arguments.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function count(): int
 	{
@@ -120,7 +120,7 @@ final class ArgumentList
 	 *
 	 * @return bool True if no arguments are present.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isEmpty(): bool
 	{

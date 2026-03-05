@@ -9,7 +9,7 @@ namespace Automattic\WpAiAgent\Integration\Mcp;
  *
  * Holds all configuration needed to connect to an MCP server via stdio or HTTP transport.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class McpServerConfiguration
 {
@@ -82,14 +82,14 @@ final class McpServerConfiguration
 	/**
 	 * Creates a new MCP server configuration.
 	 *
-	 * @param string                     $name      The unique server name/identifier.
+	 * @param string $name The unique server name/identifier.
 	 * @param string                     $transport The transport type (stdio or http).
-	 * @param string                     $command   The command to execute (stdio transport).
-	 * @param array<string>              $args      Command arguments (stdio transport).
+	 * @param string $command The command to execute (stdio transport).
+	 * @param array<string> $args Command arguments (stdio transport).
 	 * @param array<string, string>|null $env       Environment variables (stdio transport).
-	 * @param string                     $url       The HTTP endpoint URL (HTTP transport).
+	 * @param string $url The HTTP endpoint URL (HTTP transport).
 	 * @param array<string, string>      $headers   Custom headers (HTTP transport).
-	 * @param float                      $timeout   Connection timeout in seconds.
+	 * @param float $timeout Connection timeout in seconds.
 	 */
 	public function __construct(
 		string $name,
@@ -114,9 +114,9 @@ final class McpServerConfiguration
 	/**
 	 * Creates a stdio transport configuration.
 	 *
-	 * @param string                     $name    The server name.
+	 * @param string $name The server name.
 	 * @param string                     $command The command to execute.
-	 * @param array<string>              $args    Command arguments.
+	 * @param array<string> $args Command arguments.
 	 * @param array<string, string>|null $env     Environment variables.
 	 * @param float                      $timeout Connection timeout.
 	 *
@@ -144,11 +144,11 @@ final class McpServerConfiguration
 	/**
 	 * Creates an HTTP transport configuration.
 	 *
-	 * @param string                $name        The server name.
-	 * @param string                $url         The HTTP endpoint URL.
+	 * @param string $name The server name.
+	 * @param string $url The HTTP endpoint URL.
 	 * @param array<string, string> $headers     Custom headers.
 	 * @param string|null           $bearer_token Bearer token for Authorization header.
-	 * @param float                 $timeout     Connection timeout.
+	 * @param float $timeout Connection timeout.
 	 *
 	 * @return self
 	 */
@@ -178,7 +178,7 @@ final class McpServerConfiguration
 	/**
 	 * Creates a configuration from an array.
 	 *
-	 * @param string               $name   The server name.
+	 * @param string $name The server name.
 	 * @param array<string, mixed> $config The configuration array.
 	 *
 	 * @return self

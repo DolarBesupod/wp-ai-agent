@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * all output to WP_CLI methods. No ANSI escape codes are used; WP-CLI
  * manages terminal formatting internally.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpCliOutputHandler implements OutputHandlerInterface
 {
@@ -35,7 +35,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function write(string $text): void
 	{
@@ -49,7 +49,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeLine(string $text): void
 	{
@@ -66,7 +66,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeError(string $text): void
 	{
@@ -80,7 +80,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeSuccess(string $text): void
 	{
@@ -94,7 +94,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeWarning(string $text): void
 	{
@@ -114,7 +114,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeToolResult(string $tool_name, ToolResult $result): void
 	{
@@ -143,7 +143,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeAssistantResponse(string $text): void
 	{
@@ -162,7 +162,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeStreamChunk(string $chunk): void
 	{
@@ -181,7 +181,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeStatus(string $status): void
 	{
@@ -198,7 +198,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function writeDebug(string $message): void
 	{
@@ -214,7 +214,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function clearLine(): void
 	{
@@ -228,7 +228,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function setDebugEnabled(bool $enabled): void
 	{
@@ -240,7 +240,7 @@ final class WpCliOutputHandler implements OutputHandlerInterface
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function isDebugEnabled(): bool
 	{

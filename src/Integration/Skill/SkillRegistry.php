@@ -21,7 +21,7 @@ use Automattic\WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
  * The fallback fires only when the index option is null — not when it is an
  * empty array, which means the user intentionally cleared all skills.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SkillRegistry
 {
@@ -68,13 +68,13 @@ final class SkillRegistry
 	/**
 	 * Creates a new SkillRegistry instance.
 	 *
-	 * @param WpOptionsSkillRepository       $repository         The WordPress options skill repository.
-	 * @param SkillLoader                    $loader             The skill loader for markdown files.
+	 * @param WpOptionsSkillRepository $repository The WordPress options skill repository.
+	 * @param SkillLoader $loader The skill loader for markdown files.
 	 * @param FileReferenceExpanderInterface $file_expander      The file reference expander.
-	 * @param BashCommandExpanderInterface   $bash_expander      The bash command expander.
+	 * @param BashCommandExpanderInterface $bash_expander The bash command expander.
 	 * @param string                         $bundled_skills_dir Absolute path to the plugin's skills/ directory.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		WpOptionsSkillRepository $repository,
@@ -104,7 +104,7 @@ final class SkillRegistry
 	 *
 	 * @return int The number of skills successfully registered.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function discoverAndRegister(ToolRegistryInterface $tool_registry): int
 	{
@@ -128,12 +128,12 @@ final class SkillRegistry
 	/**
 	 * Registers skills from the WordPress options repository by name list.
 	 *
-	 * @param string[]              $names         The skill names to load and register.
+	 * @param string[] $names The skill names to load and register.
 	 * @param ToolRegistryInterface $tool_registry The tool registry.
 	 *
 	 * @return int The number of skills successfully registered.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function registerFromRepository(array $names, ToolRegistryInterface $tool_registry): int
 	{
@@ -173,7 +173,7 @@ final class SkillRegistry
 	 *
 	 * @return int The number of skills successfully registered.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function registerFromBundledDir(ToolRegistryInterface $tool_registry): int
 	{

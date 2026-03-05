@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Command\Command;
  * The command loader is responsible for parsing markdown files with
  * YAML frontmatter and creating Command instances from them.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface CommandLoaderInterface
 {

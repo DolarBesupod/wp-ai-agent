@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\Command\Command;
  * methods to register, retrieve, and list them. It supports both built-in commands
  * and custom commands loaded from markdown files.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface CommandRegistryInterface
 {

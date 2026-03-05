@@ -16,7 +16,7 @@ use Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
  * methods to register, retrieve, and list them. It supports auto-discovery
  * of commands from markdown files in .wp-ai-agent directories.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class CommandRegistry implements CommandRegistryInterface
 {
@@ -44,10 +44,10 @@ final class CommandRegistry implements CommandRegistryInterface
 	/**
 	 * Creates a new CommandRegistry instance.
 	 *
-	 * @param CommandLoaderInterface     $loader    The command loader.
+	 * @param CommandLoaderInterface $loader The command loader.
 	 * @param SettingsDiscoveryInterface $discovery The settings discovery service.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		CommandLoaderInterface $loader,
@@ -66,7 +66,7 @@ final class CommandRegistry implements CommandRegistryInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function register(Command $command): void
 	{
@@ -81,7 +81,7 @@ final class CommandRegistry implements CommandRegistryInterface
 	 *
 	 * @return Command|null The command or null if not found.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function get(string $name): ?Command
 	{
@@ -95,7 +95,7 @@ final class CommandRegistry implements CommandRegistryInterface
 	 *
 	 * @return bool True if the command exists, false otherwise.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function has(string $name): bool
 	{
@@ -107,7 +107,7 @@ final class CommandRegistry implements CommandRegistryInterface
 	 *
 	 * @return array<string, Command> Map of command name to command instance.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function all(): array
 	{
@@ -122,7 +122,7 @@ final class CommandRegistry implements CommandRegistryInterface
 	 *
 	 * @return array<string, Command> Map of command name to command instance.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getCustomCommands(): array
 	{
@@ -140,7 +140,7 @@ final class CommandRegistry implements CommandRegistryInterface
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function discover(): void
 	{

@@ -13,7 +13,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
  * Replaces $1, $2, $3, etc. placeholders with positional arguments
  * and $ARGUMENTS with the full raw argument string.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ArgumentSubstitutor implements ArgumentSubstitutorInterface
 {
@@ -48,12 +48,12 @@ final class ArgumentSubstitutor implements ArgumentSubstitutorInterface
 	 *
 	 * Missing positional arguments are replaced with empty strings.
 	 *
-	 * @param string       $content   The content containing placeholders.
+	 * @param string $content The content containing placeholders.
 	 * @param ArgumentList $arguments The arguments to substitute.
 	 *
 	 * @return string The content with placeholders replaced.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function substitute(string $content, ArgumentList $arguments): string
 	{

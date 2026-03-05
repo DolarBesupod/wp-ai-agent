@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Skill\Skill;
  * The skill loader is responsible for parsing markdown files with YAML
  * frontmatter and creating Skill instances from them.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface SkillLoaderInterface
 {
@@ -29,7 +29,7 @@ interface SkillLoaderInterface
 	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ParseException If the file cannot be parsed.
 	 * @throws \RuntimeException If the file cannot be read.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function load(string $filepath): Skill;
 }

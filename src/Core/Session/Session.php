@@ -15,7 +15,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
  * Manages the conversation history, system prompt, metadata, and token usage
  * for a single conversation session with the AI agent.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class Session implements SessionInterface
 {
@@ -43,7 +43,7 @@ final class Session implements SessionInterface
 	/**
 	 * Creates a new Session instance.
 	 *
-	 * @param SessionId|null              $id            The session identifier.
+	 * @param SessionId|null $id The session identifier.
 	 * @param string                      $system_prompt The system prompt.
 	 * @param SessionMetadataInterface|null $metadata      The session metadata.
 	 */

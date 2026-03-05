@@ -249,7 +249,7 @@ final class AiResponseTest extends TestCase
 	 * Creates a GenerativeAiResult with text content.
 	 *
 	 * @param string $content          The text content.
-	 * @param int    $prompt_tokens    Prompt token count.
+	 * @param int $prompt_tokens Prompt token count.
 	 * @param int    $completion_tokens Completion token count.
 	 *
 	 * @return GenerativeAiResult
@@ -291,7 +291,7 @@ final class AiResponseTest extends TestCase
 	 * Creates a GenerativeAiResult with custom candidates.
 	 *
 	 * @param array<Candidate> $candidates       The candidates.
-	 * @param int              $prompt_tokens    Prompt token count.
+	 * @param int $prompt_tokens Prompt token count.
 	 * @param int              $completion_tokens Completion token count.
 	 *
 	 * @return GenerativeAiResult

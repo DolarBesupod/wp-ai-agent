@@ -11,7 +11,7 @@ namespace Automattic\WpAiAgent\Core\Contracts;
  * or deny tool executions. It also manages bypass rules for tools that should
  * execute without confirmation.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface ConfirmationHandlerInterface
 {

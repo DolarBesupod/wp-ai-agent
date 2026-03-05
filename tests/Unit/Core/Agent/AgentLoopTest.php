@@ -311,9 +311,9 @@ final class AgentLoopTest extends TestCase
 	/**
 	 * Creates a mock AiResponseInterface.
 	 *
-	 * @param string                                                                        $content    The response content.
+	 * @param string $content The response content.
 	 * @param array<int, array{id: string, name: string, arguments: array<string, mixed>}> $tool_calls The tool calls.
-	 * @param bool                                                                          $is_final   Whether this is a final response.
+	 * @param bool $is_final Whether this is a final response.
 	 * @param array{input_tokens: int, output_tokens: int}|null                            $usage      Token usage.
 	 *
 	 * @return AiResponseInterface&MockObject

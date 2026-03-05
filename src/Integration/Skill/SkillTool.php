@@ -28,7 +28,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
  * single bad reference never prevents the rest of the template from
  * rendering. No WordPress functions are called anywhere in this class.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class SkillTool extends AbstractTool
 {
@@ -56,11 +56,11 @@ final class SkillTool extends AbstractTool
 	/**
 	 * Creates a new SkillTool instance.
 	 *
-	 * @param Skill                          $skill                   The skill to wrap.
+	 * @param Skill $skill The skill to wrap.
 	 * @param FileReferenceExpanderInterface $file_reference_expander The file reference expander.
-	 * @param BashCommandExpanderInterface   $bash_command_expander   The bash command expander.
+	 * @param BashCommandExpanderInterface $bash_command_expander The bash command expander.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		Skill $skill,
@@ -77,7 +77,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getName(): string
 	{
@@ -89,7 +89,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getDescription(): string
 	{
@@ -103,7 +103,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return bool
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function requiresConfirmation(): bool
 	{
@@ -119,7 +119,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getParametersSchema(): array
 	{
@@ -175,7 +175,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return ToolResult
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function execute(array $arguments): ToolResult
 	{
@@ -233,7 +233,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return string The base path for file reference resolution.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function resolveBasePath(): string
 	{
@@ -254,12 +254,12 @@ final class SkillTool extends AbstractTool
 	 * Placeholders are replaced longest-first to avoid partial substitutions
 	 * when one parameter name is a prefix of another.
 	 *
-	 * @param string               $content   The template content.
+	 * @param string $content The template content.
 	 * @param array<string, mixed> $arguments The argument values keyed by parameter name.
 	 *
 	 * @return string The content with named placeholders replaced.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function substituteParameters(string $content, array $arguments): string
 	{
@@ -287,7 +287,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return array{content: string, error: string|null} The expansion result.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function expandFileReferences(string $content, string $base_path): array
 	{
@@ -315,7 +315,7 @@ final class SkillTool extends AbstractTool
 	 *
 	 * @return array{content: string, error: string|null} The expansion result.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function expandBashCommands(string $content, string $working_dir): array
 	{

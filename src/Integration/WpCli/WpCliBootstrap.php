@@ -32,7 +32,7 @@ use Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
  * (kept for backward compatibility with existing wp-config.php files). Connection
  * failures are reported via WP_CLI::warning() and do not abort startup.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpCliBootstrap
 {
@@ -55,7 +55,7 @@ final class WpCliBootstrap
 	 *
 	 * @return WpCliApplication The fully-wired application.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function createApplication(): WpCliApplication
 	{
@@ -138,7 +138,7 @@ final class WpCliBootstrap
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private static function discoverSkills(
 		\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
@@ -186,7 +186,7 @@ final class WpCliBootstrap
 	 *
 	 * @return McpClientManager|null The connected manager, or null when MCP is not configured.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private static function connectMcpServers(
 		\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
@@ -251,9 +251,10 @@ final class WpCliBootstrap
 	 * not exist. Registers a single AbilityStrapTool that provides list,
 	 * describe, and execute actions for all WordPress abilities.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
-	 * @param \Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry Tool registry to register abilities into.
+	 * @param \Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
+	 *     Tool registry to register abilities into.
 	 */
 	private static function discoverAbilities(
 		\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry,

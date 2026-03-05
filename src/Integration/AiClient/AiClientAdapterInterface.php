@@ -16,14 +16,14 @@ use WordPress\AiClient\Providers\ProviderRegistry;
  * methods specific to the php-ai-client integration, providing access
  * to the underlying provider registry and configuration options.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface AiClientAdapterInterface extends AiAdapterInterface
 {
 	/**
 	 * Returns the provider registry used by this adapter.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return ProviderRegistry The configured provider registry.
 	 */
@@ -34,7 +34,7 @@ interface AiClientAdapterInterface extends AiAdapterInterface
 	 *
 	 * Verifies that the API key is set and the provider is available.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return bool True if properly configured, false otherwise.
 	 */
@@ -43,7 +43,7 @@ interface AiClientAdapterInterface extends AiAdapterInterface
 	/**
 	 * Returns the provider ID being used.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @return string The provider ID (e.g., 'anthropic', 'openai', 'google').
 	 */
@@ -55,10 +55,10 @@ interface AiClientAdapterInterface extends AiAdapterInterface
 	 * Registers the new provider on the existing ProviderRegistry,
 	 * creates the appropriate authentication, and updates internal state.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param string   $provider_id The provider identifier (e.g., 'openai', 'google', 'anthropic').
-	 * @param string   $api_key     The API key for the new provider.
+	 * @param string $api_key The API key for the new provider.
 	 * @param AuthMode $auth_mode   Authentication mode (defaults to API_KEY).
 	 *
 	 * @return void

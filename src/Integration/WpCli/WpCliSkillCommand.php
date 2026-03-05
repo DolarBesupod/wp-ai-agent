@@ -18,7 +18,7 @@ use Automattic\WpAiAgent\Integration\Skill\SkillLoader;
  * - `wp agent skills remove <name>`     — delete a skill.
  * - `wp agent skills show <name>`       — print a skill's full definition.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class WpCliSkillCommand
 {
@@ -56,10 +56,10 @@ final class WpCliSkillCommand
 	 * concrete implementations are created automatically.
 	 *
 	 * @param WpOptionsSkillRepository|null $repository         The WordPress options skill repository.
-	 * @param SkillLoader|null              $loader             The skill loader for markdown parsing.
+	 * @param SkillLoader|null $loader The skill loader for markdown parsing.
 	 * @param string|null                   $bundled_skills_dir Absolute path to the bundled skills/ directory.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		?WpOptionsSkillRepository $repository = null,
@@ -83,7 +83,7 @@ final class WpCliSkillCommand
 	 *
 	 * @subcommand list
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments (unused).
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -156,7 +156,7 @@ final class WpCliSkillCommand
 	 *
 	 * @subcommand add
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments; $args[0] is the skill name.
 	 * @param array<string, string|bool> $assoc_args Named arguments (--file, --description, --body, --force).
@@ -219,7 +219,7 @@ final class WpCliSkillCommand
 	 *
 	 * @subcommand remove
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments; $args[0] is the skill name.
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -271,7 +271,7 @@ final class WpCliSkillCommand
 	 *
 	 * @subcommand show
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 *
 	 * @param array<int, string>         $args       Positional arguments; $args[0] is the skill name.
 	 * @param array<string, string|bool> $assoc_args Named arguments (unused).
@@ -336,12 +336,12 @@ final class WpCliSkillCommand
 	 *
 	 * Returns null and emits a WP_CLI::error() when arguments are insufficient.
 	 *
-	 * @param string                     $name       The validated skill name.
+	 * @param string $name The validated skill name.
 	 * @param array<string, string|bool> $assoc_args The named arguments from WP-CLI.
 	 *
 	 * @return Skill|null The resolved skill, or null on failure.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function resolveSkillFromArgs(string $name, array $assoc_args): ?Skill
 	{
@@ -388,7 +388,7 @@ final class WpCliSkillCommand
 	 *
 	 * @return Skill|null The loaded skill, or null on failure.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function resolveSkillFromFile(string $name, string $filepath): ?Skill
 	{
@@ -426,7 +426,7 @@ final class WpCliSkillCommand
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function seedBundledSkillsIfNeeded(): void
 	{

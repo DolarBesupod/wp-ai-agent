@@ -14,7 +14,7 @@ use Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
  * This class maintains a collection of available tools, indexed by name,
  * and provides methods to register, retrieve, and list them.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class ToolRegistry implements ToolRegistryInterface
 {

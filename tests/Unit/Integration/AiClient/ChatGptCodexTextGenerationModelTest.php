@@ -64,7 +64,7 @@ final class ChatGptCodexTextGenerationModelTest extends TestCase
 	/**
 	 * Creates a configured model instance for testing.
 	 *
-	 * @param string      $model_id         The model identifier.
+	 * @param string $model_id The model identifier.
 	 * @param string|null $system_instruction Optional system instruction.
 	 *
 	 * @return ChatGptCodexTextGenerationModel

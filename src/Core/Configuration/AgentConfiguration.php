@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
  * Aggregates all configuration settings including provider configuration,
  * MCP servers, and agent-specific settings.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class AgentConfiguration
 {
@@ -83,12 +83,12 @@ final class AgentConfiguration
 	/**
 	 * Creates a new agent configuration.
 	 *
-	 * @param ProviderConfiguration        $provider                  The AI provider configuration.
+	 * @param ProviderConfiguration $provider The AI provider configuration.
 	 * @param array<McpServerConfiguration> $mcp_servers               The MCP server configurations.
-	 * @param string                       $session_storage_path      The session storage path.
-	 * @param string                       $log_path                  The log path.
-	 * @param int                          $max_turns                 The maximum number of agent loop turns.
-	 * @param string                       $default_system_prompt     The default system prompt.
+	 * @param string $session_storage_path The session storage path.
+	 * @param string $log_path The log path.
+	 * @param int $max_turns The maximum number of agent loop turns.
+	 * @param string $default_system_prompt The default system prompt.
 	 * @param array<string>                $bypass_confirmation_tools Tools that bypass confirmation.
 	 */
 	public function __construct(
@@ -152,7 +152,8 @@ final class AgentConfiguration
 			: '';
 
 		/** @var array<string> $bypass_confirmation_tools */
-		$bypass_confirmation_tools = isset($config['bypass_confirmation_tools']) && is_array($config['bypass_confirmation_tools'])
+		$bypass_confirmation_tools = isset($config['bypass_confirmation_tools'])
+			&& is_array($config['bypass_confirmation_tools'])
 			? $config['bypass_confirmation_tools']
 			: [];
 

@@ -37,7 +37,7 @@ final class McpToolAdapterTest extends TestCase
 	/**
 	 * Creates a McpToolAdapter instance for testing.
 	 *
-	 * @param string              $tool_name   The original tool name.
+	 * @param string $tool_name The original tool name.
 	 * @param string              $description The tool description.
 	 * @param array<string,mixed> $input_schema The JSON schema for tool input.
 	 * @param string              $server_name The MCP server name.

@@ -7,7 +7,7 @@ namespace Automattic\WpAiAgent\Core\Exceptions;
 /**
  * Exception thrown when a requested tool is not found in the registry.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class ToolNotFoundException extends AgentException
 {

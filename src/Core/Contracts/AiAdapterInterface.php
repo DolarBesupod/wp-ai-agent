@@ -12,16 +12,17 @@ use Automattic\WpAiAgent\Core\ValueObjects\Message;
  * The AI adapter abstracts the communication with the AI provider (Anthropic Claude,
  * OpenAI, etc.). It handles message formatting, tool declarations, and response parsing.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface AiAdapterInterface
 {
 	/**
 	 * Sends messages to the AI model and returns the response.
 	 *
-	 * @param array<int, Message>                                                           $messages The conversation messages.
-	 * @param string                                                                        $system   The system prompt.
-	 * @param array<int, array{name: string, description: string, parameters?: array<string, mixed>}> $tools    Tool declarations.
+	 * @param array<int, Message> $messages The conversation messages.
+	 * @param string $system The system prompt.
+	 * @param array<int, array{name: string, description: string, parameters?: array<string, mixed>}> $tools
+	 *     Tool declarations.
 	 *
 	 * @return AiResponseInterface The model's response.
 	 *
@@ -32,10 +33,11 @@ interface AiAdapterInterface
 	/**
 	 * Sends messages and streams the response.
 	 *
-	 * @param array<int, Message>                                                           $messages The conversation messages.
-	 * @param string                                                                        $system   The system prompt.
-	 * @param array<int, array{name: string, description: string, parameters?: array<string, mixed>}> $tools    Tool declarations.
-	 * @param callable(string): void                                                        $on_chunk Callback for each text chunk.
+	 * @param array<int, Message> $messages The conversation messages.
+	 * @param string $system The system prompt.
+	 * @param array<int, array{name: string, description: string, parameters?: array<string, mixed>}> $tools
+	 *     Tool declarations.
+	 * @param callable(string): void $on_chunk Callback for each text chunk.
 	 *
 	 * @return AiResponseInterface The complete response after streaming.
 	 *

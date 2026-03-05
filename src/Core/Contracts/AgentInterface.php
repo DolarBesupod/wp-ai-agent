@@ -12,7 +12,7 @@ use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
  * The agent is the entry point for interacting with the AI system. It manages
  * the session lifecycle and delegates to the agent loop for processing messages.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 interface AgentInterface
 {

@@ -20,7 +20,7 @@ use Automattic\WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool;
  * Provides convenient factory methods to create a ToolRegistry pre-populated
  * with all built-in tools. Supports excluding specific tools when needed.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class BuiltInToolRegistry
 {

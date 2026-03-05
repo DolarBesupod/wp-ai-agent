@@ -57,8 +57,8 @@ final class SkillToolTest extends TestCase
 	 * Builds a Skill with the given config and body.
 	 *
 	 * @param SkillConfig $config The skill config.
-	 * @param string      $body   The body template.
-	 * @param string      $name   The skill name.
+	 * @param string $body The body template.
+	 * @param string $name The skill name.
 	 *
 	 * @return Skill
 	 */

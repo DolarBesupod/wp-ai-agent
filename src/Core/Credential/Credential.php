@@ -10,21 +10,21 @@ namespace Automattic\WpAiAgent\Core\Credential;
  * A credential binds a provider name to an authentication mode and secret,
  * along with timestamps and an optional metadata bag for future extensibility.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 final class Credential
 {
 	/**
 	 * Creates a new Credential instance.
 	 *
-	 * @param string             $provider   The provider name (e.g. 'anthropic').
-	 * @param AuthMode           $auth_mode  The authentication mode.
-	 * @param string             $secret     The secret value.
+	 * @param string $provider The provider name (e.g. 'anthropic').
+	 * @param AuthMode $auth_mode The authentication mode.
+	 * @param string $secret The secret value.
 	 * @param \DateTimeImmutable $created_at When the credential was first stored.
 	 * @param \DateTimeImmutable $updated_at When the credential was last updated.
 	 * @param array<string, mixed> $meta     Optional metadata bag.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		private readonly string $provider,
@@ -41,7 +41,7 @@ final class Credential
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getProvider(): string
 	{
@@ -53,7 +53,7 @@ final class Credential
 	 *
 	 * @return AuthMode
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAuthMode(): AuthMode
 	{
@@ -65,7 +65,7 @@ final class Credential
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getSecret(): string
 	{
@@ -77,7 +77,7 @@ final class Credential
 	 *
 	 * @return \DateTimeImmutable
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getCreatedAt(): \DateTimeImmutable
 	{
@@ -89,7 +89,7 @@ final class Credential
 	 *
 	 * @return \DateTimeImmutable
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getUpdatedAt(): \DateTimeImmutable
 	{
@@ -101,7 +101,7 @@ final class Credential
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMeta(): array
 	{
@@ -116,7 +116,7 @@ final class Credential
 	 *
 	 * @return string
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getMaskedSecret(): string
 	{
@@ -137,7 +137,7 @@ final class Credential
 	 *     meta: array<string, mixed>
 	 * }
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function toArray(): array
 	{
@@ -162,7 +162,7 @@ final class Credential
 	 *
 	 * @throws \InvalidArgumentException If required fields are missing or invalid.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public static function fromArray(array $data): self
 	{

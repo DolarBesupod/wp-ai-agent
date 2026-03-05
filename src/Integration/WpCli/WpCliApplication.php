@@ -20,7 +20,7 @@ use Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
  * the WP-CLI integration. Does not depend on CliApplication or src/bootstrap.php.
  * All dependencies are injected through the constructor for testability.
  *
- * @since n.e.x.t
+ * @since 0.1.0
  */
 class WpCliApplication
 {
@@ -79,16 +79,16 @@ class WpCliApplication
 	/**
 	 * Creates a new WpCliApplication.
 	 *
-	 * @param ConfigurationInterface       $configuration        The configuration.
-	 * @param AgentInterface               $agent                The agent.
-	 * @param WpCliOutputHandler           $output_handler       The output handler.
+	 * @param ConfigurationInterface $configuration The configuration.
+	 * @param AgentInterface $agent The agent.
+	 * @param WpCliOutputHandler $output_handler The output handler.
 	 * @param WpCliConfirmationHandler     $confirmation_handler The confirmation handler.
-	 * @param SessionRepositoryInterface   $session_repository   The session repository.
-	 * @param AiClientAdapterInterface     $ai_adapter           The AI adapter for model and provider switching.
-	 * @param McpClientManager|null        $mcp_client_manager   MCP client manager (kept alive to prevent GC).
-	 * @param CredentialResolver|null      $credential_resolver  Credential resolver for runtime provider switching.
+	 * @param SessionRepositoryInterface $session_repository The session repository.
+	 * @param AiClientAdapterInterface $ai_adapter The AI adapter for model and provider switching.
+	 * @param McpClientManager|null $mcp_client_manager MCP client manager (kept alive to prevent GC).
+	 * @param CredentialResolver|null $credential_resolver Credential resolver for runtime provider switching.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function __construct(
 		/** @phpstan-ignore property.onlyWritten */
@@ -124,7 +124,7 @@ class WpCliApplication
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function chat(array $assoc_args): void
 	{
@@ -209,7 +209,7 @@ class WpCliApplication
 	/**
 	 * Sends a single message to the agent and ends the session.
 	 *
-	 * @param string               $message    The user's message.
+	 * @param string $message The user's message.
 	 * @param array<string, mixed> $assoc_args WP-CLI associative arguments.
 	 *                                          Supported keys:
 	 *                                          - 'session' (string): session ID to resume.
@@ -217,7 +217,7 @@ class WpCliApplication
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function ask(string $message, array $assoc_args): void
 	{
@@ -249,7 +249,7 @@ class WpCliApplication
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function init(array $assoc_args): void
 	{
@@ -308,7 +308,7 @@ class WpCliApplication
 	 *
 	 * @return AgentInterface
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getAgent(): AgentInterface
 	{
@@ -320,7 +320,7 @@ class WpCliApplication
 	 *
 	 * @return WpCliOutputHandler
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	public function getOutputHandler(): WpCliOutputHandler
 	{
@@ -339,7 +339,7 @@ class WpCliApplication
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function handleModelSwitch(string $model): void
 	{
@@ -391,7 +391,7 @@ class WpCliApplication
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function resolveSession(array $assoc_args): void
 	{
@@ -414,7 +414,7 @@ class WpCliApplication
 	 *
 	 * @return void
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function resolveUserContext(array $assoc_args): void
 	{
@@ -438,7 +438,12 @@ class WpCliApplication
 		}
 
 		\wp_set_current_user($wp_user->ID);
-		\WP_CLI::log(sprintf('User context: %s (ID %d, %s)', $wp_user->user_login, $wp_user->ID, implode(', ', $wp_user->roles)));
+		\WP_CLI::log(sprintf(
+			'User context: %s (ID %d, %s)',
+			$wp_user->user_login,
+			$wp_user->ID,
+			implode(', ', $wp_user->roles)
+		));
 	}
 
 	/**
@@ -452,7 +457,7 @@ class WpCliApplication
 	 *
 	 * @return string The shell-safe value representation.
 	 *
-	 * @since n.e.x.t
+	 * @since 0.1.0
 	 */
 	private function formatConstantValue(mixed $value, string $type): string
 	{
