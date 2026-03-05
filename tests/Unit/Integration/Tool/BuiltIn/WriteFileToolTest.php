@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool;
 
 /**
  * Tests for WriteFileTool.
  *
- * @covers \WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool
+ * @covers \Automattic\WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool
  */
 final class WriteFileToolTest extends TestCase
 {

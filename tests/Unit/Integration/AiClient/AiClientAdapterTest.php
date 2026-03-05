@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Core\Exceptions\AiClientException;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Integration\AiClient\AiClientAdapter;
-use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
-use WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
-use WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
-use WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
@@ -24,7 +24,7 @@ use WordPress\GoogleAiProvider\Authentication\GoogleApiKeyRequestAuthentication;
 /**
  * Unit tests for AiClientAdapter.
  *
- * @covers \WpAiAgent\Integration\AiClient\AiClientAdapter
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter
  */
 final class AiClientAdapterTest extends TestCase
 {

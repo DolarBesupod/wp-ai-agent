@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Exceptions\AiClientException;
-use WpAiAgent\Integration\AiClient\SseResponseParser;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\SseResponseParser;
 
 /**
  * Unit tests for SseResponseParser.
  *
- * @covers \WpAiAgent\Integration\AiClient\SseResponseParser
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\SseResponseParser
  */
 final class SseResponseParserTest extends TestCase
 {

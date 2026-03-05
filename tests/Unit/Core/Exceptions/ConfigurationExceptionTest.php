@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Exceptions;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Tests for ConfigurationException.
  *
- * @covers \WpAiAgent\Core\Exceptions\ConfigurationException
+ * @covers \Automattic\WpAiAgent\Core\Exceptions\ConfigurationException
  */
 final class ConfigurationExceptionTest extends TestCase
 {

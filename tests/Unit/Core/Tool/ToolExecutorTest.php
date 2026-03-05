@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Tool;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use WpAiAgent\Core\Contracts\ToolInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Core\Exceptions\ToolExecutionException;
-use WpAiAgent\Core\Tool\ToolExecutor;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
+use Automattic\Automattic\WpAiAgent\Core\Tool\ToolExecutor;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\NullLogger;
 
 /**
  * Tests for ToolExecutor.
  *
- * @covers \WpAiAgent\Core\Tool\ToolExecutor
+ * @covers \Automattic\WpAiAgent\Core\Tool\ToolExecutor
  */
 final class ToolExecutorTest extends TestCase
 {

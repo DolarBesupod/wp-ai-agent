@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Settings;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
 
-use WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use WpAiAgent\Integration\Settings\FileReferenceExpander;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * Unit tests for FileReferenceExpander.
  *
- * @covers \WpAiAgent\Integration\Settings\FileReferenceExpander
+ * @covers \Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander
  */
 final class FileReferenceExpanderTest extends TestCase
 {

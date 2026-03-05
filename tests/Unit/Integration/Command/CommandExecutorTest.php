@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Command;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Command;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Command\Command;
-use WpAiAgent\Core\Command\CommandConfig;
-use WpAiAgent\Core\Command\CommandExecutionResult;
-use WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
-use WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use WpAiAgent\Core\ValueObjects\ArgumentList;
-use WpAiAgent\Integration\Command\CommandExecutor;
+use Automattic\Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\Automattic\WpAiAgent\Core\Command\CommandConfig;
+use Automattic\Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\Automattic\WpAiAgent\Integration\Command\CommandExecutor;
 use RuntimeException;
 
 /**
  * Tests for CommandExecutor.
  *
- * @covers \WpAiAgent\Integration\Command\CommandExecutor
+ * @covers \Automattic\WpAiAgent\Integration\Command\CommandExecutor
  */
 final class CommandExecutorTest extends TestCase
 {

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Settings;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
 
-use WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
-use WpAiAgent\Core\ValueObjects\ArgumentList;
-use WpAiAgent\Integration\Settings\ArgumentSubstitutor;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\Automattic\WpAiAgent\Integration\Settings\ArgumentSubstitutor;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for ArgumentSubstitutor.
  *
- * @covers \WpAiAgent\Integration\Settings\ArgumentSubstitutor
+ * @covers \Automattic\WpAiAgent\Integration\Settings\ArgumentSubstitutor
  */
 final class ArgumentSubstitutorTest extends TestCase
 {

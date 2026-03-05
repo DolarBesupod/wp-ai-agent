@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\ValueObjects;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
 
-use WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for ArgumentList value object.
  *
- * @covers \WpAiAgent\Core\ValueObjects\ArgumentList
+ * @covers \Automattic\WpAiAgent\Core\ValueObjects\ArgumentList
  */
 final class ArgumentListTest extends TestCase
 {

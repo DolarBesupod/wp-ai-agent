@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\Tool\BuiltIn\BashTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\BashTool;
 
 /**
  * Tests for BashTool.
  *
- * @covers \WpAiAgent\Integration\Tool\BuiltIn\BashTool
+ * @covers \Automattic\WpAiAgent\Integration\Tool\BuiltIn\BashTool
  */
 final class BashToolTest extends TestCase
 {

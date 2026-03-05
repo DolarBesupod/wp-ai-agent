@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\WpCli\WpCliConfigCommand;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfigCommand;
 
 /**
  * Unit tests for WpCliConfigCommand.
@@ -14,7 +14,7 @@ use WpAiAgent\Integration\WpCli\WpCliConfigCommand;
  * `config set` command via WP_CLI::runcommand(). All WP_CLI calls are
  * captured by the stub in tests/Stubs/WpCliStub.php.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpCliConfigCommand
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpCliConfigCommand
  *
  * @since n.e.x.t
  */

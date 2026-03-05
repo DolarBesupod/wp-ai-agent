@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use WpAiAgent\Integration\Configuration\SettingsWriter;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\SettingsWriter;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for SettingsWriter.
  *
- * @covers \WpAiAgent\Integration\Configuration\SettingsWriter
+ * @covers \Automattic\WpAiAgent\Integration\Configuration\SettingsWriter
  */
 final class SettingsWriterTest extends TestCase
 {

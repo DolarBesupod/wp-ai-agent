@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Exceptions\AiClientException;
-use WpAiAgent\Integration\AiClient\ChatGptCodexTextGenerationModel;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\ChatGptCodexTextGenerationModel;
 use WordPress\AiClient\Common\Exception\InvalidArgumentException;
 use WordPress\AiClient\Messages\DTO\Message;
 use WordPress\AiClient\Messages\DTO\MessagePart;
@@ -31,7 +31,7 @@ use WordPress\AiClient\Tools\DTO\FunctionResponse;
 /**
  * Unit tests for ChatGptCodexTextGenerationModel.
  *
- * @covers \WpAiAgent\Integration\AiClient\ChatGptCodexTextGenerationModel
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\ChatGptCodexTextGenerationModel
  */
 final class ChatGptCodexTextGenerationModelTest extends TestCase
 {

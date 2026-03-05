@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use WpAiAgent\Integration\AiClient\ProviderDetector;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for ProviderDetector.
  *
- * @covers \WpAiAgent\Integration\AiClient\ProviderDetector
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\ProviderDetector
  */
 final class ProviderDetectorTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Integration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 
@@ -12,9 +12,9 @@ use PHPUnit\Framework\TestCase;
  * These tests verify that the command system components are properly
  * initialized and wired together in the bootstrap file.
  *
- * @covers \WpAiAgent\Integration\Command\CommandRegistry
- * @covers \WpAiAgent\Integration\Command\CommandLoader
- * @covers \WpAiAgent\Integration\Command\CommandExecutor
+ * @covers \Automattic\WpAiAgent\Integration\Command\CommandRegistry
+ * @covers \Automattic\WpAiAgent\Integration\Command\CommandLoader
+ * @covers \Automattic\WpAiAgent\Integration\Command\CommandExecutor
  */
 final class BootstrapCommandWiringTest extends TestCase
 {
@@ -39,28 +39,28 @@ final class BootstrapCommandWiringTest extends TestCase
 	public function test_commandComponentsCanBeInstantiated(): void
 	{
 		// Test that all command system components can be instantiated correctly
-		$markdown_parser = new \WpAiAgent\Integration\Configuration\MarkdownParser();
-		$settings_discovery = new \WpAiAgent\Integration\Settings\SettingsDiscovery($this->temp_dir);
-		$argument_substitutor = new \WpAiAgent\Integration\Settings\ArgumentSubstitutor();
-		$file_reference_expander = new \WpAiAgent\Integration\Settings\FileReferenceExpander();
-		$bash_command_expander = new \WpAiAgent\Integration\Settings\BashCommandExpander();
-		$command_loader = new \WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
-		$command_registry = new \WpAiAgent\Integration\Command\CommandRegistry(
+		$markdown_parser = new \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser();
+		$settings_discovery = new \Automattic\WpAiAgent\Integration\Settings\SettingsDiscovery($this->temp_dir);
+		$argument_substitutor = new \Automattic\WpAiAgent\Integration\Settings\ArgumentSubstitutor();
+		$file_reference_expander = new \Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander();
+		$bash_command_expander = new \Automattic\WpAiAgent\Integration\Settings\BashCommandExpander();
+		$command_loader = new \Automattic\WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
+		$command_registry = new \Automattic\WpAiAgent\Integration\Command\CommandRegistry(
 			$command_loader,
 			$settings_discovery
 		);
-		$command_executor = new \WpAiAgent\Integration\Command\CommandExecutor(
+		$command_executor = new \Automattic\WpAiAgent\Integration\Command\CommandExecutor(
 			$argument_substitutor,
 			$file_reference_expander,
 			$bash_command_expander
 		);
 
 		$this->assertInstanceOf(
-			\WpAiAgent\Core\Contracts\CommandRegistryInterface::class,
+			\Automattic\WpAiAgent\Core\Contracts\CommandRegistryInterface::class,
 			$command_registry
 		);
 		$this->assertInstanceOf(
-			\WpAiAgent\Core\Contracts\CommandExecutorInterface::class,
+			\Automattic\WpAiAgent\Core\Contracts\CommandExecutorInterface::class,
 			$command_executor
 		);
 	}
@@ -85,13 +85,13 @@ MD;
 		mkdir($fake_home, 0755, true);
 
 		// Initialize components
-		$markdown_parser = new \WpAiAgent\Integration\Configuration\MarkdownParser();
-		$settings_discovery = new \WpAiAgent\Integration\Settings\SettingsDiscovery(
+		$markdown_parser = new \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser();
+		$settings_discovery = new \Automattic\WpAiAgent\Integration\Settings\SettingsDiscovery(
 			$this->temp_dir,
 			$fake_home
 		);
-		$command_loader = new \WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
-		$command_registry = new \WpAiAgent\Integration\Command\CommandRegistry(
+		$command_loader = new \Automattic\WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
+		$command_registry = new \Automattic\WpAiAgent\Integration\Command\CommandRegistry(
 			$command_loader,
 			$settings_discovery
 		);
@@ -120,13 +120,13 @@ MD;
 		mkdir($fake_home, 0755, true);
 
 		// Initialize components
-		$markdown_parser = new \WpAiAgent\Integration\Configuration\MarkdownParser();
-		$settings_discovery = new \WpAiAgent\Integration\Settings\SettingsDiscovery(
+		$markdown_parser = new \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser();
+		$settings_discovery = new \Automattic\WpAiAgent\Integration\Settings\SettingsDiscovery(
 			$this->temp_dir,
 			$fake_home
 		);
-		$command_loader = new \WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
-		$command_registry = new \WpAiAgent\Integration\Command\CommandRegistry(
+		$command_loader = new \Automattic\WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
+		$command_registry = new \Automattic\WpAiAgent\Integration\Command\CommandRegistry(
 			$command_loader,
 			$settings_discovery
 		);
@@ -145,24 +145,24 @@ MD;
 	public function test_commandExecutorExpandsArgumentPlaceholders(): void
 	{
 		// Create a command with argument placeholders
-		$markdown_parser = new \WpAiAgent\Integration\Configuration\MarkdownParser();
-		$command_loader = new \WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
-		$argument_substitutor = new \WpAiAgent\Integration\Settings\ArgumentSubstitutor();
-		$file_reference_expander = new \WpAiAgent\Integration\Settings\FileReferenceExpander();
-		$bash_command_expander = new \WpAiAgent\Integration\Settings\BashCommandExpander();
+		$markdown_parser = new \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser();
+		$command_loader = new \Automattic\WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
+		$argument_substitutor = new \Automattic\WpAiAgent\Integration\Settings\ArgumentSubstitutor();
+		$file_reference_expander = new \Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander();
+		$bash_command_expander = new \Automattic\WpAiAgent\Integration\Settings\BashCommandExpander();
 
 		$command = $command_loader->loadFromContent(
 			'test',
 			"---\ndescription: Test\n---\nHello \$1, welcome to \$2!"
 		);
 
-		$command_executor = new \WpAiAgent\Integration\Command\CommandExecutor(
+		$command_executor = new \Automattic\WpAiAgent\Integration\Command\CommandExecutor(
 			$argument_substitutor,
 			$file_reference_expander,
 			$bash_command_expander
 		);
 
-		$arguments = \WpAiAgent\Core\ValueObjects\ArgumentList::fromString('World PHP');
+		$arguments = \Automattic\WpAiAgent\Core\ValueObjects\ArgumentList::fromString('World PHP');
 		$result = $command_executor->execute($command, $arguments);
 
 		$this->assertTrue($result->isSuccess());
@@ -185,13 +185,13 @@ MD;
 		mkdir($fake_home, 0755, true);
 
 		// Initialize and discover
-		$markdown_parser = new \WpAiAgent\Integration\Configuration\MarkdownParser();
-		$settings_discovery = new \WpAiAgent\Integration\Settings\SettingsDiscovery(
+		$markdown_parser = new \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser();
+		$settings_discovery = new \Automattic\WpAiAgent\Integration\Settings\SettingsDiscovery(
 			$this->temp_dir,
 			$fake_home
 		);
-		$command_loader = new \WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
-		$command_registry = new \WpAiAgent\Integration\Command\CommandRegistry(
+		$command_loader = new \Automattic\WpAiAgent\Integration\Command\CommandLoader($markdown_parser);
+		$command_registry = new \Automattic\WpAiAgent\Integration\Command\CommandRegistry(
 			$command_loader,
 			$settings_discovery
 		);

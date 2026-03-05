@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use WpAiAgent\Core\Contracts\ConfigurationInterface;
-use WpAiAgent\Integration\Configuration\ConfigurationResolver;
-use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
-use WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
-use WpAiAgent\Integration\Configuration\McpJsonLoader;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\ConfigurationResolver;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\McpJsonLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  * 2. .wp-ai-agent/settings.json + .wp-ai-agent/mcp.json
  * 3. Built-in defaults (lowest priority)
  *
- * @covers \WpAiAgent\Integration\Configuration\ConfigurationResolver
+ * @covers \Automattic\WpAiAgent\Integration\Configuration\ConfigurationResolver
  */
 final class ConfigurationResolverTest extends TestCase
 {

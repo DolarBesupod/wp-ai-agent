@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Agent\Agent;
-use WpAiAgent\Core\Contracts\AgentLoopInterface;
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use WpAiAgent\Core\Session\Session;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Core\Agent\Agent;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Tests for Agent facade.
  *
- * @covers \WpAiAgent\Core\Agent\Agent
+ * @covers \Automattic\WpAiAgent\Core\Agent\Agent
  */
 final class AgentTest extends TestCase
 {
@@ -224,7 +224,7 @@ final class AgentTest extends TestCase
 		$expected = [
 			[
 				'id' => SessionId::fromString('session-1'),
-				'metadata' => $this->createMock(\WpAiAgent\Core\Contracts\SessionMetadataInterface::class),
+				'metadata' => $this->createMock(\Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface::class),
 			],
 		];
 

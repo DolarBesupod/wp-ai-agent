@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Session;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Session;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Session\SessionMessage;
-use WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\Session\SessionMessage;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
 
 /**
  * Tests for SessionMessage.
  *
- * @covers \WpAiAgent\Core\Session\SessionMessage
+ * @covers \Automattic\WpAiAgent\Core\Session\SessionMessage
  */
 final class SessionMessageTest extends TestCase
 {

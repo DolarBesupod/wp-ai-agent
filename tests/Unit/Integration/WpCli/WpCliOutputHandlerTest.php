@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
-use WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use WpAiAgent\Core\ValueObjects\ToolResult;
-use WpAiAgent\Integration\WpCli\WpCliOutputHandler;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  * defined in tests/Stubs/WpCliStub.php (loaded by tests/bootstrap.php) records
  * every static call so tests can assert output routing without a live runtime.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpCliOutputHandler
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler
  *
  * @since n.e.x.t
  */

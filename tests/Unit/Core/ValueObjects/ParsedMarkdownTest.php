@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\ValueObjects;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
 
 /**
  * Tests for ParsedMarkdown value object.
  *
- * @covers \WpAiAgent\Core\ValueObjects\ParsedMarkdown
+ * @covers \Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown
  */
 final class ParsedMarkdownTest extends TestCase
 {

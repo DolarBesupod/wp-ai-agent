@@ -30,13 +30,13 @@ if (!class_exists('WP_CLI')) {
 }
 require_once $project_root . '/tests/Stubs/WpFunctionsStub.php';
 
-use WpAiAgent\Integration\WpCli\WpCliApplication;
-use WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
-use WpAiAgent\Integration\WpCli\WpCliOutputHandler;
-use WpAiAgent\Tests\Stubs\MinimalAgentStub;
-use WpAiAgent\Tests\Stubs\MinimalAiAdapterStub;
-use WpAiAgent\Tests\Stubs\MinimalConfigStub;
-use WpAiAgent\Tests\Stubs\MinimalSessionRepositoryStub;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliApplication;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
+use Automattic\Automattic\WpAiAgent\Tests\Stubs\MinimalAgentStub;
+use Automattic\Automattic\WpAiAgent\Tests\Stubs\MinimalAiAdapterStub;
+use Automattic\Automattic\WpAiAgent\Tests\Stubs\MinimalConfigStub;
+use Automattic\Automattic\WpAiAgent\Tests\Stubs\MinimalSessionRepositoryStub;
 
 $result_file = $argv[1] ?? null;
 $assoc_json  = $argv[2] ?? '{}';

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\User;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\User;
 
-use WpAiAgent\Integration\User\UserContextTool;
+use Automattic\Automattic\WpAiAgent\Integration\User\UserContextTool;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for UserContextTool.
  *
- * @covers \WpAiAgent\Integration\User\UserContextTool
+ * @covers \Automattic\WpAiAgent\Integration\User\UserContextTool
  */
 final class UserContextToolTest extends TestCase
 {

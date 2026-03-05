@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Settings;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
 
-use WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use WpAiAgent\Integration\Settings\BashCommandExpander;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Settings\BashCommandExpander;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * Unit tests for BashCommandExpander.
  *
- * @covers \WpAiAgent\Integration\Settings\BashCommandExpander
+ * @covers \Automattic\WpAiAgent\Integration\Settings\BashCommandExpander
  */
 final class BashCommandExpanderTest extends TestCase
 {

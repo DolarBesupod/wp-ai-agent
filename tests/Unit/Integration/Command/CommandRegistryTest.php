@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Command;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Command;
 
-use WpAiAgent\Core\Command\Command;
-use WpAiAgent\Core\Command\CommandConfig;
-use WpAiAgent\Core\Contracts\CommandLoaderInterface;
-use WpAiAgent\Core\Contracts\CommandRegistryInterface;
-use WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
-use WpAiAgent\Integration\Command\CommandRegistry;
+use Automattic\Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\Automattic\WpAiAgent\Core\Command\CommandConfig;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Command\CommandRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for CommandRegistry.
  *
- * @covers \WpAiAgent\Integration\Command\CommandRegistry
+ * @covers \Automattic\WpAiAgent\Integration\Command\CommandRegistry
  */
 final class CommandRegistryTest extends TestCase
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Credential;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Credential;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Core\Credential\Credential;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Core\Credential\Credential;
 
 /**
  * Unit tests for Credential value object.
  *
- * @covers \WpAiAgent\Core\Credential\Credential
+ * @covers \Automattic\WpAiAgent\Core\Credential\Credential
  *
  * @since n.e.x.t
  */

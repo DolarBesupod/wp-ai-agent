@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Tool;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Tool\AbstractTool;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Tool\AbstractTool;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for AbstractTool.
  *
- * @covers \WpAiAgent\Core\Tool\AbstractTool
+ * @covers \Automattic\WpAiAgent\Core\Tool\AbstractTool
  */
 final class AbstractToolTest extends TestCase
 {

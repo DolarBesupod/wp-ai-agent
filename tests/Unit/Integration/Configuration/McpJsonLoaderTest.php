@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use WpAiAgent\Core\Configuration\McpServerConfiguration;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
-use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
-use WpAiAgent\Integration\Configuration\McpJsonLoader;
+use Automattic\Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\McpJsonLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for McpJsonLoader.
  *
- * @covers \WpAiAgent\Integration\Configuration\McpJsonLoader
+ * @covers \Automattic\WpAiAgent\Integration\Configuration\McpJsonLoader
  */
 final class McpJsonLoaderTest extends TestCase
 {

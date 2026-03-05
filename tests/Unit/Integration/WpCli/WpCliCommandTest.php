@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\WpCli\WpCliCommand;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliCommand;
 
 /**
  * Unit tests for WpCliCommand.
@@ -15,7 +15,7 @@ use WpAiAgent\Integration\WpCli\WpCliCommand;
  * tests focus exclusively on guard/error paths that short-circuit before the
  * bootstrap is called.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpCliCommand
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpCliCommand
  *
  * @since n.e.x.t
  */

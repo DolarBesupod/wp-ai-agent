@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\Tool\BuiltIn\GrepTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\GrepTool;
 
 /**
  * Tests for GrepTool.
  *
- * @covers \WpAiAgent\Integration\Tool\BuiltIn\GrepTool
+ * @covers \Automattic\WpAiAgent\Integration\Tool\BuiltIn\GrepTool
  */
 final class GrepToolTest extends TestCase
 {

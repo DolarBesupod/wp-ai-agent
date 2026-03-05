@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Ability;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Ability;
 
 use WP_Ability;
 use WP_Error;
-use WpAiAgent\Core\Contracts\ToolInterface;
-use WpAiAgent\Integration\Ability\AbilityToolAdapter;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Ability\AbilityToolAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for AbilityToolAdapter.
  *
- * @covers \WpAiAgent\Integration\Ability\AbilityToolAdapter
+ * @covers \Automattic\WpAiAgent\Integration\Ability\AbilityToolAdapter
  */
 final class AbilityToolAdapterTest extends TestCase
 {

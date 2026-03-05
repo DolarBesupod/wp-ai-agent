@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Contracts\ConfigurationInterface;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
-use WpAiAgent\Integration\WpCli\WpConfigConfiguration;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpConfigConfiguration;
 
 /**
  * Unit tests for WpConfigConfiguration.
@@ -20,7 +20,7 @@ use WpAiAgent\Integration\WpCli\WpConfigConfiguration;
  * Tests that rely only on environment variables use putenv() because env
  * vars are mutable and do not require process isolation.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpConfigConfiguration
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpConfigConfiguration
  *
  * @since n.e.x.t
  */

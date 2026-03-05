@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Skill;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Skill;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use WpAiAgent\Core\Contracts\SkillRepositoryInterface;
-use WpAiAgent\Core\Exceptions\SkillNotFoundException;
-use WpAiAgent\Core\Skill\Skill;
-use WpAiAgent\Core\Skill\SkillConfig;
-use WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SkillRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SkillNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
 
 /**
  * Unit tests for WpOptionsSkillRepository.
@@ -19,7 +19,7 @@ use WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
  * are provided by tests/Stubs/WpFunctionsStub.php, loaded by tests/bootstrap.php.
  * WpOptionsStore::reset() ensures complete isolation between test cases.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpOptionsSkillRepository
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpOptionsSkillRepository
  *
  * @since n.e.x.t
  */

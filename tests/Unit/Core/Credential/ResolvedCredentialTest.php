@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Credential;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Credential;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Core\Credential\ResolvedCredential;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Core\Credential\ResolvedCredential;
 
 /**
  * Unit tests for ResolvedCredential DTO.
  *
- * @covers \WpAiAgent\Core\Credential\ResolvedCredential
+ * @covers \Automattic\WpAiAgent\Core\Credential\ResolvedCredential
  *
  * @since n.e.x.t
  */

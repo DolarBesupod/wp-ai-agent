@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Tool;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Tool;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Tests for BuiltInToolRegistry.
  *
- * @covers \WpAiAgent\Integration\Tool\BuiltInToolRegistry
+ * @covers \Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry
  */
 final class BuiltInToolRegistryTest extends TestCase
 {

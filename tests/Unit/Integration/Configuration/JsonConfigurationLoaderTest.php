@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use WpAiAgent\Core\Exceptions\ConfigurationException;
-use WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
-use WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for JsonConfigurationLoader.
  *
- * @covers \WpAiAgent\Integration\Configuration\JsonConfigurationLoader
+ * @covers \Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader
  */
 final class JsonConfigurationLoaderTest extends TestCase
 {

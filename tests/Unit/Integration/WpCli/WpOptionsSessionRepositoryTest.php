@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use WpAiAgent\Core\Exceptions\SessionPersistenceException;
-use WpAiAgent\Core\Session\Session;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\SessionId;
-use WpAiAgent\Integration\WpCli\WpOptionsSessionRepository;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use Automattic\Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsSessionRepository;
 
 /**
  * Unit tests for WpOptionsSessionRepository.
@@ -22,7 +22,7 @@ use WpAiAgent\Integration\WpCli\WpOptionsSessionRepository;
  * tests/bootstrap.php. WpOptionsStore::reset() is called in setUp() to ensure
  * complete isolation between test cases.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpOptionsSessionRepository
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpOptionsSessionRepository
  *
  * @since n.e.x.t
  */

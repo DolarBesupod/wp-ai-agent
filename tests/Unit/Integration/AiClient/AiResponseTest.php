@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Integration\AiClient\AiResponse;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiResponse;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Messages\DTO\MessagePart;
 use WordPress\AiClient\Messages\DTO\ModelMessage;
@@ -22,7 +22,7 @@ use WordPress\AiClient\Tools\DTO\FunctionCall;
 /**
  * Unit tests for AiResponse.
  *
- * @covers \WpAiAgent\Integration\AiClient\AiResponse
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\AiResponse
  */
 final class AiResponseTest extends TestCase
 {

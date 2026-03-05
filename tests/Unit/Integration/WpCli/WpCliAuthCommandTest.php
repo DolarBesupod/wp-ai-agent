@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Integration\WpCli\CredentialResolver;
-use WpAiAgent\Integration\WpCli\WpCliAuthCommand;
-use WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\CredentialResolver;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliAuthCommand;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
 
 /**
  * Unit tests for WpCliAuthCommand.
@@ -18,7 +18,7 @@ use WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
  * calls are captured by the stub in tests/Stubs/WpCliStub.php. WordPress
  * option functions use the in-memory WpOptionsStore.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpCliAuthCommand
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpCliAuthCommand
  *
  * @since n.e.x.t
  */

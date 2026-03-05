@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
 use WordPress\AiClient\Providers\Http\DTO\Request;
 use WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum;
@@ -13,7 +13,7 @@ use WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum;
 /**
  * Unit tests for OpenAiSubscriptionRequestAuthentication.
  *
- * @covers \WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication
  */
 final class OpenAiSubscriptionRequestAuthenticationTest extends TestCase
 {

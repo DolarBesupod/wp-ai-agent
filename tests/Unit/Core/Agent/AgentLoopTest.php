@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Agent\AgentLoop;
-use WpAiAgent\Core\Agent\AgentState;
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
-use WpAiAgent\Core\Contracts\AiResponseInterface;
-use WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use WpAiAgent\Core\Contracts\ToolExecutorInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\Session\Session;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Agent\AgentLoop;
+use Automattic\Automattic\WpAiAgent\Core\Agent\AgentState;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for AgentLoop.
  *
- * @covers \WpAiAgent\Core\Agent\AgentLoop
+ * @covers \Automattic\WpAiAgent\Core\Agent\AgentLoop
  */
 final class AgentLoopTest extends TestCase
 {

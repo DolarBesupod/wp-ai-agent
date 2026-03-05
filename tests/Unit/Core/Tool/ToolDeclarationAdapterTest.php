@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Tool;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Contracts\ToolInterface;
-use WpAiAgent\Core\Tool\ToolDeclarationAdapter;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\Automattic\WpAiAgent\Core\Tool\ToolDeclarationAdapter;
 
 /**
  * Tests for ToolDeclarationAdapter.
  *
- * @covers \WpAiAgent\Core\Tool\ToolDeclarationAdapter
+ * @covers \Automattic\WpAiAgent\Core\Tool\ToolDeclarationAdapter
  */
 final class ToolDeclarationAdapterTest extends TestCase
 {

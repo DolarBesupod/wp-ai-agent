@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Ability;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Ability;
 
 use WP_Ability;
 use WP_Error;
-use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use WpAiAgent\Integration\Ability\AbilityStrapTool;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for AbilityStrapTool.
  *
- * @covers \WpAiAgent\Integration\Ability\AbilityStrapTool
+ * @covers \Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool
  */
 final class AbilityStrapToolTest extends TestCase
 {

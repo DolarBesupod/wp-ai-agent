@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Exceptions;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\Exceptions\ConfirmationDeniedException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfirmationDeniedException;
 
 /**
  * Tests for ConfirmationDeniedException.
  *
- * @covers \WpAiAgent\Core\Exceptions\ConfirmationDeniedException
+ * @covers \Automattic\WpAiAgent\Core\Exceptions\ConfirmationDeniedException
  */
 final class ConfirmationDeniedExceptionTest extends TestCase
 {

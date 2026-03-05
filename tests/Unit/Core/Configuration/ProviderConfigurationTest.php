@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Configuration;
 
-use WpAiAgent\Core\Configuration\ProviderConfiguration;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Core\Configuration\ProviderConfiguration;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for ProviderConfiguration.
  *
- * @covers \WpAiAgent\Core\Configuration\ProviderConfiguration
+ * @covers \Automattic\WpAiAgent\Core\Configuration\ProviderConfiguration
  */
 final class ProviderConfigurationTest extends TestCase
 {

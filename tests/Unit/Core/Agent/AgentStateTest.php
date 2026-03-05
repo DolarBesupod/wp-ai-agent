@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Agent\AgentState;
+use Automattic\Automattic\WpAiAgent\Core\Agent\AgentState;
 
 /**
  * Tests for AgentState enum.
  *
- * @covers \WpAiAgent\Core\Agent\AgentState
+ * @covers \Automattic\WpAiAgent\Core\Agent\AgentState
  */
 final class AgentStateTest extends TestCase
 {

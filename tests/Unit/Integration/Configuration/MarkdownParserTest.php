@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use WpAiAgent\Core\Exceptions\ParseException;
-use WpAiAgent\Core\ValueObjects\ParsedMarkdown;
-use WpAiAgent\Integration\Configuration\MarkdownParser;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for MarkdownParser.
  *
- * @covers \WpAiAgent\Integration\Configuration\MarkdownParser
+ * @covers \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser
  */
 final class MarkdownParserTest extends TestCase
 {

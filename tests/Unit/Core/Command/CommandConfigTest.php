@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Command;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Command;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Command\CommandConfig;
+use Automattic\Automattic\WpAiAgent\Core\Command\CommandConfig;
 
 /**
  * Tests for CommandConfig value object.
  *
- * @covers \WpAiAgent\Core\Command\CommandConfig
+ * @covers \Automattic\WpAiAgent\Core\Command\CommandConfig
  */
 final class CommandConfigTest extends TestCase
 {

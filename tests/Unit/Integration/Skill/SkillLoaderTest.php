@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Skill;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Skill;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use WpAiAgent\Core\Exceptions\ParseException;
-use WpAiAgent\Core\ValueObjects\ParsedMarkdown;
-use WpAiAgent\Integration\Skill\SkillLoader;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillLoader;
 
 /**
  * Unit tests for SkillLoader.
@@ -17,7 +17,7 @@ use WpAiAgent\Integration\Skill\SkillLoader;
  * MarkdownParserInterface is mocked so no real filesystem or YAML parsing
  * is needed. All tests exercise the SkillLoader's orchestration logic only.
  *
- * @covers \WpAiAgent\Integration\Skill\SkillLoader
+ * @covers \Automattic\WpAiAgent\Integration\Skill\SkillLoader
  *
  * @since n.e.x.t
  */

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Core\Credential\Credential;
-use WpAiAgent\Core\Exceptions\CredentialNotFoundException;
-use WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Core\Credential\Credential;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
 
 /**
  * Unit tests for WpOptionsCredentialRepository.
@@ -19,7 +19,7 @@ use WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
  * by tests/bootstrap.php. WpOptionsStore::reset() is called in setUp() to
  * ensure complete isolation between test cases.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository
  *
  * @since n.e.x.t
  */

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Configuration;
 
-use WpAiAgent\Core\Configuration\McpServerConfiguration;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for McpServerConfiguration (Core layer).
  *
- * @covers \WpAiAgent\Core\Configuration\McpServerConfiguration
+ * @covers \Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration
  */
 final class McpServerConfigurationTest extends TestCase
 {

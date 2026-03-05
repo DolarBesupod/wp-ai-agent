@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\ValueObjects;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Tests for SessionId value object.
  *
- * @covers \WpAiAgent\Core\ValueObjects\SessionId
+ * @covers \Automattic\WpAiAgent\Core\ValueObjects\SessionId
  */
 final class SessionIdTest extends TestCase
 {

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Skill;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Skill;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Core\Skill\Skill;
-use WpAiAgent\Core\Skill\SkillConfig;
-use WpAiAgent\Integration\Skill\SkillLoader;
-use WpAiAgent\Integration\Skill\SkillRegistry;
-use WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillLoader;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillRegistry;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
 
 /**
  * Unit tests for SkillRegistry.
@@ -22,7 +22,7 @@ use WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
  * Uses WpOptionsStore for in-memory option simulation and temp directories
  * for bundled skill file tests. WP_CLI stubs record all static calls.
  *
- * @covers \WpAiAgent\Integration\Skill\SkillRegistry
+ * @covers \Automattic\WpAiAgent\Integration\Skill\SkillRegistry
  *
  * @since n.e.x.t
  */
@@ -115,7 +115,7 @@ final class SkillRegistryTest extends TestCase
 	 */
 	private function makeLoader(): SkillLoader
 	{
-		return new SkillLoader(new \WpAiAgent\Integration\Configuration\MarkdownParser());
+		return new SkillLoader(new \Automattic\WpAiAgent\Integration\Configuration\MarkdownParser());
 	}
 
 	/**

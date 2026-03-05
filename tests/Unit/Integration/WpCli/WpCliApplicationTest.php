@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Contracts\AgentInterface;
-use WpAiAgent\Core\Contracts\ConfigurationInterface;
-use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use WpAiAgent\Core\ValueObjects\SessionId;
-use WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
-use WpAiAgent\Integration\WpCli\WpCliApplication;
-use WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
-use WpAiAgent\Integration\WpCli\WpCliOutputHandler;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliApplication;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
 
 /**
  * Unit tests for WpCliApplication.
@@ -31,7 +31,7 @@ use WpAiAgent\Integration\WpCli\WpCliOutputHandler;
  * via proc_open() that pipes the commands through STDIN. This is the only
  * reliable way to test fgets(STDIN) behavior without modifying production code.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpCliApplication
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpCliApplication
  *
  * @since n.e.x.t
  */

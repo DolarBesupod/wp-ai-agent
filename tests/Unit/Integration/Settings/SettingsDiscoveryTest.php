@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Settings;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
 
-use WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
-use WpAiAgent\Integration\Settings\SettingsDiscovery;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
+use Automattic\Automattic\WpAiAgent\Integration\Settings\SettingsDiscovery;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for SettingsDiscovery.
  *
- * @covers \WpAiAgent\Integration\Settings\SettingsDiscovery
+ * @covers \Automattic\WpAiAgent\Integration\Settings\SettingsDiscovery
  */
 final class SettingsDiscoveryTest extends TestCase
 {

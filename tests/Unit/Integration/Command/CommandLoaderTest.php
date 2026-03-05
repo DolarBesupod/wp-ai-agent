@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Command;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Command;
 
-use WpAiAgent\Core\Command\Command;
-use WpAiAgent\Core\Contracts\CommandLoaderInterface;
-use WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use WpAiAgent\Core\Exceptions\ParseException;
-use WpAiAgent\Core\ValueObjects\ParsedMarkdown;
-use WpAiAgent\Integration\Command\CommandLoader;
+use Automattic\Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\Automattic\WpAiAgent\Integration\Command\CommandLoader;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for CommandLoader.
  *
- * @covers \WpAiAgent\Integration\Command\CommandLoader
+ * @covers \Automattic\WpAiAgent\Integration\Command\CommandLoader
  */
 final class CommandLoaderTest extends TestCase
 {

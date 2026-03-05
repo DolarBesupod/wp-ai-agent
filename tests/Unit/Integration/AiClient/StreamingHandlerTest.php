@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use WpAiAgent\Integration\AiClient\StreamingHandler;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\StreamingHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for StreamingHandler.
  *
- * @covers \WpAiAgent\Integration\AiClient\StreamingHandler
+ * @covers \Automattic\WpAiAgent\Integration\AiClient\StreamingHandler
  */
 final class StreamingHandlerTest extends TestCase
 {

@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Agent\AgentContext;
-use WpAiAgent\Core\Agent\AgentState;
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Session\Session;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Agent\AgentContext;
+use Automattic\Automattic\WpAiAgent\Core\Agent\AgentState;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use RuntimeException;
 
 /**
  * Tests for AgentContext.
  *
- * @covers \WpAiAgent\Core\Agent\AgentContext
+ * @covers \Automattic\WpAiAgent\Core\Agent\AgentContext
  */
 final class AgentContextTest extends TestCase
 {

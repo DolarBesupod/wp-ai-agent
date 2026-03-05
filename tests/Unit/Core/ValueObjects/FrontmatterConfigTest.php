@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\ValueObjects;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\ValueObjects\FrontmatterConfig;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\FrontmatterConfig;
 
 /**
  * Tests for FrontmatterConfig value object.
  *
- * @covers \WpAiAgent\Core\ValueObjects\FrontmatterConfig
+ * @covers \Automattic\WpAiAgent\Core\ValueObjects\FrontmatterConfig
  */
 final class FrontmatterConfigTest extends TestCase
 {

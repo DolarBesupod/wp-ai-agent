@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Skill;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Skill;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use WpAiAgent\Core\Skill\Skill;
-use WpAiAgent\Core\Skill\SkillConfig;
-use WpAiAgent\Integration\Skill\SkillTool;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillTool;
 
 /**
  * Unit tests for SkillTool.
@@ -19,7 +19,7 @@ use WpAiAgent\Integration\Skill\SkillTool;
  * FileReferenceExpanderInterface and BashCommandExpanderInterface are mocked.
  * By default both expanders return their input unchanged (pass-through).
  *
- * @covers \WpAiAgent\Integration\Skill\SkillTool
+ * @covers \Automattic\WpAiAgent\Integration\Skill\SkillTool
  *
  * @since n.e.x.t
  */

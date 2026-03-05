@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Core\Exceptions;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
 
 /**
  * Tests for AiClientException.
  *
- * @covers \WpAiAgent\Core\Exceptions\AiClientException
+ * @covers \Automattic\WpAiAgent\Core\Exceptions\AiClientException
  */
 final class AiClientExceptionTest extends TestCase
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use WpAiAgent\Core\Exceptions\ConfigurationException;
-use WpAiAgent\Integration\Configuration\SettingsSchemaValidator;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\SettingsSchemaValidator;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for SettingsSchemaValidator.
  *
- * @covers \WpAiAgent\Integration\Configuration\SettingsSchemaValidator
+ * @covers \Automattic\WpAiAgent\Integration\Configuration\SettingsSchemaValidator
  */
 final class SettingsSchemaValidatorTest extends TestCase
 {

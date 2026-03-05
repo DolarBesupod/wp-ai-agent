@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Tool\BuiltIn;
 
 use PHPUnit\Framework\TestCase;
-use WpAiAgent\Integration\Tool\BuiltIn\GlobTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\GlobTool;
 
 /**
  * Tests for GlobTool.
  *
- * @covers \WpAiAgent\Integration\Tool\BuiltIn\GlobTool
+ * @covers \Automattic\WpAiAgent\Integration\Tool\BuiltIn\GlobTool
  */
 final class GlobToolTest extends TestCase
 {

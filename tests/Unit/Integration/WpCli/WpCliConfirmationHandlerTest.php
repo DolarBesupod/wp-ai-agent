@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
-use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  * every static call and can simulate WP_CLI\ExitException (user declines prompt)
  * via the `$confirm_throws` flag.
  *
- * @covers \WpAiAgent\Integration\WpCli\WpCliConfirmationHandler
+ * @covers \Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler
  *
  * @since n.e.x.t
  */
