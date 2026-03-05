@@ -129,6 +129,7 @@ class WpCliApplication
 	public function chat(array $assoc_args): void
 	{
 		$this->resolveSession($assoc_args);
+		$this->resolveUserContext($assoc_args);
 
 		if (! empty($assoc_args['yolo'])) {
 			$this->confirmation_handler->setAutoConfirm(true);
@@ -221,6 +222,7 @@ class WpCliApplication
 	public function ask(string $message, array $assoc_args): void
 	{
 		$this->resolveSession($assoc_args);
+		$this->resolveUserContext($assoc_args);
 
 		if (! empty($assoc_args['yolo'])) {
 			$this->confirmation_handler->setAutoConfirm(true);
@@ -399,6 +401,44 @@ class WpCliApplication
 		} else {
 			$this->agent->startSession();
 		}
+	}
+
+	/**
+	 * Resolves the WordPress user context from the --user flag.
+	 *
+	 * Accepts a numeric ID, login name, or email address. Resolves the user
+	 * via get_user_by() and sets the current user via wp_set_current_user().
+	 * Reports the active user context. Does nothing when the flag is absent.
+	 *
+	 * @param array<string, mixed> $assoc_args The WP-CLI associative arguments.
+	 *
+	 * @return void
+	 *
+	 * @since n.e.x.t
+	 */
+	private function resolveUserContext(array $assoc_args): void
+	{
+		if (empty($assoc_args['user'])) {
+			return;
+		}
+
+		$identifier = (string) $assoc_args['user'];
+
+		if (is_numeric($identifier)) {
+			$wp_user = \get_user_by('id', (int) $identifier);
+		} elseif (str_contains($identifier, '@')) {
+			$wp_user = \get_user_by('email', $identifier);
+		} else {
+			$wp_user = \get_user_by('login', $identifier);
+		}
+
+		if ($wp_user === false) {
+			\WP_CLI::warning(sprintf('User not found: %s — abilities will require manual user context.', $identifier));
+			return;
+		}
+
+		\wp_set_current_user($wp_user->ID);
+		\WP_CLI::log(sprintf('User context: %s (ID %d, %s)', $wp_user->user_login, $wp_user->ID, implode(', ', $wp_user->roles)));
 	}
 
 	/**

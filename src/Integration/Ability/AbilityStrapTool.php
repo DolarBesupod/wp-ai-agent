@@ -127,9 +127,10 @@ class AbilityStrapTool extends AbstractTool
 	public function getDescription(): string
 	{
 		$description = 'Interact with WordPress abilities. '
-			. 'Use action "list" to discover available abilities, '
-			. '"describe" with ability_name to get the full parameter schema, '
-			. 'and "execute" with ability_name and params to run an ability.';
+			. 'Workflow: 1) "list" to discover available abilities, '
+			. '2) ALWAYS "describe" with ability_name to get the full parameter schema before executing, '
+			. '3) "execute" with ability_name and params to run. '
+			. 'Never skip describe -- you need the exact schema to build valid params.';
 
 		if ($this->isAutoConfirmEnabled()) {
 			$description .= ' Auto-confirm is active: all abilities execute without confirmation.';
@@ -250,8 +251,9 @@ class AbilityStrapTool extends AbstractTool
 		$response = [
 			'abilities' => $abilities,
 			'count' => count($abilities),
-			'usage_hint' => "Use action 'describe' with ability_name to get full parameter schema. "
-				. "Use action 'execute' with ability_name and params to run.",
+			'usage_hint' => "IMPORTANT: Always use action 'describe' with ability_name to get the full parameter schema "
+				. "BEFORE executing. Do not guess parameters from key_params alone -- describe returns "
+				. "the complete schema with types, required fields, and validation rules.",
 		];
 
 		$encoded = wp_json_encode($response);

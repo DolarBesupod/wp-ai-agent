@@ -51,10 +51,16 @@ class WpCliCommand
 	 * [--yolo]
 	 * : Auto-confirm all tool executions without prompting. Use with caution.
 	 *
+	 * [--user=<login>]
+	 * : Set the WordPress user context by login name, email, or ID. Required for
+	 *   executing WordPress abilities. Without this, the agent must set the user
+	 *   context manually via the wordpress_users tool.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp agent chat
 	 *     wp agent chat --session=abc123
+	 *     wp agent chat --user=admin
 	 *     wp agent chat --no-save
 	 *
 	 * @subcommand chat
@@ -94,11 +100,17 @@ class WpCliCommand
 	 * [--yolo]
 	 * : Auto-confirm all tool executions without prompting. Use with caution.
 	 *
+	 * [--user=<login>]
+	 * : Set the WordPress user context by login name, email, or ID. Required for
+	 *   executing WordPress abilities. Without this, the agent must set the user
+	 *   context manually via the wordpress_users tool.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp agent ask "What plugins are active?"
 	 *     wp agent ask "List posts from last week" --session=abc123
 	 *     wp agent ask "Run a health check" --no-save
+	 *     wp agent ask "List all plugins" --user=admin --yolo
 	 *
 	 * @since n.e.x.t
 	 *
