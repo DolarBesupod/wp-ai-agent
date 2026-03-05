@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
-use WpAiAgent\Core\Skill\Skill;
-use WpAiAgent\Core\Skill\SkillConfig;
-use WpAiAgent\Integration\Configuration\MarkdownParser;
-use WpAiAgent\Integration\Skill\SkillLoader;
+use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillLoader;
 
 /**
  * WP-CLI command handler for the `wp agent skills` subcommand group.

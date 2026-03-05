@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
 /**
  * Interface for AI model responses.
@@ -68,7 +68,7 @@ interface AiResponseInterface
 	/**
 	 * Converts the response to a Message value object.
 	 *
-	 * @return \WpAiAgent\Core\ValueObjects\Message
+	 * @return \Automattic\WpAiAgent\Core\ValueObjects\Message
 	 */
-	public function toMessage(): \WpAiAgent\Core\ValueObjects\Message;
+	public function toMessage(): \Automattic\WpAiAgent\Core\ValueObjects\Message;
 }

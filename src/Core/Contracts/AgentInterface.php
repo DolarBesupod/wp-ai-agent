@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
-use WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Interface for the main agent that coordinates the conversation loop.
@@ -30,7 +30,7 @@ interface AgentInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\SessionNotFoundException If the session does not exist.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException If the session does not exist.
 	 */
 	public function resumeSession(SessionId $session_id): void;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\ValueObjects;
+namespace Automattic\Automattic\WpAiAgent\Core\ValueObjects;
 
 /**
  * Value object representing a parsed list of command arguments.

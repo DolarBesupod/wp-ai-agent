@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Command;
+namespace Automattic\Automattic\WpAiAgent\Integration\Command;
 
-use WpAiAgent\Core\Command\Command;
-use WpAiAgent\Core\Contracts\CommandLoaderInterface;
-use WpAiAgent\Core\Contracts\CommandRegistryInterface;
-use WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
 
 /**
  * Registry for managing command registration and retrieval.

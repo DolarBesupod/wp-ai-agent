@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Interface for tools that can be executed by the agent.
@@ -57,7 +57,7 @@ interface ToolInterface
 	 *
 	 * @return ToolResult The result of the execution.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\ToolExecutionException If execution fails.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException If execution fails.
 	 */
 	public function execute(array $arguments): ToolResult;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Core\Exceptions\CredentialNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
 
 /**
  * WP-CLI command handler for the `wp agent auth` subcommand group.

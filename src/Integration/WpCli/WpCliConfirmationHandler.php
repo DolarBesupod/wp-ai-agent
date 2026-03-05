@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
-use WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
 
 /**
  * WP-CLI confirmation handler for tool execution approvals.

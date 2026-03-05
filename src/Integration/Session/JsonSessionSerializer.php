@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Session;
+namespace Automattic\Automattic\WpAiAgent\Integration\Session;
 
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Exceptions\SessionPersistenceException;
-use WpAiAgent\Core\Session\Session;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use Automattic\Automattic\WpAiAgent\Core\Session\Session;
 
 /**
  * Serializer for converting sessions to/from JSON format.

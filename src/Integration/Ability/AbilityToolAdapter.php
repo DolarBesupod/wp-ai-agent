@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Ability;
+namespace Automattic\Automattic\WpAiAgent\Integration\Ability;
 
 use WP_Ability;
 use WP_Error;
-use WpAiAgent\Core\Tool\AbstractTool;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Tool\AbstractTool;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Throwable;
 
 /**

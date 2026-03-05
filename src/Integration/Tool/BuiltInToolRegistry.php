@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Tool;
+namespace Automattic\Automattic\WpAiAgent\Integration\Tool;
 
-use WpAiAgent\Core\Contracts\ToolInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Core\Tool\ToolRegistry;
-use WpAiAgent\Integration\Tool\BuiltIn\BashTool;
-use WpAiAgent\Integration\Tool\BuiltIn\GlobTool;
-use WpAiAgent\Integration\Tool\BuiltIn\GrepTool;
-use WpAiAgent\Integration\Tool\BuiltIn\ReadFileTool;
-use WpAiAgent\Integration\Tool\BuiltIn\ThinkTool;
-use WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Tool\ToolRegistry;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\BashTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\GlobTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\GrepTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\ReadFileTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\ThinkTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn\WriteFileTool;
 
 /**
  * Registry factory for built-in tools.

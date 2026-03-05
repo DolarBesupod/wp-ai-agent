@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Integration\Configuration;
 
-use WpAiAgent\Core\Configuration\McpServerConfiguration;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Loads MCP server configuration from JSON file in .wp-ai-agent folder.

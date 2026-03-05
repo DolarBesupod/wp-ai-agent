@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Session;
+namespace Automattic\Automattic\WpAiAgent\Core\Session;
 
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Contracts\SessionMetadataInterface;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Session implementation for conversation persistence.

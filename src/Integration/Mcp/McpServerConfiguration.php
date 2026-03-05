@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Mcp;
+namespace Automattic\Automattic\WpAiAgent\Integration\Mcp;
 
 /**
  * Configuration for an MCP server connection.

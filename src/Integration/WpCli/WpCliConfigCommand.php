@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
 /**
  * WP-CLI command handler for the `wp agent config` subcommand group.

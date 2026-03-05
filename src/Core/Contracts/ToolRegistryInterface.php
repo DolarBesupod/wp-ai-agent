@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
 /**
  * Interface for managing tool registration and retrieval.
@@ -22,7 +22,7 @@ interface ToolRegistryInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\DuplicateToolException If a tool with the same name exists.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException If a tool with the same name exists.
 	 */
 	public function register(ToolInterface $tool): void;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Integration\AiClient;
 
 /**
  * Static utility that maps model name prefixes to AI provider IDs.

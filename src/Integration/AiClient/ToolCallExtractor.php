@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\AiClient;
+namespace Automattic\Automattic\WpAiAgent\Integration\AiClient;
 
 use WordPress\AiClient\Messages\DTO\Message;
 use WordPress\AiClient\Results\DTO\GenerativeAiResult;

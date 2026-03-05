@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Settings;
+namespace Automattic\Automattic\WpAiAgent\Integration\Settings;
 
-use WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
 
 /**
  * Discovers configuration files in .wp-ai-agent directories.

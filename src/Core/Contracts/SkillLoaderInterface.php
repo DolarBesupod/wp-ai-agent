@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
-use WpAiAgent\Core\Skill\Skill;
+use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
 
 /**
  * Interface for loading skills from files or content.
@@ -26,7 +26,7 @@ interface SkillLoaderInterface
 	 *
 	 * @return Skill The loaded skill.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\ParseException If the file cannot be parsed.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ParseException If the file cannot be parsed.
 	 * @throws \RuntimeException If the file cannot be read.
 	 *
 	 * @since n.e.x.t

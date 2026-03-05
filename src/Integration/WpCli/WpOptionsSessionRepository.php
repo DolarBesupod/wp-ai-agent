@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Contracts\SessionMetadataInterface;
-use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use WpAiAgent\Core\Exceptions\SessionPersistenceException;
-use WpAiAgent\Core\ValueObjects\SessionId;
-use WpAiAgent\Integration\Session\JsonSessionSerializer;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Integration\Session\JsonSessionSerializer;
 
 /**
  * WordPress options-based session repository.

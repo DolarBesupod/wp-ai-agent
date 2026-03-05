@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Core\Agent;
 
-use WpAiAgent\Core\Contracts\AgentInterface;
-use WpAiAgent\Core\Contracts\AgentLoopInterface;
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use WpAiAgent\Core\Session\Session;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -274,7 +274,7 @@ final class Agent implements AgentInterface
 	/**
 	 * Lists all available sessions.
 	 *
-	 * @return array<int, array{id: SessionId, metadata: \WpAiAgent\Core\Contracts\SessionMetadataInterface}>
+	 * @return array<int, array{id: SessionId, metadata: \Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface}>
 	 */
 	public function listSessions(): array
 	{

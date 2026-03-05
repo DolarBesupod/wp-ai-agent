@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Mcp;
+namespace Automattic\Automattic\WpAiAgent\Integration\Mcp;
 
 use Automattic\PhpMcpClient\Client\ClientCapabilities;
 use Automattic\PhpMcpClient\Client\McpClient;
@@ -13,7 +13,7 @@ use Automattic\PhpMcpClient\Exception\TimeoutException;
 use Automattic\PhpMcpClient\Exception\TransportException;
 use Automattic\PhpMcpClient\Transport\Http\HttpTransport;
 use Automattic\PhpMcpClient\Transport\StdioTransport;
-use WpAiAgent\Core\Exceptions\McpConnectionException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

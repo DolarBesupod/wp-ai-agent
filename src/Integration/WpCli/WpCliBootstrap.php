@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
-use WpAiAgent\Core\Agent\Agent;
-use WpAiAgent\Core\Agent\AgentLoop;
-use WpAiAgent\Core\Tool\ToolExecutor;
-use WpAiAgent\Integration\AiClient\AiClientAdapter;
-use WpAiAgent\Integration\AiClient\ProviderDetector;
-use WpAiAgent\Integration\Configuration\MarkdownParser;
-use WpAiAgent\Integration\Mcp\McpClientManager;
-use WpAiAgent\Integration\Mcp\McpServerConfiguration;
-use WpAiAgent\Integration\Mcp\McpToolRegistry;
-use WpAiAgent\Integration\Settings\BashCommandExpander;
-use WpAiAgent\Integration\Settings\FileReferenceExpander;
-use WpAiAgent\Integration\Skill\SkillLoader;
-use WpAiAgent\Integration\Skill\SkillRegistry;
-use WpAiAgent\Integration\Ability\AbilityStrapTool;
-use WpAiAgent\Integration\User\UserContextTool;
-use WpAiAgent\Integration\Tool\BuiltInToolRegistry;
+use Automattic\Automattic\WpAiAgent\Core\Agent\Agent;
+use Automattic\Automattic\WpAiAgent\Core\Agent\AgentLoop;
+use Automattic\Automattic\WpAiAgent\Core\Tool\ToolExecutor;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter;
+use Automattic\Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
+use Automattic\Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
+use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
+use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
+use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpToolRegistry;
+use Automattic\Automattic\WpAiAgent\Integration\Settings\BashCommandExpander;
+use Automattic\Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillLoader;
+use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillRegistry;
+use Automattic\Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool;
+use Automattic\Automattic\WpAiAgent\Integration\User\UserContextTool;
+use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Static factory that wires all WP-CLI-specific implementations into a WpCliApplication.
@@ -134,14 +134,14 @@ final class WpCliBootstrap
 	 * are used as a first-run fallback. Discovery errors are reported via
 	 * WP_CLI::warning() and never abort startup.
 	 *
-	 * @param \WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry The tool registry.
+	 * @param \Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry The tool registry.
 	 *
 	 * @return void
 	 *
 	 * @since n.e.x.t
 	 */
 	private static function discoverSkills(
-		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
+		\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
 	): void {
 		try {
 			$markdown_parser = new MarkdownParser();
@@ -182,14 +182,14 @@ final class WpCliBootstrap
 	 * ]);
 	 * </code>
 	 *
-	 * @param \WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry The tool registry.
+	 * @param \Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry The tool registry.
 	 *
 	 * @return McpClientManager|null The connected manager, or null when MCP is not configured.
 	 *
 	 * @since n.e.x.t
 	 */
 	private static function connectMcpServers(
-		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
+		\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry
 	): ?McpClientManager {
 		if (!defined('PHP_CLI_AGENT_MCP_SERVERS') || !is_array(constant('PHP_CLI_AGENT_MCP_SERVERS'))) {
 			return null;
@@ -253,11 +253,11 @@ final class WpCliBootstrap
 	 *
 	 * @since n.e.x.t
 	 *
-	 * @param \WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry Tool registry to register abilities into.
+	 * @param \Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry Tool registry to register abilities into.
 	 */
 	private static function discoverAbilities(
-		\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry,
-		\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface $confirmation_handler
+		\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface $tool_registry,
+		\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface $confirmation_handler
 	): void {
 		if (!function_exists('wp_get_abilities')) {
 			return;

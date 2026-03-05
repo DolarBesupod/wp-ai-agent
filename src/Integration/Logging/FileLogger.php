@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Logging;
+namespace Automattic\Automattic\WpAiAgent\Integration\Logging;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Core\Configuration;
 
-use WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Main configuration for the CLI Agent.

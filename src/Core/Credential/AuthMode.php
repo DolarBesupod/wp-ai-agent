@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Credential;
+namespace Automattic\Automattic\WpAiAgent\Core\Credential;
 
 /**
  * Backed string enum representing supported authentication modes.

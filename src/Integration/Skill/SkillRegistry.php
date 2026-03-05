@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Skill;
+namespace Automattic\Automattic\WpAiAgent\Integration\Skill;
 
 use Exception;
-use WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsSkillRepository;
 
 /**
  * Discovers and registers skill tools from WordPress options and bundled files.

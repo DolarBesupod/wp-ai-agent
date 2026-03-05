@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Tool;
+namespace Automattic\Automattic\WpAiAgent\Core\Tool;
 
-use WpAiAgent\Core\Contracts\ToolInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Core\Exceptions\DuplicateToolException;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
 
 /**
  * Registry for managing tool registration and retrieval.

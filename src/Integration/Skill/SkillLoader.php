@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Skill;
+namespace Automattic\Automattic\WpAiAgent\Integration\Skill;
 
-use WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use WpAiAgent\Core\Contracts\SkillLoaderInterface;
-use WpAiAgent\Core\Exceptions\ParseException;
-use WpAiAgent\Core\Skill\Skill;
-use WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SkillLoaderInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
 
 /**
  * Loads skills from markdown files with YAML frontmatter.

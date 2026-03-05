@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Core\Agent;
 
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Immutable context for the agent loop execution.

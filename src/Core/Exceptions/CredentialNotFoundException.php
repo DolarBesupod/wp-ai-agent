@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Exceptions;
+namespace Automattic\Automattic\WpAiAgent\Core\Exceptions;
 
 /**
  * Exception thrown when a requested credential is not found in the repository.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
-use WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Interface for session persistence.
@@ -23,7 +23,7 @@ interface SessionRepositoryInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\SessionPersistenceException If saving fails.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException If saving fails.
 	 */
 	public function save(SessionInterface $session): void;
 
@@ -34,8 +34,8 @@ interface SessionRepositoryInterface
 	 *
 	 * @return SessionInterface The loaded session.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\SessionNotFoundException If the session doesn't exist.
-	 * @throws \WpAiAgent\Core\Exceptions\SessionPersistenceException If loading fails.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException If the session doesn't exist.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException If loading fails.
 	 */
 	public function load(SessionId $session_id): SessionInterface;
 
@@ -55,7 +55,7 @@ interface SessionRepositoryInterface
 	 *
 	 * @return bool True if deleted, false if it didn't exist.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\SessionPersistenceException If deletion fails.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException If deletion fails.
 	 */
 	public function delete(SessionId $session_id): bool;
 

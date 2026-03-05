@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Integration\Configuration;
 
-use WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use WpAiAgent\Core\Exceptions\ParseException;
-use WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
 use Symfony\Component\Yaml\Exception\ParseException as YamlParseException;
 use Symfony\Component\Yaml\Yaml;
 

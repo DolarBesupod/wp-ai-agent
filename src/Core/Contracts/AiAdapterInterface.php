@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
-use WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
 
 /**
  * Interface for AI model adapters.
@@ -25,7 +25,7 @@ interface AiAdapterInterface
 	 *
 	 * @return AiResponseInterface The model's response.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\AiAdapterException If the request fails.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\AiAdapterException If the request fails.
 	 */
 	public function chat(array $messages, string $system, array $tools = []): AiResponseInterface;
 
@@ -39,7 +39,7 @@ interface AiAdapterInterface
 	 *
 	 * @return AiResponseInterface The complete response after streaming.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\AiAdapterException If the request fails.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\AiAdapterException If the request fails.
 	 */
 	public function chatStream(
 		array $messages,

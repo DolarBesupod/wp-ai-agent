@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Configuration;
+namespace Automattic\Automattic\WpAiAgent\Integration\Configuration;
 
-use WpAiAgent\Core\Contracts\ConfigurationInterface;
-use WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Configuration implementation for resolved configuration data.

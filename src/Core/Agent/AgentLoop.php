@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Agent;
+namespace Automattic\Automattic\WpAiAgent\Core\Agent;
 
-use WpAiAgent\Core\Contracts\AiAdapterInterface;
-use WpAiAgent\Core\Contracts\AiResponseInterface;
-use WpAiAgent\Core\Contracts\AgentLoopInterface;
-use WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use WpAiAgent\Core\Contracts\SessionInterface;
-use WpAiAgent\Core\Contracts\ToolExecutorInterface;
-use WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use WpAiAgent\Core\Exceptions\AgentException;
-use WpAiAgent\Core\ValueObjects\Message;
-use WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;
@@ -238,7 +238,7 @@ final class AgentLoop implements AgentLoopInterface
 
 			// Track token usage on the session.
 			$usage = $response->getUsage();
-			if ($context->getSession() instanceof \WpAiAgent\Core\Session\Session) {
+			if ($context->getSession() instanceof \Automattic\WpAiAgent\Core\Session\Session) {
 				$context->getSession()->addTokenUsage($usage['input_tokens'], $usage['output_tokens']);
 			}
 

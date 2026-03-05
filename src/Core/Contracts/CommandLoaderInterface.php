@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
-use WpAiAgent\Core\Command\Command;
+use Automattic\Automattic\WpAiAgent\Core\Command\Command;
 
 /**
  * Interface for loading commands from files or content.
@@ -26,7 +26,7 @@ interface CommandLoaderInterface
 	 *
 	 * @return Command The loaded command.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\ParseException If the file cannot be parsed.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ParseException If the file cannot be parsed.
 	 * @throws \RuntimeException If the file cannot be read.
 	 */
 	public function load(string $filepath): Command;
@@ -41,7 +41,7 @@ interface CommandLoaderInterface
 	 *
 	 * @return Command The loaded command.
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\ParseException If the content cannot be parsed.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ParseException If the content cannot be parsed.
 	 */
 	public function loadFromContent(string $name, string $content): Command;
 }

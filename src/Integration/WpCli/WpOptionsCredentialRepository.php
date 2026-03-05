@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\WpCli;
+namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
 
-use WpAiAgent\Core\Contracts\CredentialRepositoryInterface;
-use WpAiAgent\Core\Credential\AuthMode;
-use WpAiAgent\Core\Credential\Credential;
-use WpAiAgent\Core\Exceptions\CredentialNotFoundException;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\CredentialRepositoryInterface;
+use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\Automattic\WpAiAgent\Core\Credential\Credential;
+use Automattic\Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
 
 /**
  * WordPress options-based credential repository.

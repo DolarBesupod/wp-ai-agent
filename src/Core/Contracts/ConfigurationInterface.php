@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\Contracts;
+namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
 
 /**
  * Interface for agent configuration.
@@ -55,7 +55,7 @@ interface ConfigurationInterface
 	 *
 	 * @return string
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\ConfigurationException If API key is not set.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ConfigurationException If API key is not set.
 	 */
 	public function getApiKey(): string;
 
@@ -141,7 +141,7 @@ interface ConfigurationInterface
 	 *
 	 * @return void
 	 *
-	 * @throws \WpAiAgent\Core\Exceptions\ConfigurationException If the file cannot be loaded.
+	 * @throws \Automattic\WpAiAgent\Core\Exceptions\ConfigurationException If the file cannot be loaded.
 	 */
 	public function loadFromFile(string $path): void;
 

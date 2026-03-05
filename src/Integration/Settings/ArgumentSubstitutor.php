@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Integration\Settings;
+namespace Automattic\Automattic\WpAiAgent\Integration\Settings;
 
-use WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
-use WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
+use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
 
 /**
  * Substitutes argument placeholders in content.

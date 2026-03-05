@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WpAiAgent\Core\ValueObjects;
+namespace Automattic\Automattic\WpAiAgent\Core\ValueObjects;
 
 /**
  * Immutable value object representing parsed markdown content.
