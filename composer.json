@@ -22,12 +22,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"WpAiAgent\\": "src/"
+			"Automattic\\WpAiAgent\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"WpAiAgent\\Tests\\": "tests/"
+			"Automattic\\WpAiAgent\\Tests\\": "tests/"
 		}
 	},
 	"repositories": [
