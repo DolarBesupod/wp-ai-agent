@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
+namespace Automattic\WpAiAgent\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Agent\Agent;
-use Automattic\Automattic\WpAiAgent\Core\Agent\AgentLoop;
-use Automattic\Automattic\WpAiAgent\Core\Tool\ToolExecutor;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpToolRegistry;
-use Automattic\Automattic\WpAiAgent\Integration\Settings\BashCommandExpander;
-use Automattic\Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander;
-use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillLoader;
-use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillRegistry;
-use Automattic\Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool;
-use Automattic\Automattic\WpAiAgent\Integration\User\UserContextTool;
-use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
+use Automattic\WpAiAgent\Core\Agent\Agent;
+use Automattic\WpAiAgent\Core\Agent\AgentLoop;
+use Automattic\WpAiAgent\Core\Tool\ToolExecutor;
+use Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter;
+use Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
+use Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
+use Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
+use Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
+use Automattic\WpAiAgent\Integration\Mcp\McpToolRegistry;
+use Automattic\WpAiAgent\Integration\Settings\BashCommandExpander;
+use Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander;
+use Automattic\WpAiAgent\Integration\Skill\SkillLoader;
+use Automattic\WpAiAgent\Integration\Skill\SkillRegistry;
+use Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool;
+use Automattic\WpAiAgent\Integration\User\UserContextTool;
+use Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Static factory that wires all WP-CLI-specific implementations into a WpCliApplication.

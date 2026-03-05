@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Exceptions;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\WpAiAgent\Core\Exceptions\AgentException;
 
 /**
  * Tests for AgentException.

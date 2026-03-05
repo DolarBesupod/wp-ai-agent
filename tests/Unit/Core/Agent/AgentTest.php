@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Agent;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Agent\Agent;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use Automattic\Automattic\WpAiAgent\Core\Session\Session;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Core\Agent\Agent;
+use Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Tests for Agent facade.

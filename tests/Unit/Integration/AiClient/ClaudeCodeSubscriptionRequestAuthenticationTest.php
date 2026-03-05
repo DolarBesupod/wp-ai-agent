@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
+use Automattic\WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
 use WordPress\AiClient\Providers\Http\DTO\Request;
 use WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum;

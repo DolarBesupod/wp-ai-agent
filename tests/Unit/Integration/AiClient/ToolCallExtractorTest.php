@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ToolCallExtractor;
+use Automattic\WpAiAgent\Integration\AiClient\ToolCallExtractor;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Messages\DTO\Message;
 use WordPress\AiClient\Messages\DTO\MessagePart;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Session;
+namespace Automattic\WpAiAgent\Core\Session;
 
 use DateTimeImmutable;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
 
 /**
  * Session metadata implementation.

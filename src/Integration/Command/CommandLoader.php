@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Command;
+namespace Automattic\WpAiAgent\Integration\Command;
 
-use Automattic\Automattic\WpAiAgent\Core\Command\Command;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandConfig;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\WpAiAgent\Core\Command\CommandConfig;
+use Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
+use Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ParseException;
 
 /**
  * Loads commands from markdown files with YAML frontmatter.

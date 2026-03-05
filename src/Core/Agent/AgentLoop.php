@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Agent;
+namespace Automattic\WpAiAgent\Core\Agent;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolExecutorInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
+use Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
+use Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

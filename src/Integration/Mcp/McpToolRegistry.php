@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Mcp;
+namespace Automattic\WpAiAgent\Integration\Mcp;
 
 use Automattic\PhpMcpClient\Client\McpClient;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
+use Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
+use Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

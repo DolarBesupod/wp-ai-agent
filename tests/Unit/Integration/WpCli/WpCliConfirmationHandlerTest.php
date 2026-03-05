@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
+use Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

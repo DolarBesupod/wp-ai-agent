@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Tool;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
-use Automattic\Automattic\WpAiAgent\Core\Tool\ToolExecutor;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
+use Automattic\WpAiAgent\Core\Tool\ToolExecutor;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\NullLogger;
 
 /**

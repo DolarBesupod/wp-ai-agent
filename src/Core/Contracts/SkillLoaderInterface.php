@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
+namespace Automattic\WpAiAgent\Core\Contracts;
 
-use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\WpAiAgent\Core\Skill\Skill;
 
 /**
  * Interface for loading skills from files or content.

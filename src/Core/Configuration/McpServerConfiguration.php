@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Configuration;
+namespace Automattic\WpAiAgent\Core\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Configuration for an MCP server.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
+namespace Automattic\WpAiAgent\Core\Contracts;
 
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
 
 /**
  * Interface for AI model adapters.

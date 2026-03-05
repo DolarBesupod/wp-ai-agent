@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
 
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Command;
+namespace Automattic\WpAiAgent\Integration\Command;
 
-use Automattic\Automattic\WpAiAgent\Core\Command\Command;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandExecutorInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
+use Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
+use Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\WpAiAgent\Core\Contracts\CommandExecutorInterface;
+use Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
 use RuntimeException;
 
 /**

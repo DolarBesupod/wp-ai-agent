@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Agent;
+namespace Automattic\WpAiAgent\Core\Agent;
 
 /**
  * Enum representing the possible states of the agent loop.

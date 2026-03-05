@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
-use Automattic\Automattic\WpAiAgent\Core\Session\Session;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsSessionRepository;
+use Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Integration\WpCli\WpOptionsSessionRepository;
 
 /**
  * Unit tests for WpOptionsSessionRepository.

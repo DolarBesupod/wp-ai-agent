@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
 
 use Automattic\PhpMcpClient\Client\McpClient;
 use Automattic\PhpMcpClient\Exception\JsonRpcException;
 use Automattic\PhpMcpClient\Exception\McpException;
 use Automattic\PhpMcpClient\Exception\TimeoutException;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpToolAdapter;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
+use Automattic\WpAiAgent\Integration\Mcp\McpToolAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**

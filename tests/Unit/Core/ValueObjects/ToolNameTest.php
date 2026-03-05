@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\ValueObjects;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolName;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolName;
 
 /**
  * Tests for ToolName value object.

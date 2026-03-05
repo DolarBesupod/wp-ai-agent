@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
-use Automattic\Automattic\WpAiAgent\Integration\Settings\ArgumentSubstitutor;
+use Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\WpAiAgent\Integration\Settings\ArgumentSubstitutor;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Tool;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Tool\AbstractTool;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Tool\AbstractTool;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for AbstractTool.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Credential;
+namespace Automattic\WpAiAgent\Core\Credential;
 
 /**
  * Immutable DTO returned by the credential resolver.

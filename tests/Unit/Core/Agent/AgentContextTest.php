@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Agent;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Agent;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Agent\AgentContext;
-use Automattic\Automattic\WpAiAgent\Core\Agent\AgentState;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
-use Automattic\Automattic\WpAiAgent\Core\Session\Session;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Agent\AgentContext;
+use Automattic\WpAiAgent\Core\Agent\AgentState;
+use Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use RuntimeException;
 
 /**

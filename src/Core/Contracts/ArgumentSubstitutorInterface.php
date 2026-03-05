@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
+namespace Automattic\WpAiAgent\Core\Contracts;
 
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
 
 /**
  * Interface for substituting argument placeholders in content.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
+namespace Automattic\WpAiAgent\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Reads agent configuration from PHP constants defined in wp-config.php.

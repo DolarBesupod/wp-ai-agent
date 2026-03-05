@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Skill;
+namespace Automattic\WpAiAgent\Integration\Skill;
 
 use RuntimeException;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
-use Automattic\Automattic\WpAiAgent\Core\Tool\AbstractTool;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\WpAiAgent\Core\Tool\AbstractTool;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tool wrapper for a loaded Skill value object.

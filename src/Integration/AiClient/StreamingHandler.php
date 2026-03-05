@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\AiClient;
+namespace Automattic\WpAiAgent\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
 
 /**
  * Handles streaming responses from the AI client.

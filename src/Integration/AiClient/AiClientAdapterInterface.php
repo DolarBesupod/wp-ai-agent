@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\AiClient;
+namespace Automattic\WpAiAgent\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\WpAiAgent\Core\Contracts\AiAdapterInterface;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Exceptions\AiClientException;
 use WordPress\AiClient\Providers\ProviderRegistry;
 
 /**

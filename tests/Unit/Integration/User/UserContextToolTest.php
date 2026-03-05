@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\User;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\User;
 
-use Automattic\Automattic\WpAiAgent\Integration\User\UserContextTool;
+use Automattic\WpAiAgent\Integration\User\UserContextTool;
 use PHPUnit\Framework\TestCase;
 
 /**

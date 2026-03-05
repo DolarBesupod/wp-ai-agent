@@ -4,9 +4,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Stubs;
+namespace Automattic\WpAiAgent\Tests\Stubs;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
 
 /**
  * Minimal stub implementation of ConfigurationInterface for subprocess-based tests.

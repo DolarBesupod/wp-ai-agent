@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Settings;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander;
+use Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\WpAiAgent\Integration\Settings\FileReferenceExpander;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

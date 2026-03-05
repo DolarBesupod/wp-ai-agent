@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\ValueObjects;
+namespace Automattic\WpAiAgent\Core\ValueObjects;
 
 /**
  * Value object representing a session identifier.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ToolDeclarationAdapter;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Integration\AiClient\ToolDeclarationAdapter;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Tools\DTO\FunctionDeclaration;
 

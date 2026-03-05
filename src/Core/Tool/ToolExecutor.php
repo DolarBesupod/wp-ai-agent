@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Tool;
+namespace Automattic\WpAiAgent\Core\Tool;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolExecutorInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolExecutorInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ToolExecutionException;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Credential\Credential;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Credential\Credential;
+use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
+use Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
 
 /**
  * Unit tests for WpOptionsCredentialRepository.

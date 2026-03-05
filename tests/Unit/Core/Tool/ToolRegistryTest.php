@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Tool;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Tool;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
-use Automattic\Automattic\WpAiAgent\Core\Tool\ToolRegistry;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
+use Automattic\WpAiAgent\Core\Tool\ToolRegistry;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tests for ToolRegistry.

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\WpOptionsStore;
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Credential\ResolvedCredential;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\CredentialResolver;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Credential\ResolvedCredential;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Integration\WpCli\CredentialResolver;
+use Automattic\WpAiAgent\Integration\WpCli\WpOptionsCredentialRepository;
 
 /**
  * Unit tests for CredentialResolver.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\ResolvedConfiguration;
+use Automattic\WpAiAgent\Integration\Configuration\ResolvedConfiguration;
 
 /**
  * Unit tests for ResolvedConfiguration.

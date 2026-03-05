@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
+use Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Skill;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Skill;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\WpAiAgent\Core\Skill\SkillConfig;
 
 /**
  * Unit tests for SkillConfig.

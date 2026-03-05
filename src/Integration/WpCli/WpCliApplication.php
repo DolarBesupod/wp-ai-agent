@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
+namespace Automattic\WpAiAgent\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
+use Automattic\WpAiAgent\Core\Contracts\AgentInterface;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
+use Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
 
 /**
  * WP-CLI application.

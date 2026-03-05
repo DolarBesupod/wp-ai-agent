@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfigCommand;
+use Automattic\WpAiAgent\Integration\WpCli\WpCliConfigCommand;
 
 /**
  * Unit tests for WpCliConfigCommand.

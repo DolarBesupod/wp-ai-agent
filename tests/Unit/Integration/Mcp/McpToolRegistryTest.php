@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
 
 use Automattic\PhpMcpClient\Client\McpClient;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpToolAdapter;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpToolRegistry;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\DuplicateToolException;
+use Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
+use Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
+use Automattic\WpAiAgent\Integration\Mcp\McpToolAdapter;
+use Automattic\WpAiAgent\Integration\Mcp\McpToolRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

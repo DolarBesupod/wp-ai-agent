@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpConfigConfiguration;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Integration\WpCli\WpConfigConfiguration;
 
 /**
  * Unit tests for WpConfigConfiguration.

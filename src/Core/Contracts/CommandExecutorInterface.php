@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
+namespace Automattic\WpAiAgent\Core\Contracts;
 
-use Automattic\Automattic\WpAiAgent\Core\Command\Command;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
+use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
 
 /**
  * Interface for executing commands.

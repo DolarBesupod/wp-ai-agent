@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Command;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Command;
 
-use Automattic\Automattic\WpAiAgent\Core\Command\Command;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandConfig;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\CommandRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
-use Automattic\Automattic\WpAiAgent\Integration\Command\CommandRegistry;
+use Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\WpAiAgent\Core\Command\CommandConfig;
+use Automattic\WpAiAgent\Core\Contracts\CommandLoaderInterface;
+use Automattic\WpAiAgent\Core\Contracts\CommandRegistryInterface;
+use Automattic\WpAiAgent\Core\Contracts\SettingsDiscoveryInterface;
+use Automattic\WpAiAgent\Integration\Command\CommandRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

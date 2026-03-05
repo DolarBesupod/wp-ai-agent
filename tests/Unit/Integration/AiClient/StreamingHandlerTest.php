@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\StreamingHandler;
+use Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\WpAiAgent\Integration\AiClient\StreamingHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

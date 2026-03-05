@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
+namespace Automattic\WpAiAgent\Core\Contracts;
 
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Credential\Credential;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Credential\Credential;
+use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
 
 /**
  * Interface for persisting and retrieving credentials.

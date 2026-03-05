@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Ability;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Ability;
 
 use WP_Ability;
 use WP_Error;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool;
+use Automattic\WpAiAgent\Core\Contracts\ConfirmationHandlerInterface;
+use Automattic\WpAiAgent\Integration\Ability\AbilityStrapTool;
 use PHPUnit\Framework\TestCase;
 
 /**

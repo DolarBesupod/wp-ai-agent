@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Tool;
+namespace Automattic\WpAiAgent\Core\Tool;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
 
 /**
  * Adapter for converting tools to AI model declarations.

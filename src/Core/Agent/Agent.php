@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Agent;
+namespace Automattic\WpAiAgent\Core\Agent;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AgentException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use Automattic\Automattic\WpAiAgent\Core\Session\Session;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Core\Contracts\AgentInterface;
+use Automattic\WpAiAgent\Core\Contracts\AgentLoopInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\AgentException;
+use Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 

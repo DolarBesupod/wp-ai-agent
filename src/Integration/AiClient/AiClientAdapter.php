@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\AiClient;
+namespace Automattic\WpAiAgent\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiAdapterException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
+use Automattic\WpAiAgent\Core\Exceptions\AiAdapterException;
+use Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
 use WordPress\AiClient\Builders\PromptBuilder;
 use WordPress\AiClient\Common\Exception\InvalidArgumentException as AiClientInvalidArgumentException;
 use WordPress\AiClient\Common\Exception\RuntimeException as AiClientRuntimeException;

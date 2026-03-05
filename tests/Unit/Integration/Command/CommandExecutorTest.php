@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Command;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Command;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Command\Command;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandConfig;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
-use Automattic\Automattic\WpAiAgent\Integration\Command\CommandExecutor;
+use Automattic\WpAiAgent\Core\Command\Command;
+use Automattic\WpAiAgent\Core\Command\CommandConfig;
+use Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
+use Automattic\WpAiAgent\Core\Contracts\ArgumentSubstitutorInterface;
+use Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\ArgumentList;
+use Automattic\WpAiAgent\Integration\Command\CommandExecutor;
 use RuntimeException;
 
 /**

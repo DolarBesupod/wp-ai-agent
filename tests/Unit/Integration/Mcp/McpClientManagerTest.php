@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
 
 use Automattic\PhpMcpClient\Client\ClientCapabilities;
 use Automattic\PhpMcpClient\Client\McpClient;
@@ -13,9 +13,9 @@ use Automattic\PhpMcpClient\Exception\ConnectionException;
 use Automattic\PhpMcpClient\Exception\TimeoutException;
 use Automattic\PhpMcpClient\Exception\TransportException;
 use Automattic\PhpMcpClient\Transport\StdioTransport;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
+use Automattic\WpAiAgent\Core\Exceptions\McpConnectionException;
+use Automattic\WpAiAgent\Integration\Mcp\McpClientManager;
+use Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 

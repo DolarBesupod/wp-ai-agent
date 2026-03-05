@@ -4,12 +4,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Stubs;
+namespace Automattic\WpAiAgent\Tests\Stubs;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Minimal stub implementation of SessionRepositoryInterface for subprocess-based tests.

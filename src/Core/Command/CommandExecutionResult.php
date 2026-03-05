@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Command;
+namespace Automattic\WpAiAgent\Core\Command;
 
 /**
  * Immutable value object representing the result of a command execution.

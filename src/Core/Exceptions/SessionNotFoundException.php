@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Exceptions;
+namespace Automattic\WpAiAgent\Core\Exceptions;
 
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Exception thrown when a session is not found.

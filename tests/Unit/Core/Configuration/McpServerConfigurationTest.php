@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Configuration;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 
 /**

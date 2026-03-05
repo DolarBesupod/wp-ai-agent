@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Mcp;
 
-use Automattic\Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
+use Automattic\WpAiAgent\Integration\Mcp\McpServerConfiguration;
 use PHPUnit\Framework\TestCase;
 
 /**

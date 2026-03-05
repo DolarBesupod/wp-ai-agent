@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\WpCli;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliApplication;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
-use Automattic\Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
+use Automattic\WpAiAgent\Core\Contracts\AgentInterface;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionRepositoryInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use Automattic\WpAiAgent\Integration\WpCli\WpCliApplication;
+use Automattic\WpAiAgent\Integration\WpCli\WpCliConfirmationHandler;
+use Automattic\WpAiAgent\Integration\WpCli\WpCliOutputHandler;
 
 /**
  * Unit tests for WpCliApplication.

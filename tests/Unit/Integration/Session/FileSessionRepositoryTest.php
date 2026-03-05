@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Session;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Session;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
-use Automattic\Automattic\WpAiAgent\Core\Session\Session;
-use Automattic\Automattic\WpAiAgent\Core\Session\SessionMetadata;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
-use Automattic\Automattic\WpAiAgent\Integration\Session\FileSessionRepository;
+use Automattic\WpAiAgent\Core\Contracts\SessionMetadataInterface;
+use Automattic\WpAiAgent\Core\Exceptions\SessionNotFoundException;
+use Automattic\WpAiAgent\Core\Exceptions\SessionPersistenceException;
+use Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\WpAiAgent\Core\Session\SessionMetadata;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Integration\Session\FileSessionRepository;
 
 /**
  * Tests for FileSessionRepository.

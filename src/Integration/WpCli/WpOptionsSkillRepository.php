@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
+namespace Automattic\WpAiAgent\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SkillRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\SkillNotFoundException;
-use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
-use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\WpAiAgent\Core\Contracts\SkillRepositoryInterface;
+use Automattic\WpAiAgent\Core\Exceptions\SkillNotFoundException;
+use Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\WpAiAgent\Core\Skill\SkillConfig;
 
 /**
  * WordPress options-based skill repository.

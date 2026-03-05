@@ -4,12 +4,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Stubs;
+namespace Automattic\WpAiAgent\Tests\Stubs;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AgentInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\SessionInterface;
-use Automattic\Automattic\WpAiAgent\Core\Session\Session;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\SessionId;
+use Automattic\WpAiAgent\Core\Contracts\AgentInterface;
+use Automattic\WpAiAgent\Core\Contracts\SessionInterface;
+use Automattic\WpAiAgent\Core\Session\Session;
+use Automattic\WpAiAgent\Core\ValueObjects\SessionId;
 
 /**
  * Minimal stub implementation of AgentInterface for subprocess-based tests.

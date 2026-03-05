@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Session;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Session;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Session\SessionMetadata;
+use Automattic\WpAiAgent\Core\Session\SessionMetadata;
 
 /**
  * Tests for SessionMetadata.

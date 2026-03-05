@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Configuration;
+namespace Automattic\WpAiAgent\Integration\Configuration;
 
 /**
  * Writes updates to the settings.json file.

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\ConfigurationResolver;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\McpJsonLoader;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Integration\Configuration\ConfigurationResolver;
+use Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
+use Automattic\WpAiAgent\Integration\Configuration\McpJsonLoader;
 use PHPUnit\Framework\TestCase;
 
 /**

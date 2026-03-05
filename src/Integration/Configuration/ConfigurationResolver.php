@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Configuration;
+namespace Automattic\WpAiAgent\Integration\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Core\Configuration\McpServerConfiguration;
+use Automattic\WpAiAgent\Core\Contracts\ConfigurationInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
 
 /**
  * Resolves configuration from multiple sources with priority chain.

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
+use Automattic\WpAiAgent\Core\Contracts\MarkdownParserInterface;
+use Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\WpAiAgent\Integration\Configuration\MarkdownParser;
 use PHPUnit\Framework\TestCase;
 
 /**

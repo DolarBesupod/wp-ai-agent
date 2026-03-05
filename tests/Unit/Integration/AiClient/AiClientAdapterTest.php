@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Integration\AiClient\AiClientAdapter;
+use Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use Automattic\WpAiAgent\Integration\AiClient\AnthropicSubscriptionRequestAuthentication;
+use Automattic\WpAiAgent\Integration\AiClient\ClaudeCodeSubscriptionRequestAuthentication;
+use Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Http\Contracts\HttpTransporterInterface;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;

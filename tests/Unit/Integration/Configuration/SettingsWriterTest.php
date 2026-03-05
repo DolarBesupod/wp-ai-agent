@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\SettingsWriter;
+use Automattic\WpAiAgent\Integration\Configuration\SettingsWriter;
 use PHPUnit\Framework\TestCase;
 
 /**

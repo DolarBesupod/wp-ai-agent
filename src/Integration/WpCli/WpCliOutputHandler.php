@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
+namespace Automattic\WpAiAgent\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\OutputHandlerInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * WP-CLI-specific output handler using native WP-CLI output functions.

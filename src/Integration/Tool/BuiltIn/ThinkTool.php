@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltIn;
+namespace Automattic\WpAiAgent\Integration\Tool\BuiltIn;
 
-use Automattic\Automattic\WpAiAgent\Core\Tool\AbstractTool;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Tool\AbstractTool;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 
 /**
  * Tool for internal LLM reasoning and reflection.

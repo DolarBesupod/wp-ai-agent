@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\WpCli;
+namespace Automattic\WpAiAgent\Integration\WpCli;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\CredentialRepositoryInterface;
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Core\Credential\ResolvedCredential;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
+use Automattic\WpAiAgent\Core\Contracts\CredentialRepositoryInterface;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Credential\ResolvedCredential;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Core\Exceptions\CredentialNotFoundException;
 
 /**
  * Resolves credentials for AI providers using a priority chain.

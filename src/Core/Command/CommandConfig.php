@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Command;
+namespace Automattic\WpAiAgent\Core\Command;
 
 /**
  * Immutable value object providing typed access to command frontmatter configuration.

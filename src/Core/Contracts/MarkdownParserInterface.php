@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Contracts;
+namespace Automattic\WpAiAgent\Core\Contracts;
 
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ParseException;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
+use Automattic\WpAiAgent\Core\Exceptions\ParseException;
+use Automattic\WpAiAgent\Core\ValueObjects\ParsedMarkdown;
 
 /**
  * Interface for parsing markdown content with YAML frontmatter.

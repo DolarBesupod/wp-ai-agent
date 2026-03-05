@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Command;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Command;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
+use Automattic\WpAiAgent\Core\Command\CommandExecutionResult;
 
 /**
  * Tests for CommandExecutionResult value object.

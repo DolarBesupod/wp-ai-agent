@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Session;
+namespace Automattic\WpAiAgent\Core\Session;
 
 use DateTimeImmutable;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\Message;
+use Automattic\WpAiAgent\Core\ValueObjects\Message;
 
 /**
  * Wrapper for messages within a session context.

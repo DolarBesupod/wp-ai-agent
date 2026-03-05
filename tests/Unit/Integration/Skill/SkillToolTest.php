@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Skill;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Skill;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
-use Automattic\Automattic\WpAiAgent\Core\Skill\Skill;
-use Automattic\Automattic\WpAiAgent\Core\Skill\SkillConfig;
-use Automattic\Automattic\WpAiAgent\Integration\Skill\SkillTool;
+use Automattic\WpAiAgent\Core\Contracts\BashCommandExpanderInterface;
+use Automattic\WpAiAgent\Core\Contracts\FileReferenceExpanderInterface;
+use Automattic\WpAiAgent\Core\Skill\Skill;
+use Automattic\WpAiAgent\Core\Skill\SkillConfig;
+use Automattic\WpAiAgent\Integration\Skill\SkillTool;
 
 /**
  * Unit tests for SkillTool.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
+use Automattic\WpAiAgent\Integration\AiClient\ProviderDetector;
 use PHPUnit\Framework\TestCase;
 
 /**

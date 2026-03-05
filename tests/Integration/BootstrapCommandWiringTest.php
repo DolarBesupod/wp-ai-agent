@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Integration;
+namespace Automattic\WpAiAgent\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 

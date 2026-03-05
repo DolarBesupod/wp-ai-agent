@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Logging;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Logging;
 
-use Automattic\Automattic\WpAiAgent\Integration\Logging\ConsoleLogger;
+use Automattic\WpAiAgent\Integration\Logging\ConsoleLogger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\AiClient;
+namespace Automattic\WpAiAgent\Integration\AiClient;
 
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\AiClientException;
+use Automattic\WpAiAgent\Core\Exceptions\AiClientException;
 
 /**
  * Parses Server-Sent Events (SSE) response bodies.

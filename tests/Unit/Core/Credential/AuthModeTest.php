@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Core\Credential;
+namespace Automattic\WpAiAgent\Tests\Unit\Core\Credential;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
 
 /**
  * Unit tests for AuthMode enum.

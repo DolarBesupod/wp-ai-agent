@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Tool;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Tool;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
-use Automattic\Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
+use Automattic\WpAiAgent\Core\Contracts\ToolRegistryInterface;
+use Automattic\WpAiAgent\Integration\Tool\BuiltInToolRegistry;
 
 /**
  * Tests for BuiltInToolRegistry.

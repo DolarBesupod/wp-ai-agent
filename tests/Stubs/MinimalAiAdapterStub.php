@@ -4,11 +4,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Stubs;
+namespace Automattic\WpAiAgent\Tests\Stubs;
 
-use Automattic\Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
-use Automattic\Automattic\WpAiAgent\Core\Credential\AuthMode;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
+use Automattic\WpAiAgent\Core\Contracts\AiResponseInterface;
+use Automattic\WpAiAgent\Core\Credential\AuthMode;
+use Automattic\WpAiAgent\Integration\AiClient\AiClientAdapterInterface;
 use WordPress\AiClient\Providers\ProviderRegistry;
 
 /**

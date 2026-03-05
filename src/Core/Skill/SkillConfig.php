@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Core\Skill;
+namespace Automattic\WpAiAgent\Core\Skill;
 
 /**
  * Immutable value object providing typed access to skill frontmatter configuration.

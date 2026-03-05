@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Integration\Mcp;
+namespace Automattic\WpAiAgent\Integration\Mcp;
 
 use Automattic\PhpMcpClient\Client\McpClient;
-use Automattic\Automattic\WpAiAgent\Core\Contracts\ToolInterface;
-use Automattic\Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
+use Automattic\WpAiAgent\Core\Contracts\ToolInterface;
+use Automattic\WpAiAgent\Core\ValueObjects\ToolResult;
 use Throwable;
 
 /**

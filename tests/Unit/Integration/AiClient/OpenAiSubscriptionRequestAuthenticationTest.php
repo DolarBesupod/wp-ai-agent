@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\AiClient;
 
 use PHPUnit\Framework\TestCase;
-use Automattic\Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
+use Automattic\WpAiAgent\Integration\AiClient\OpenAiSubscriptionRequestAuthentication;
 use WordPress\AiClient\Providers\Http\DTO\ApiKeyRequestAuthentication;
 use WordPress\AiClient\Providers\Http\DTO\Request;
 use WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum;
@@ -25,7 +25,10 @@ final class OpenAiSubscriptionRequestAuthenticationTest extends TestCase
 	 *           "exp":9999999999}
 	 */
 	private const TEST_JWT = 'eyJhbGciOiAiUlMyNTYiLCAidHlwIjogIkpXVCJ9'
-		. '.eyJhdWQiOiBbImh0dHBzOi8vYXBpLm9wZW5haS5jb20vdjEiXSwgImh0dHBzOi8vYXBpLm9wZW5haS5jb20vYXV0aCI6IHsiY2hhdGdwdF9hY2NvdW50X2lkIjogImFjY3QtdGVzdC0xMjM0NSIsICJjaGF0Z3B0X3BsYW5fdHlwZSI6ICJwcm8ifSwgImV4cCI6IDk5OTk5OTk5OTl9'
+		. '.eyJhdWQiOiBbImh0dHBzOi8vYXBpLm9wZW5haS5jb20vdjEiXSwgImh0dH'
+		. 'BzOi8vYXBpLm9wZW5haS5jb20vYXV0aCI6IHsiY2hhdGdwdF9hY2NvdW50'
+		. 'X2lkIjogImFjY3QtdGVzdC0xMjM0NSIsICJjaGF0Z3B0X3BsYW5fdHlwZS'
+		. 'I6ICJwcm8ifSwgImV4cCI6IDk5OTk5OTk5OTl9'
 		. '.ZmFrZS1zaWduYXR1cmU';
 
 	private const TEST_ACCOUNT_ID = 'acct-test-12345';

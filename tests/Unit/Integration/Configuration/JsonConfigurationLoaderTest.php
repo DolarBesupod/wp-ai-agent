@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Automattic\Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
+namespace Automattic\WpAiAgent\Tests\Unit\Integration\Configuration;
 
-use Automattic\Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
-use Automattic\Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
+use Automattic\WpAiAgent\Core\Exceptions\ConfigurationException;
+use Automattic\WpAiAgent\Integration\Configuration\EnvConfigurationLoader;
+use Automattic\WpAiAgent\Integration\Configuration\JsonConfigurationLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
