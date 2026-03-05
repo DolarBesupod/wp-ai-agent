@@ -375,6 +375,7 @@ final class FileLogger extends AbstractLogger
 			return;
 		}
 
+		clearstatcache(true, $this->file_path);
 		$file_size = filesize($this->file_path);
 
 		if ($file_size === false || $file_size < $this->max_file_size) {
